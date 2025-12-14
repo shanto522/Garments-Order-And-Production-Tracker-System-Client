@@ -6,10 +6,9 @@ import Swal from "sweetalert2";
 const PendingOrders = () => {
   const [orders, setOrders] = useState([]);
   const [page, setPage] = useState(1);
-  const limit = 10; // 1 page showing 10 orders
+  const limit = 10;
   const axiosSecure = useAxiosSecure();
 
-  // Fetch pending orders
   const fetchPendingOrders = async () => {
     try {
       const res = await axiosSecure.get("/orders/pending");
@@ -39,7 +38,7 @@ const PendingOrders = () => {
     if (result.isConfirmed) {
       try {
         await axiosSecure.put(`/orders/${id}`, { status: "Approved" });
-        toast.success("Order approved!"); // Hot toast
+        toast.success("Order approved!");
         setOrders((prev) => prev.filter((o) => o._id !== id));
       } catch (err) {
         console.error(err);
@@ -63,7 +62,7 @@ const PendingOrders = () => {
     if (result.isConfirmed) {
       try {
         await axiosSecure.put(`/orders/${id}`, { status: "Rejected" });
-        toast.error("Order rejected!"); // Hot toast
+        toast.error("Order rejected!");
         setOrders((prev) => prev.filter((o) => o._id !== id));
       } catch (err) {
         console.error(err);
