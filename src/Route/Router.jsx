@@ -28,9 +28,10 @@ import AddProduct from "../pages/Dashboard/Manager/AddProduct";
 import ManageProducts from "../pages/Dashboard/Manager/ManageProducts";
 import PendingOrders from "../pages/Dashboard/Manager/PendingOrders";
 import ApprovedOrders from "../pages/Dashboard/Manager/ApprovedOrders";
+import PaymentSuccess from "../pages/Dashboard/Payment/PaymentSuccess";
+import ProductDetails from "../pages/ProductDetails/ProductDetails";
 
 // Route Guards
-
 
 const router = createBrowserRouter([
   // ======================== PUBLIC ========================
@@ -42,7 +43,6 @@ const router = createBrowserRouter([
       { path: "all-products", element: <AllProducts /> },
       { path: "about-us", element: <AboutUs /> },
       { path: "contact", element: <Contact /> },
-      
     ],
   },
 
@@ -72,6 +72,18 @@ const router = createBrowserRouter([
         element: (
           <PrivateRoute>
             <MyOrders />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "payment-success",
+        element: <PaymentSuccess />,
+      },
+      {
+        path: "product/:id",
+        element: (
+          <PrivateRoute>
+            <ProductDetails />
           </PrivateRoute>
         ),
       },
