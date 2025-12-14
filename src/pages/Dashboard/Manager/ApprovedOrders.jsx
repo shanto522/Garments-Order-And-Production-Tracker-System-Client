@@ -15,7 +15,7 @@ const ApprovedOrders = () => {
   const [orders, setOrders] = useState([]);
   const [locationInputs, setLocationInputs] = useState({});
   const [page, setPage] = useState(1);
-  const limit = 10; // 1 page showing 10 orders
+  const limit = 10;
   const axiosSecure = useAxiosSecure();
 
   const fetchApprovedOrders = async () => {
