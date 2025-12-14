@@ -1,13 +1,14 @@
 import React from "react";
-import useAuth from "../hooks/useAuth";
+
 import { Navigate, useLocation } from "react-router";
-import Loading from "../Pages/Loading/Loading";
+import LoadingSpinner from "../pages/Shared/LoadingSpinner";
+import useAuth from "../hooks/useAuth";
 
 const PrivateRoute = ({ children }) => {
   const { user, loading } = useAuth();
   const location = useLocation();
   if (loading) {
-    return <Loading></Loading>;
+    return <LoadingSpinner></LoadingSpinner>;
   }
   if (user && user?.email) {
     return children;

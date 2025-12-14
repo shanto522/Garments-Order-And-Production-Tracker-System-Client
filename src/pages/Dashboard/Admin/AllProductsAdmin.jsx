@@ -1,7 +1,11 @@
-import React from "react";
+import React from 'react';
 
 const AllProductsAdmin = () => {
-  return <div>AllProductsAdmin</div>;
+  return (
+    <div>
+      
+    </div>
+  );
 };
 
 export default AllProductsAdmin;

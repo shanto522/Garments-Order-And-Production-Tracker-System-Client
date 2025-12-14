@@ -1,7 +1,11 @@
-import React from "react";
+import React from 'react';
 
 const PendingOrders = () => {
-  return <div>PendingOrders</div>;
+  return (
+    <div>
+      
+    </div>
+  );
 };
 
 export default PendingOrders;

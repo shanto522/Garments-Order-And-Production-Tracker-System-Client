@@ -1,7 +1,11 @@
-import React from "react";
+import React from 'react';
 
 const ManageUsers = () => {
-  return <div>Manage Users</div>;
+  return (
+    <div>
+      
+    </div>
+  );
 };
 
 export default ManageUsers;

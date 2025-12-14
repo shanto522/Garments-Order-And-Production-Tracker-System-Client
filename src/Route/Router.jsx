@@ -1,117 +1,163 @@
 import { createBrowserRouter } from "react-router";
-import ErrorPage from "../pages/ErrorPage/ErrorPage";
 import MainLayout from "../layouts/MainLayout";
 import AuthLayout from "../layouts/AuthLayout";
-import Login from "../pages/Auth/Login/Login";
-import Register from "../pages/Auth/Register/Register";
 import DashboardLayout from "../layouts/DashboardLayout";
+import ErrorPage from "../pages/ErrorPage/ErrorPage";
+
+// Public Pages
 import Home from "../pages/PublicPage/Home";
 import AllProducts from "../pages/PublicPage/AllProducts";
 import AboutUs from "../pages/PublicPage/AboutUs";
 import Contact from "../pages/PublicPage/Contact";
+
+// Auth Pages
+import Login from "../pages/Auth/Login/Login";
+import Register from "../pages/Auth/Register/Register";
+
+// User Pages
 import MyOrders from "../pages/Dashboard/User/MyOrders/MyOrders";
 import TrackOrder from "../pages/Dashboard/User/TrackOrder/TrackOrder";
+import Profile from "../pages/Dashboard/Profile/Profile";
 
+// Admin Pages
 import ManageUsers from "../pages/Dashboard/Admin/ManageUsers";
 import AllProductsAdmin from "../pages/Dashboard/Admin/AllProductsAdmin";
 import AllOrders from "../pages/Dashboard/Admin/AllOrders";
+// Manager Pages
 import AddProduct from "../pages/Dashboard/Manager/AddProduct";
 import ManageProducts from "../pages/Dashboard/Manager/ManageProducts";
 import PendingOrders from "../pages/Dashboard/Manager/PendingOrders";
 import ApprovedOrders from "../pages/Dashboard/Manager/ApprovedOrders";
-import Profile from "../pages/Dashboard/Profile/Profile";
+
+// Route Guards
+
 
 const router = createBrowserRouter([
+  // ======================== PUBLIC ========================
   {
     path: "/",
-    Component: MainLayout,
+    element: <MainLayout />,
     children: [
-      {
-        index: true,
-        element: <Home></Home>,
-      },
-      {
-        path: "/all-products",
-        element: <AllProducts></AllProducts>,
-      },
-      {
-        path: "/about-us",
-        element: <AboutUs></AboutUs>,
-      },
-      {
-        path: "/contact",
-        element: <Contact></Contact>,
-      },
+      { index: true, element: <Home /> },
+      { path: "all-products", element: <AllProducts /> },
+      { path: "about-us", element: <AboutUs /> },
+      { path: "contact", element: <Contact /> },
+      
     ],
   },
+
+  // ======================== AUTH ========================
   {
     path: "/auth",
     element: <AuthLayout />,
     children: [
-      {
-        path: "/auth/login",
-        element: <Login />,
-      },
-      {
-        path: "/auth/register",
-        element: <Register />,
-      },
+      { path: "/auth/login", element: <Login /> },
+      { path: "/auth/register", element: <Register /> },
     ],
   },
+
+  // ======================== DASHBOARD ========================
   {
     path: "/dashboard",
-    element: <DashboardLayout />,
+    element: (
+      <PrivateRoute>
+        <DashboardLayout /> {/* ✅ ADDED PrivateRoute for all roles */}
+      </PrivateRoute>
+    ),
     children: [
+      // ---------------- USER / BUYER ----------------
       {
+        index: true,
         path: "my-orders",
-        element: <MyOrders />,
+        element: (
+          <PrivateRoute>
+            <MyOrders />
+          </PrivateRoute>
+        ),
       },
       {
         path: "track-order/:orderId",
-        element: <TrackOrder />,
+        element: (
+          <PrivateRoute>
+            <TrackOrder />
+          </PrivateRoute>
+        ),
       },
+      // =========================
+      // COMMON PROFILE FOR ALL ROLES ✅
       {
         path: "profile",
-        element: <Profile />,
+        element: (
+          <PrivateRoute>
+            <Profile />
+          </PrivateRoute>
+        ),
       },
 
-      // Admin Routes
+      // ---------------- ADMIN ----------------
       {
         path: "manage-users",
-        element: <ManageUsers />,
+        element: (
+          <PrivateRoute>
+            <ManageUsers />
+          </PrivateRoute>
+        ),
       },
       {
         path: "all-products-admin",
-        element: <AllProductsAdmin />,
+        element: (
+          <PrivateRoute>
+            <AllProductsAdmin />
+          </PrivateRoute>
+        ),
       },
       {
         path: "all-orders",
-        element: <AllOrders />,
+        element: (
+          <PrivateRoute>
+            <AllOrders />
+          </PrivateRoute>
+        ),
       },
 
-      // Manager Routes
+      // ---------------- MANAGER ----------------
       {
         path: "add-product",
-        element: <AddProduct />,
+        element: (
+          <PrivateRoute>
+            <AddProduct />
+          </PrivateRoute>
+        ),
       },
       {
         path: "manage-products",
-        element: <ManageProducts />,
+        element: (
+          <PrivateRoute>
+            <ManageProducts />
+          </PrivateRoute>
+        ),
       },
       {
         path: "pending-orders",
-        element: <PendingOrders />,
+        element: (
+          <PrivateRoute>
+            <PendingOrders />
+          </PrivateRoute>
+        ),
       },
       {
         path: "approved-orders",
-        element: <ApprovedOrders />,
+        element: (
+          <PrivateRoute>
+            <ApprovedOrders />
+          </PrivateRoute>
+        ),
       },
     ],
   },
 
-  {
-    path: "/*",
-    element: <ErrorPage></ErrorPage>,
-  },
+  // ======================== 404 ========================
+  { path: "*", element: <ErrorPage /> },
 ]);
+
 export default router;

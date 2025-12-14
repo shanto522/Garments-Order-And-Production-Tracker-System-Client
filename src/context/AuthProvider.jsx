@@ -1,6 +1,4 @@
-// src/context/AuthProvider.jsx
 import React, { useEffect, useState } from "react";
-
 import {
   createUserWithEmailAndPassword,
   GoogleAuthProvider,
@@ -14,7 +12,7 @@ import { AuthContext } from "./AuthContext";
 
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  const [show, setShow] = useState(false);
+  const [role, setRole] = useState(null);
   const [loading, setLoading] = useState(true);
   const provider = new GoogleAuthProvider();
 
@@ -38,37 +36,43 @@ const AuthProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      // CHANGE MARKED: এখানে আমরা role ধরে রাখছি।
-      // উদাহরণ স্বরূপ ধরে নিচ্ছি user metadata এ role আছে (admin/manager/buyer)
-      if (currentUser) {
-        const role = currentUser?.role || "buyer"; // default buyer
-        setUser({ ...currentUser, role }); // CHANGE MARKED
+    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
+      setUser(currentUser);
+
+      if (currentUser?.email) {
+        try {
+          const res = await fetch(
+            `http://localhost:3000/users/role/${currentUser.email}`
+          );
+          const data = await res.json();
+          setRole(data.role); // admin/manager/buyer
+        } catch (err) {
+          console.log("Role fetch error:", err);
+          setRole(null);
+        }
       } else {
-        setUser(null);
+        setRole(null);
       }
+
       setLoading(false);
     });
+
     return () => unsubscribe();
   }, []);
 
   const authInfo = {
     user,
-    role: user?.role, // CHANGE MARKED: role access যোগ করা হয়েছে
     setUser,
-    show,
-    setShow,
+    role,
     loading,
-    setLoading,
-    signInWithPopupGoogleFunc,
-    signOutFunc,
     signInFunc,
     signUpFunc,
+    signOutFunc,
+    signInWithPopupGoogleFunc,
   };
-
   return (
     <AuthContext.Provider value={authInfo}>{children}</AuthContext.Provider>
-  ); // CHANGE MARKED: <AuthContext> -> <AuthContext.Provider>
+  );
 };
 
 export default AuthProvider;

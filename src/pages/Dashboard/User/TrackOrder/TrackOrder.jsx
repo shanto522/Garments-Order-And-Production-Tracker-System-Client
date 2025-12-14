@@ -1,7 +1,11 @@
-import React from "react";
+import React from 'react';
 
 const TrackOrder = () => {
-  return <div>Track Order</div>;
+  return (
+    <div>
+      
+    </div>
+  );
 };
 
 export default TrackOrder;
