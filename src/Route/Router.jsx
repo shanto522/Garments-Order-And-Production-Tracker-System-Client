@@ -30,6 +30,9 @@ import PendingOrders from "../pages/Dashboard/Manager/PendingOrders";
 import ApprovedOrders from "../pages/Dashboard/Manager/ApprovedOrders";
 import PaymentSuccess from "../pages/Dashboard/Payment/PaymentSuccess";
 import ProductDetails from "../pages/ProductDetails/ProductDetails";
+import FeedbackForm from "../pages/Dashboard/User/Feedback/FeedbackForm";
+import AllFeedbacks from "../pages/Dashboard/User/Feedback/AllFeedbacks";
+import PrivateRoute from "../Provider/PrivateRoute";
 
 // Route Guards
 
@@ -92,6 +95,22 @@ const router = createBrowserRouter([
         element: (
           <PrivateRoute>
             <TrackOrder />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "feedbackForm",
+        element: (
+          <PrivateRoute>
+            <FeedbackForm></FeedbackForm>
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "all-feedbacks",
+        element: (
+          <PrivateRoute>
+            <AllFeedbacks></AllFeedbacks>
           </PrivateRoute>
         ),
       },
