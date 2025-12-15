@@ -10,7 +10,7 @@ const ProductDetails = () => {
   const axiosSecure = useAxiosSecure();
   const navigate = useNavigate();
   const { user } = useAuth();
-
+  const [profile, setProfile] = useState(null);
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -31,6 +31,14 @@ const ProductDetails = () => {
       })
       .catch(() => setLoading(false));
   }, [id, axiosSecure]);
+
+  useEffect(() => {
+    if (user?.email) {
+      axiosSecure.get("/profile").then((res) => {
+        setProfile(res.data);
+      });
+    }
+  }, [user, axiosSecure]);
 
   const handleBooking = async () => {
     if (!user) return toast("Please login to book the product.");
@@ -120,142 +128,164 @@ const ProductDetails = () => {
         </p>
       </div>
 
-      {/* Booking Form */}
-      {user && user.role !== "admin" && user.role !== "manager" && (
-        <div className="lg:w-1/2 bg-white p-4 rounded shadow space-y-4">
-          <h3 className="text-3xl font-bold">Book This Product</h3>
+      {/* 🚫 Suspended Buyer Block */}
+      {profile?.status === "Suspended" && (
+        <div className="lg:w-1/2 bg-red-100 border border-red-400 p-5 rounded">
+          <h3 className="text-xl font-bold text-red-700">
+            Your account is suspended
+          </h3>
+          <p className="mt-2 text-red-600">
+            You cannot place new orders or bookings.
+          </p>
 
-          <div className="flex flex-col gap-2">
-            <label>Email</label>
-            <input
-              type="email"
-              value={user.email}
-              readOnly
-              className="border p-2 rounded bg-gray-100"
-            />
-          </div>
-
-          <div className="flex flex-col gap-2">
-            <label>Product</label>
-            <input
-              type="text"
-              value={product.name}
-              readOnly
-              className="border p-2 rounded bg-gray-100"
-            />
-          </div>
-
-          <div className="flex flex-col gap-2">
-            <label>Price</label>
-            <input
-              type="text"
-              value={`$${product.price}`}
-              readOnly
-              className="border p-2 rounded bg-gray-100"
-            />
-          </div>
-
-          <div className="flex flex-col gap-2 md:flex-row md:gap-4">
-            <div className="flex-1 flex flex-col gap-2">
-              <label>First Name</label>
-              <input
-                type="text"
-                value={firstName}
-                onChange={(e) => setFirstName(e.target.value)}
-                className="border p-2 rounded"
-              />
-            </div>
-            <div className="flex-1 flex flex-col gap-2">
-              <label>Last Name</label>
-              <input
-                type="text"
-                value={lastName}
-                onChange={(e) => setLastName(e.target.value)}
-                className="border p-2 rounded"
-              />
-            </div>
-          </div>
-
-          <div className="flex flex-col gap-2">
-            <label>Contact Number</label>
-            <input
-              type="text"
-              value={contactNumber}
-              onChange={(e) => setContactNumber(e.target.value)}
-              className="border p-2 rounded"
-            />
-          </div>
-
-          <div className="flex flex-col gap-2">
-            <label>Delivery Address</label>
-            <input
-              type="text"
-              value={deliveryAddress}
-              onChange={(e) => setDeliveryAddress(e.target.value)}
-              className="border p-2 rounded"
-            />
-          </div>
-
-          <div className="flex flex-col gap-2">
-            <label>Notes</label>
-            <textarea
-              value={notes}
-              onChange={(e) => setNotes(e.target.value)}
-              className="border p-2 rounded"
-            ></textarea>
-          </div>
-
-          <div className="flex flex-col gap-2">
-            <label>Quantity</label>
-            <input
-              type="number"
-              min={product.minOrder || 1}
-              max={product.availableQuantity || 1}
-              value={quantity}
-              onChange={(e) => {
-                const val = parseInt(e.target.value);
-                if (val < (product.minOrder || 1))
-                  setQuantity(product.minOrder || 1);
-                else if (val > (product.availableQuantity || 1))
-                  setQuantity(product.availableQuantity || 1);
-                else setQuantity(val);
-              }}
-              className="border p-2 rounded"
-            />
-            <p>Total Price: ${product.price * quantity}</p>
-          </div>
-
-          {/* Payment Button */}
-          {product.paymentOption?.toLowerCase() === "stripe" ? (
-            <Payment
-              product={product}
-              user={user}
-              quantity={quantity}
-              firstName={firstName}
-              lastName={lastName}
-              contactNumber={contactNumber}
-              deliveryAddress={deliveryAddress}
-              notes={notes}
-            />
-          ) : (
-            <button
-              onClick={handleBooking}
-              className="bg-blue-600 hover:bg-blue-700 w-full text-white px-4 py-2 rounded font-semibold"
-            >
-              Order / Book (Cash on Delivery)
-            </button>
+          {profile?.suspendFeedback && (
+            <p className="mt-2 text-sm text-gray-700">
+              <span className="font-semibold">Reason:</span>{" "}
+              {profile.suspendFeedback}
+            </p>
           )}
-
-          <div>
-            <button
-              onClick={() => navigate(-1)}
-              className="bg-gray-300 w-full hover:bg-gray-400 text-gray-800 px-4 py-2 rounded font-semibold mt-4 lg:mt-0"
-            >
-              Go Back
-            </button>
-          </div>
         </div>
       )}
+
+      {/* Booking Form */}
+      {user &&
+        user.role !== "admin" &&
+        user.role !== "manager" &&
+        profile?.status !== "Suspended" && (
+          <div className="lg:w-1/2 bg-white p-4 rounded shadow space-y-4">
+            <h3 className="text-3xl font-bold">Book This Product</h3>
+
+            <div className="flex flex-col gap-2">
+              <label>Email</label>
+              <input
+                type="email"
+                value={user.email}
+                readOnly
+                className="border p-2 rounded bg-gray-100"
+              />
+            </div>
+
+            <div className="flex flex-col gap-2">
+              <label>Product</label>
+              <input
+                type="text"
+                value={product.name}
+                readOnly
+                className="border p-2 rounded bg-gray-100"
+              />
+            </div>
+
+            <div className="flex flex-col gap-2">
+              <label>Price</label>
+              <input
+                type="text"
+                value={`$${product.price}`}
+                readOnly
+                className="border p-2 rounded bg-gray-100"
+              />
+            </div>
+
+            <div className="flex flex-col gap-2 md:flex-row md:gap-4">
+              <div className="flex-1 flex flex-col gap-2">
+                <label>First Name</label>
+                <input
+                  type="text"
+                  value={firstName}
+                  onChange={(e) => setFirstName(e.target.value)}
+                  className="border p-2 rounded"
+                />
+              </div>
+              <div className="flex-1 flex flex-col gap-2">
+                <label>Last Name</label>
+                <input
+                  type="text"
+                  value={lastName}
+                  onChange={(e) => setLastName(e.target.value)}
+                  className="border p-2 rounded"
+                />
+              </div>
+            </div>
+
+            <div className="flex flex-col gap-2">
+              <label>Contact Number</label>
+              <input
+                type="text"
+                value={contactNumber}
+                onChange={(e) => setContactNumber(e.target.value)}
+                className="border p-2 rounded"
+              />
+            </div>
+
+            <div className="flex flex-col gap-2">
+              <label>Delivery Address</label>
+              <input
+                type="text"
+                value={deliveryAddress}
+                onChange={(e) => setDeliveryAddress(e.target.value)}
+                className="border p-2 rounded"
+              />
+            </div>
+
+            <div className="flex flex-col gap-2">
+              <label>Notes</label>
+              <textarea
+                value={notes}
+                onChange={(e) => setNotes(e.target.value)}
+                className="border p-2 rounded"
+              ></textarea>
+            </div>
+
+            <div className="flex flex-col gap-2">
+              <label>Quantity</label>
+              <input
+                type="number"
+                min={product.minOrder || 1}
+                max={product.availableQuantity || 1}
+                value={quantity}
+                onChange={(e) => {
+                  const val = parseInt(e.target.value);
+                  if (val < (product.minOrder || 1))
+                    setQuantity(product.minOrder || 1);
+                  else if (val > (product.availableQuantity || 1))
+                    setQuantity(product.availableQuantity || 1);
+                  else setQuantity(val);
+                }}
+                className="border p-2 rounded"
+              />
+              <p>Total Price: ${product.price * quantity}</p>
+            </div>
+
+            {/* Payment Button */}
+            {product.paymentOption?.toLowerCase() === "stripe" ? (
+              <Payment
+                product={product}
+                user={user}
+                quantity={quantity}
+                firstName={firstName}
+                lastName={lastName}
+                contactNumber={contactNumber}
+                deliveryAddress={deliveryAddress}
+                notes={notes}
+              />
+            ) : (
+              <button
+                onClick={handleBooking}
+                className="bg-blue-600 hover:bg-blue-700 w-full text-white px-4 py-2 rounded font-semibold"
+              >
+                Order / Book (Cash on Delivery)
+              </button>
+            )}
+
+            <div>
+              <button
+                onClick={() => navigate(-1)}
+                className="bg-gray-300 w-full hover:bg-gray-400 text-gray-800 px-4 py-2 rounded font-semibold mt-4 lg:mt-0"
+              >
+                Go Back
+              </button>
+            </div>
+          </div>
+        )}
     </div>
   );
 };

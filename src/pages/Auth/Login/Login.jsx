@@ -5,7 +5,7 @@ import { useNavigate, useLocation, Link } from "react-router";
 import { toast } from "react-hot-toast";
 import useAuth from "../../../hooks/useAuth";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
-import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { FaEye, FaEyeSlash, FaGoogle } from "react-icons/fa";
 
 const Login = () => {
   const { signInFunc, signInWithPopupGoogleFunc, setUser } = useAuth();
@@ -35,14 +35,10 @@ const Login = () => {
           headers: { Authorization: `Bearer ${idToken}` },
         }
       );
-
-      // 👍 এটাই success (এখানে কোনো error toast লাগবে না)
       console.log("User save result:", res.data);
     } catch (err) {
       const msg = err.response?.data?.message;
-      console.log("User save error:", msg);
-
-      // User already exists → এটা error না
+      toast.error("User save error:", msg);
       if (msg === "User already exists") {
         return;
       }
@@ -100,17 +96,20 @@ const Login = () => {
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-indigo-50 via-purple-50 to-pink-50 p-4">
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="w-full max-w-md bg-white rounded-xl shadow-lg p-8 space-y-6"
+        className="w-full max-w-md bg-white rounded-2xl shadow-xl p-10 space-y-6 transform transition-transform duration-300 hover:scale-[1.02]"
       >
-        <h2 className="text-3xl font-bold text-center text-gray-800">Login</h2>
+        <h2 className="text-3xl font-extrabold text-center text-gray-800 tracking-tight">
+          Login
+        </h2>
 
         {/* Email */}
         <div className="flex flex-col">
+          <label className="text-gray-600 mb-1 font-medium">Email</label>
           <input
             type="email"
-            placeholder="Email"
+            placeholder="Enter your email"
             {...register("email", { required: "Email is required" })}
-            className="border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-400"
+            className="border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400 shadow-sm transition duration-200"
           />
           {errors.email && (
             <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>
@@ -119,15 +118,16 @@ const Login = () => {
 
         {/* Password */}
         <div className="flex flex-col relative">
+          <label className="text-gray-600 mb-1 font-medium">Password</label>
           <input
             type={show ? "text" : "password"}
-            placeholder="Password"
+            placeholder="Enter your password"
             {...register("password", { required: "Password is required" })}
-            className="border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-400"
+            className="border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400 shadow-sm transition duration-200"
           />
           <span
             onClick={() => setShow(!show)}
-            className="absolute right-4 top-3 cursor-pointer"
+            className="absolute right-4 top-11 text-gray-400 hover:text-gray-600 cursor-pointer transition duration-200"
           >
             {show ? <FaEye /> : <FaEyeSlash />}
           </span>
@@ -142,16 +142,16 @@ const Login = () => {
         <button
           type="submit"
           disabled={loading}
-          className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded-lg font-semibold transition duration-200"
+          className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-3 rounded-xl font-semibold cursor-pointer text-lg shadow-md transition duration-200 hover:shadow-lg"
         >
           {loading ? "Logging in..." : "Login"}
         </button>
 
-        <p className="text-center text-gray-500">
+        <p className="text-center text-gray-500 text-sm">
           Don’t have an account?{" "}
           <Link
             to="/auth/register"
-            className="text-indigo-600 font-semibold hover:underline"
+            className="text-indigo-600 font-semibold hover:underline hover:text-indigo-700 transition duration-200 cursor-pointer"
           >
             Register
           </Link>
@@ -159,7 +159,7 @@ const Login = () => {
 
         <div className="flex items-center justify-center space-x-2 mt-2">
           <span className="h-px bg-gray-300 flex-1"></span>
-          <span className="text-gray-400 text-sm">OR</span>
+          <span className="text-gray-400 text-sm font-medium">OR</span>
           <span className="h-px bg-gray-300 flex-1"></span>
         </div>
 
@@ -167,9 +167,14 @@ const Login = () => {
         <button
           type="button"
           onClick={handleGoogleLogin}
-          className="w-full bg-red-500 hover:bg-red-600 text-white py-2 rounded-lg font-semibold transition duration-200"
+          className={`w-full flex items-center justify-center gap-2 cursor-pointer py-3 rounded-lg border `}
         >
-          Login with Google
+          <img
+            src="https://www.svgrepo.com/show/355037/google.svg"
+            alt="Google"
+            className="w-5 h-5"
+          />
+          <span className="font-medium">Continue with Google</span>
         </button>
       </form>
     </div>

@@ -5,6 +5,7 @@ import { useNavigate, useLocation, Link } from "react-router";
 import { toast } from "react-hot-toast";
 import useAuth from "../../../hooks/useAuth";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
+import { FaEye, FaEyeSlash, FaGoogle } from "react-icons/fa";
 
 const Register = () => {
   const { signUpFunc, setUser, signInWithPopupGoogleFunc } = useAuth();
@@ -12,7 +13,7 @@ const Register = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const from = location.state?.from?.pathname || "/";
-
+  const [show, setShow] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const {
@@ -107,19 +108,20 @@ const Register = () => {
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-indigo-50 via-purple-50 to-pink-50 p-4">
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="w-full max-w-md bg-white rounded-xl shadow-lg p-8 space-y-6"
+        className="w-full max-w-md bg-white rounded-2xl shadow-xl p-10 space-y-6 transform transition-transform duration-300 hover:scale-[1.02]"
       >
-        <h2 className="text-3xl font-bold text-center text-gray-800">
+        <h2 className="text-3xl font-extrabold text-center text-gray-800 tracking-tight">
           Register
         </h2>
 
         {/* Name */}
         <div className="flex flex-col">
+          <label className="text-gray-600 mb-1 font-medium">Full Name</label>
           <input
             type="text"
-            placeholder="Full Name"
+            placeholder="Enter your full name"
             {...formRegister("name", { required: "Name is required" })}
-            className="border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-400"
+            className="border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400 shadow-sm transition duration-200"
           />
           {errors.name && (
             <p className="text-red-500 mt-1 text-sm">{errors.name.message}</p>
@@ -128,11 +130,12 @@ const Register = () => {
 
         {/* Email */}
         <div className="flex flex-col">
+          <label className="text-gray-600 mb-1 font-medium">Email</label>
           <input
             type="email"
-            placeholder="Email"
+            placeholder="Enter your email"
             {...formRegister("email", { required: "Email is required" })}
-            className="border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-400"
+            className="border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400 shadow-sm transition duration-200"
           />
           {errors.email && (
             <p className="text-red-500 mt-1 text-sm">{errors.email.message}</p>
@@ -140,10 +143,11 @@ const Register = () => {
         </div>
 
         {/* Password */}
-        <div className="flex flex-col">
+        <div className="flex flex-col relative">
+          <label className="text-gray-600 mb-1 font-medium">Password</label>
           <input
-            type="password"
-            placeholder="Password"
+            type={show ? "text" : "password"}
+            placeholder="Enter your password"
             {...formRegister("password", {
               required: "Password is required",
               minLength: { value: 6, message: "Min 6 characters" },
@@ -157,8 +161,14 @@ const Register = () => {
                   /[!@#$%^&*]/.test(v) || "1 special char required",
               },
             })}
-            className="border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-400"
+            className="border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400 shadow-sm transition duration-200"
           />
+          <span
+            onClick={() => setShow(!show)}
+            className="absolute right-4 top-11 text-gray-400 hover:text-gray-600 cursor-pointer transition duration-200"
+          >
+            {show ? <FaEye /> : <FaEyeSlash />}
+          </span>
           {errors.password && (
             <p className="text-red-500 mt-1 text-sm">
               {errors.password.message}
@@ -168,9 +178,10 @@ const Register = () => {
 
         {/* Role dropdown */}
         <div className="flex flex-col">
+          <label className="text-gray-600 mb-1 font-medium">Role</label>
           <select
             {...formRegister("role", { required: "Role is required" })}
-            className="border rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-400"
+            className="border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400 shadow-sm transition duration-200"
           >
             <option value="">Select Role</option>
             <option value="customer">Customer</option>
@@ -183,11 +194,14 @@ const Register = () => {
 
         {/* Photo Upload */}
         <div className="flex flex-col">
+          <label className="text-gray-600 mb-1 font-medium">
+            Profile Photo
+          </label>
           <input
             type="file"
             {...formRegister("photo")}
             accept="image/*"
-            className="file-input file-input-bordered file-input-md w-full"
+            className="file-input file-input-bordered file-input-md w-full rounded-xl"
           />
         </div>
 
@@ -195,17 +209,17 @@ const Register = () => {
         <button
           type="submit"
           disabled={loading}
-          className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded-lg font-semibold transition duration-200"
+          className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-3 rounded-xl font-semibold text-lg shadow-md transition duration-200 hover:shadow-lg"
         >
           {loading ? "Registering..." : "Register"}
         </button>
 
-        <p className="text-center text-gray-500">
+        <p className="text-center text-gray-500 text-sm">
           Already have an account?{" "}
           <Link
             to="/auth/login"
             state={{ from: location }}
-            className="text-indigo-600 font-semibold hover:underline"
+            className="text-indigo-600 font-semibold hover:underline hover:text-indigo-700 transition duration-200"
           >
             Login
           </Link>
@@ -213,17 +227,22 @@ const Register = () => {
 
         <div className="flex items-center justify-center space-x-2 mt-2">
           <span className="h-px bg-gray-300 flex-1"></span>
-          <span className="text-gray-400 text-sm">OR</span>
+          <span className="text-gray-400 text-sm font-medium">OR</span>
           <span className="h-px bg-gray-300 flex-1"></span>
         </div>
 
+        {/* Google login (modern neutral style) */}
         <button
           type="button"
           onClick={handleGoogleLogin}
-          disabled={loading}
-          className="w-full bg-red-500 hover:bg-red-600 text-white py-2 rounded-lg font-semibold transition duration-200"
+          className={`w-full flex items-center justify-center gap-2 cursor-pointer py-3 rounded-lg border `}
         >
-          Register / Login with Google
+          <img
+            src="https://www.svgrepo.com/show/355037/google.svg"
+            alt="Google"
+            className="w-5 h-5"
+          />
+          <span className="font-medium">Continue with Google</span>
         </button>
       </form>
     </div>

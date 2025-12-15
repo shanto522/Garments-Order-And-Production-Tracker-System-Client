@@ -16,13 +16,19 @@ const Navbar = () => {
   const publicLinks = (
     <>
       <li>
-        <NavLink className='font-semibold' to="/">Home</NavLink>
+        <NavLink className="font-semibold" to="/">
+          Home
+        </NavLink>
       </li>
       <li>
-        <NavLink className='font-semibold' to="/all-products">All-Products</NavLink>
+        <NavLink className="font-semibold" to="/all-products">
+          All-Products
+        </NavLink>
       </li>
       <li>
-        <NavLink className='font-semibold' to="/about-us">About Us</NavLink>
+        <NavLink className="font-semibold" to="/about-us">
+          About Us
+        </NavLink>
       </li>
       <li>
         <NavLink to="/contact">Contact</NavLink>
@@ -33,19 +39,25 @@ const Navbar = () => {
   const privateLinks = (
     <>
       <li>
-        <NavLink className='font-semibold' to="/">Home</NavLink>
+        <NavLink className="font-semibold" to="/">
+          Home
+        </NavLink>
       </li>
       <li>
-        <NavLink className='font-semibold' to="/all-products">All-Products</NavLink>
+        <NavLink className="font-semibold" to="/all-products">
+          All-Products
+        </NavLink>
       </li>
       <li>
-        <NavLink className='font-semibold' to="/dashboard">Dashboard</NavLink>
+        <NavLink className="font-semibold" to="/dashboard">
+          Dashboard
+        </NavLink>
       </li>
     </>
   );
 
   return (
-    <div className="navbar bg-base-100 shadow-sm px-4">
+    <div className="navbar dark:bg-gray-900 dark:text-gray-200 px-4">
       {/* Navbar Start */}
       <div className="navbar-start">
         {/* Small screen dropdown */}
@@ -68,7 +80,7 @@ const Navbar = () => {
           </label>
           <ul
             tabIndex={0}
-            className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52"
+            className="menu menu-compact dark:bg-gray-900 dark:text-gray-200 dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52"
           >
             {user ? privateLinks : publicLinks}
 
@@ -121,7 +133,7 @@ const Navbar = () => {
               <FaRegArrowAltCircleDown />
             </div>
 
-            <ul className="dropdown-content menu bg-base-100 rounded-xl mt-3 w-60 p-3 shadow-lg border border-gray-200 dark:border-gray-700">
+            <ul className="dropdown-content menu bg-base-100 rounded-xl mt-3 w-60 dark:bg-gray-900 dark:text-gray-200 p-3 shadow-lg border border-gray-200 dark:border-gray-700">
               <li className="text-center pb-2 border-b border-gray-300 dark:border-gray-600">
                 <div className="flex flex-col items-center">
                   <img
@@ -137,9 +149,7 @@ const Navbar = () => {
                   <p className="font-semibold text-[20px]">
                     {user.displayName}
                   </p>
-                  <p className="text-xs font-semibold">
-                    {user.email}
-                  </p>
+                  <p className="text-xs font-semibold">{user.email}</p>
                 </div>
               </li>
               <li>

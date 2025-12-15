@@ -33,6 +33,8 @@ import ProductDetails from "../pages/ProductDetails/ProductDetails";
 import FeedbackForm from "../pages/Dashboard/User/Feedback/FeedbackForm";
 import AllFeedbacks from "../pages/Dashboard/User/Feedback/AllFeedbacks";
 import PrivateRoute from "../Provider/PrivateRoute";
+import AdminRoute from "./AdminRoute";
+import ManagerRoute from "./ManagerRoute";
 
 // Route Guards
 
@@ -64,7 +66,7 @@ const router = createBrowserRouter([
     path: "/dashboard",
     element: (
       <PrivateRoute>
-        <DashboardLayout /> {/* ✅ ADDED PrivateRoute for all roles */}
+        <DashboardLayout />
       </PrivateRoute>
     ),
     children: [
@@ -130,7 +132,9 @@ const router = createBrowserRouter([
         path: "manage-users",
         element: (
           <PrivateRoute>
-            <ManageUsers />
+            <AdminRoute>
+              <ManageUsers />
+            </AdminRoute>
           </PrivateRoute>
         ),
       },
@@ -138,7 +142,9 @@ const router = createBrowserRouter([
         path: "all-products-admin",
         element: (
           <PrivateRoute>
-            <AllProductsAdmin />
+            <AdminRoute>
+              <AllProductsAdmin />
+            </AdminRoute>
           </PrivateRoute>
         ),
       },
@@ -146,7 +152,9 @@ const router = createBrowserRouter([
         path: "all-orders",
         element: (
           <PrivateRoute>
-            <AllOrders />
+            <AdminRoute>
+              <AllOrders />
+            </AdminRoute>
           </PrivateRoute>
         ),
       },
@@ -156,7 +164,9 @@ const router = createBrowserRouter([
         path: "add-product",
         element: (
           <PrivateRoute>
-            <AddProduct />
+            <ManagerRoute>
+              <AddProduct />
+            </ManagerRoute>
           </PrivateRoute>
         ),
       },
@@ -164,7 +174,9 @@ const router = createBrowserRouter([
         path: "manage-products",
         element: (
           <PrivateRoute>
-            <ManageProducts />
+            <ManagerRoute>
+              <ManageProducts />
+            </ManagerRoute>
           </PrivateRoute>
         ),
       },
@@ -172,7 +184,9 @@ const router = createBrowserRouter([
         path: "pending-orders",
         element: (
           <PrivateRoute>
-            <PendingOrders />
+            <ManagerRoute>
+              <PendingOrders />
+            </ManagerRoute>
           </PrivateRoute>
         ),
       },
@@ -180,7 +194,9 @@ const router = createBrowserRouter([
         path: "approved-orders",
         element: (
           <PrivateRoute>
-            <ApprovedOrders />
+            <ManagerRoute>
+              <ApprovedOrders />
+            </ManagerRoute>
           </PrivateRoute>
         ),
       },

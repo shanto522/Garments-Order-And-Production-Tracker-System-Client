@@ -1,7 +1,9 @@
 // src/components/Shared/Footer.jsx
 import React from "react";
-import { NavLink } from "react-router";
+import { Link, NavLink } from "react-router";
 import logoImg from "../../../assets/logoImg.jpg";
+import { FaFacebook, FaInstagram, FaYoutube } from "react-icons/fa";
+import { BsTwitterX } from "react-icons/bs";
 
 const Footer = () => {
   return (
@@ -55,23 +57,27 @@ const Footer = () => {
 
         {/* Account Links */}
         <div className="flex flex-col items-center md:items-start text-center md:text-left">
-          <h4 className="font-semibold text-lg mb-3">Account</h4>
-          <ul className="space-y-2 text-sm">
+          <h4 className="font-semibold  text-lg mb-3">Follow Us</h4>
+          <ul className=" flex flex-row gap-4 mt-5 text-sm">
             <li>
-              <NavLink
-                to="/auth/login"
-                className="hover:text-blue-600 transition"
-              >
-                Login
-              </NavLink>
+              <Link>
+                <FaFacebook size={26} />
+              </Link>
             </li>
             <li>
-              <NavLink
-                to="/auth/register"
-                className="hover:text-blue-600 transition"
-              >
-                Register
-              </NavLink>
+              <Link>
+                <FaInstagram size={26} />
+              </Link>
+            </li>
+            <li>
+              <Link>
+                <BsTwitterX size={26} />
+              </Link>
+            </li>
+            <li>
+              <Link>
+                <FaYoutube size={26} />
+              </Link>
             </li>
           </ul>
         </div>

@@ -6,7 +6,7 @@ import toast from "react-hot-toast";
 const ManageUsers = () => {
   const [users, setUsers] = useState([]);
   const [modalData, setModalData] = useState(null);
-
+  const [totalUsers, setTotalUsers] = useState(0);
   // NEW STATES
   const [searchTerm, setSearchTerm] = useState("");
   const [filterRole, setFilterRole] = useState("all");
@@ -19,35 +19,22 @@ const ManageUsers = () => {
   const axiosSecure = useAxiosSecure();
 
   const fetchUsers = () => {
-    axiosSecure.get("/users").then((res) => setUsers(res.data));
+    axiosSecure
+      .get(
+        `/users?search=${searchTerm}&role=${filterRole}&status=${filterStatus}&page=${page}&limit=${limit}`
+      )
+      .then((res) => {
+        setUsers(res.data.users);
+        setTotalUsers(res.data.total);
+      });
   };
 
   useEffect(() => {
     fetchUsers();
-  }, [axiosSecure]);
-
-  // 🔍 FILTER + SEARCH LOGIC
-  const filteredUsers = users.filter((u) => {
-    const matchesSearch =
-      u.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      u.email?.toLowerCase().includes(searchTerm.toLowerCase());
-
-    const matchesRole = filterRole === "all" ? true : u.role === filterRole;
-
-    const matchesStatus =
-      filterStatus === "all"
-        ? true
-        : filterStatus === "active"
-        ? !u.suspended
-        : u.suspended;
-
-    return matchesSearch && matchesRole && matchesStatus;
-  });
-
+  }, [searchTerm, filterRole, filterStatus, page]);
+  const paginatedUsers = users;
   // Pagination
-  const totalPages = Math.ceil(filteredUsers.length / limit);
-  const paginatedUsers = filteredUsers.slice((page - 1) * limit, page * limit);
-
+  const totalPages = Math.ceil(totalUsers / limit);
   const maxVisible = 5;
 
   const getPages = () => {
@@ -151,12 +138,14 @@ const ManageUsers = () => {
                     {u.suspended ? "Suspended" : "Active"}
                   </td>
                   <td className="p-3">
-                    <button
-                      onClick={() => handleUpdate(u)}
-                      className="bg-blue-600 text-white px-3 py-2 rounded-md"
-                    >
-                      Update
-                    </button>
+                    {u.role !== "admin" && (
+                      <button
+                        onClick={() => handleUpdate(u)}
+                        className="bg-blue-600 text-white px-3 py-2 rounded-md"
+                      >
+                        Update
+                      </button>
+                    )}
                   </td>
                 </tr>
               ))

@@ -11,16 +11,20 @@ import MenuItem from "./Menu/MenuItem";
 import AdminMenu from "./Menu/AdminMenu";
 import ManagerMenu from "./Menu/ManagerMenu";
 import CustomerMenu from "./Menu/CustomerMenu";
+import { House } from "lucide-react";
+import useRole from "../../hooks/useRole";
+import LoadingSpinner from "../../pages/Shared/LoadingSpinner";
 
 const Sidebar = () => {
   const [isActive, setActive] = useState(false);
+  const [role, isRoleLoading] = useRole();
 
   // Sidebar Responsive Handler
   const handleToggle = () => {
     setActive(!isActive);
     document.body.classList.toggle("overflow-hidden");
   };
-
+  if (isRoleLoading) return <LoadingSpinner />;
   return (
     <>
       {/* Small Screen Navbar */}
@@ -45,35 +49,33 @@ const Sidebar = () => {
 
       {/* Sidebar */}
       <div
-        className={`z-30 md:fixed flex flex-col justify-between overflow-y-auto overflow-x-hidden 
-        bg-white/90 shadow-2xl backdrop-blur-xl 
-        w-60 sm:w-64 md:w-64 lg:w-72 space-y-6 px-5 py-6 absolute 
-        inset-y-0 left-0 transform border-r border-blue-100
-        ${isActive ? "translate-x-0" : "-translate-x-full"}
-        md:translate-x-0  
-        transition-all duration-300 ease-in-out rounded-r-2xl`}
+        className={`z-30 fixed inset-y-0 left-0 w-60 sm:w-64 md:w-64 lg:w-72 bg-white/90 shadow-2xl backdrop-blur-xl border-r border-blue-100 transform
+    ${isActive ? "translate-x-0" : "-translate-x-full"}
+    md:translate-x-0 transition-all duration-300 ease-in-out rounded-r-2xl flex flex-col`}
       >
-        <div className="flex flex-col h-full">
-          {/* Middle Content */}
-          <div className="flex flex-col justify-between flex-1 mt-3 space-y-2 md:space-y-3">
-            <nav className="space-y-2 md:space-y-3 lg:space-y-4">
-              {/* Role-Based Menus */}
-              <CustomerMenu />
-              <ManagerMenu />
-              <AdminMenu />
-            </nav>
-          </div>
+        {/* Scrollable Middle */}
+        <nav className="flex-1 overflow-y-auto px-5 py-3 space-y-2">
+          <Link
+            to="/"
+            className="w-full font-semibold p-4 rounded-2xl shadow-lg 
+        bg-gradient-to-br from-[#f5f7fa] to-[#dfe9f3]
+        flex items-center justify-center gap-3"
+          >
+            <House className="w-5 h-5" />
+            <span>Home</span>
+          </Link>
+          {role === "customer" && <CustomerMenu />}
+          {role === "manager" && <ManagerMenu />}
+          {role === "admin" && <AdminMenu />}
+        </nav>
 
-          {/* Bottom Area */}
-          <div className="pb-3">
-            <hr className="mb-4 border-blue-200" />
-
-            <MenuItem
-              icon={FcSettings}
-              label="Profile"
-              address="/dashboard/profile"
-            />
-          </div>
+        {/* Bottom fixed */}
+        <div className="flex-shrink-0 px-5 py-3 border-t border-blue-100">
+          <MenuItem
+            icon={FcSettings}
+            label="Profile"
+            address="/dashboard/profile"
+          />
         </div>
       </div>
     </>
