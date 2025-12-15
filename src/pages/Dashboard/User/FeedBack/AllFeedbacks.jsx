@@ -32,7 +32,7 @@ const AllFeedbacks = () => {
   const totalPages = Math.ceil(total / limit);
 
   return (
-    <div className="container mx-auto px-4 py-16">
+    <div className=" px-4 py-16">
       <h2 className="text-3xl font-bold mb-8 text-center">
         All Customer Feedbacks
       </h2>

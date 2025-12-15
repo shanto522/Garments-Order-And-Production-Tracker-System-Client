@@ -20,8 +20,8 @@ const FeedbackSection = () => {
   }, [axiosSecure]);
 
   return (
-    <section className="container mx-auto px-4 py-4">
-      <h2 className="text-3xl font-bold mb-8 text-center">Customer Feedback</h2>
+    <section className="container shadow-md mx-auto px-4 py-4">
+      <h2 className="text-4xl font-bold mb-8 text-center">Customer Feedback</h2>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
         {feedbacks.map((fb, idx) => (

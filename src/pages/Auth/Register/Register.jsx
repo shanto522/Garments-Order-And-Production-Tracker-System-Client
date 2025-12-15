@@ -27,7 +27,7 @@ const Register = () => {
     try {
       const { name, email, password, photo, role } = data;
 
-      // 1️⃣ Image upload to IMGBB
+      // Image upload to IMGBB
       let photoURL = "";
       if (photo && photo[0]) {
         const formData = new FormData();
@@ -41,30 +41,24 @@ const Register = () => {
         if (imgData.success) photoURL = imgData.data.url;
         else toast.error("Image upload failed");
       }
-
-      // 2️⃣ Create user in Firebase
       const userCredential = await signUpFunc(email, password);
       const user = userCredential.user;
       setUser(user);
-
-      // 3️⃣ Get Firebase token
       const idToken = await user.getIdToken();
-
-      // 4️⃣ Save user to backend with role & status pending
       await axiosSecure.post(
         "/users",
         {
           name,
           email,
           photoURL,
-          role, // buyer/manager from dropdown
+          role,
           status: "pending",
         },
         { headers: { Authorization: `Bearer ${idToken}` } }
       );
 
       toast.success("Registration successful!");
-      navigate(from, { replace: true }); // আগের page এ redirect
+      navigate(from, { replace: true });
     } catch (err) {
       console.error(err);
       toast.error(err.message || "Registration failed!");

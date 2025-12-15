@@ -35,6 +35,7 @@ import AllFeedbacks from "../pages/Dashboard/User/Feedback/AllFeedbacks";
 import PrivateRoute from "../Provider/PrivateRoute";
 import AdminRoute from "./AdminRoute";
 import ManagerRoute from "./ManagerRoute";
+import RoleRedirect from "../pages/Dashboard/RoleRedirect";
 
 // Route Guards
 
@@ -73,6 +74,9 @@ const router = createBrowserRouter([
       // ---------------- USER / BUYER ----------------
       {
         index: true,
+        element: <RoleRedirect />,
+      },
+      {
         path: "my-orders",
         element: (
           <PrivateRoute>

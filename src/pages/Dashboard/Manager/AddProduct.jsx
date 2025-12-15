@@ -97,38 +97,31 @@ const AddProduct = () => {
             onChange={handleChange}
             className="border border-gray-300 p-3 w-full rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-400"
           >
-            <option>Shirt</option>
-            <option>T-Shirt</option>
-            <option>Polo Shirt</option>
-            <option>Pant</option>
-            <option>Jeans</option>
-            <option>Shorts</option>
-            <option>Jacket</option>
-            <option>Hoodie</option>
-            <option>Sweater / Sweatshirt</option>
-            <option>Coat</option>
-            <option>Blazer</option>
-            <option>Dress</option>
-            <option>Skirt</option>
-            <option>Kurta / Kurti</option>
-            <option>Saree</option>
-            <option>Salwar / Churidar</option>
-            <option>Ethnic Wear / Traditional Wear</option>
-            <option>Shoes / Footwear</option>
-            <option>Sandals / Slippers</option>
-            <option>Socks</option>
-            <option>Hat / Cap</option>
-            <option>Gloves</option>
-            <option>Scarves / Stoles</option>
-            <option>Bag / Backpack / Purse</option>
-            <option>Belt</option>
-            <option>Tie / Bowtie</option>
-            <option>Jewelry / Accessories</option>
-            <option>Sunglasses</option>
-            <option>Underwear / Lingerie</option>
-            <option>Nightwear / Pajamas</option>
-            <option>Swimwear</option>
-            <option>Activewear / Sportswear</option>
+            <option value="shirt">Shirt</option>
+            <option value="tshirt">T-Shirt</option>
+            <option value="polo-shirt">Polo Shirt</option>
+            <option value="hoodie">Hoodie</option>
+            <option value="sweater">Sweater / Sweatshirt</option>
+            <option value="jacket">Jacket</option>
+            <option value="blazer">Blazer</option>
+            <option value="coat">Coat</option>
+
+            <option value="pant">Pant / Trouser</option>
+            <option value="jeans">Jeans</option>
+            <option value="shorts">Shorts</option>
+
+            <option value="kurta">Kurta / Kurti</option>
+            <option value="saree">Saree</option>
+            <option value="salwar">Salwar / Churidar</option>
+
+            <option value="dress">Dress</option>
+            <option value="skirt">Skirt</option>
+
+            <option value="activewear">Activewear / Sportswear</option>
+            <option value="nightwear">Nightwear / Pajamas</option>
+            <option value="swimwear">Swimwear</option>
+
+            <option value="accessories">Accessories</option>
           </select>
           <input
             type="number"

@@ -59,13 +59,13 @@ const AllProducts = () => {
 
   return (
     <div className="container mx-auto p-4">
-      <h2 className="text-3xl text-center font-bold mb-6">All Products</h2>
+      <h2 className="text-4xl text-center font-bold mb-6">All Products</h2>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {products?.slice(0, visibleLimit).map((product) => (
           <div
             key={product._id}
-            className="border rounded-lg shadow hover:shadow-lg transition p-4 flex flex-col"
+            className="rounded-lg shadow-2xl hover:shadow-lg transition p-4 flex flex-col"
           >
             {product.images?.length > 0 ? (
               <img
