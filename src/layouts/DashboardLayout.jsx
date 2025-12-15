@@ -17,7 +17,7 @@ const DashboardLayout = () => {
   }, [user, navigate]);
 
   return (
-    <div className="relative min-h-screen md:flex bg-gray-50 text-gray-800">
+    <div className="relative min-h-screen  md:flex bg-gray-50 text-gray-800">
       {/* Left Side: Sidebar Component */}
       <Sidebar />
 

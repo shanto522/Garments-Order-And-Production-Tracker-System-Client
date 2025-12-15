@@ -26,7 +26,26 @@ const AllProducts = () => {
   }, [axiosSecure, page, limit]);
 
   const totalPages = Math.ceil(total / limit);
+  const maxVisible = 5;
 
+  const getPages = () => {
+    const pages = [];
+    let start = Math.max(1, page - Math.floor(maxVisible / 2));
+    let end = start + maxVisible - 1;
+
+    if (end > totalPages) {
+      end = totalPages;
+      start = Math.max(1, end - maxVisible + 1);
+    }
+
+    for (let i = start; i <= end; i++) {
+      pages.push(i);
+    }
+
+    return { pages, start, end };
+  };
+
+  const { pages, start, end } = getPages();
   // Update visibleLimit on window resize
   useEffect(() => {
     const handleResize = () => {
@@ -81,38 +100,68 @@ const AllProducts = () => {
       </div>
 
       {/* Pagination */}
-      <div className="flex justify-center items-center gap-4 mt-6">
-        <button
-          disabled={page === 1}
-          onClick={() => setPage((p) => p - 1)}
-          className="px-4 py-2 bg-gray-300 hover:bg-gray-400 disabled:bg-gray-200 rounded"
-        >
-          Previous
-        </button>
-
-        {/* Page number buttons */}
-        {Array.from({ length: totalPages }, (_, i) => i + 1).map((num) => (
+      {totalPages > 1 && (
+        <div className="flex justify-center items-center gap-2 mt-6 flex-wrap">
+          {/* Previous */}
           <button
-            key={num}
-            onClick={() => setPage(num)}
-            className={`px-3 py-1 rounded ${
-              page === num
-                ? "bg-lime-500 text-white"
-                : "bg-gray-200 hover:bg-gray-300"
-            }`}
+            disabled={page === 1}
+            onClick={() => setPage((p) => p - 1)}
+            className="px-3 py-2 rounded bg-gray-200 hover:bg-gray-300 disabled:opacity-40"
           >
-            {num}
+            Previous
           </button>
-        ))}
 
-        <button
-          disabled={page === totalPages}
-          onClick={() => setPage((p) => p + 1)}
-          className="px-4 py-2 bg-gray-300 hover:bg-gray-400 disabled:bg-gray-200 rounded"
-        >
-          Next
-        </button>
-      </div>
+          {/* First page */}
+          {start > 1 && (
+            <>
+              <button
+                onClick={() => setPage(1)}
+                className="px-3 py-1 rounded bg-gray-200 hover:bg-gray-300"
+              >
+                1
+              </button>
+              <span className="px-1 text-gray-500">...</span>
+            </>
+          )}
+
+          {/* Visible pages */}
+          {pages.map((num) => (
+            <button
+              key={num}
+              onClick={() => setPage(num)}
+              className={`px-3 py-1 rounded transition ${
+                page === num
+                  ? "bg-lime-500 text-white"
+                  : "bg-gray-200 hover:bg-gray-300"
+              }`}
+            >
+              {num}
+            </button>
+          ))}
+
+          {/* Last page */}
+          {end < totalPages && (
+            <>
+              <span className="px-1 text-gray-500">...</span>
+              <button
+                onClick={() => setPage(totalPages)}
+                className="px-3 py-1 rounded bg-gray-200 hover:bg-gray-300"
+              >
+                {totalPages}
+              </button>
+            </>
+          )}
+
+          {/* Next */}
+          <button
+            disabled={page === totalPages}
+            onClick={() => setPage((p) => p + 1)}
+            className="px-3 py-2 rounded bg-gray-200 hover:bg-gray-300 disabled:opacity-40"
+          >
+            Next
+          </button>
+        </div>
+      )}
     </div>
   );
 };

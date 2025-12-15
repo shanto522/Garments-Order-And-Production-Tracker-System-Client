@@ -48,6 +48,26 @@ const ManageUsers = () => {
   const totalPages = Math.ceil(filteredUsers.length / limit);
   const paginatedUsers = filteredUsers.slice((page - 1) * limit, page * limit);
 
+  const maxVisible = 5;
+
+  const getPages = () => {
+    const pages = [];
+    let start = Math.max(1, page - Math.floor(maxVisible / 2));
+    let end = start + maxVisible - 1;
+
+    if (end > totalPages) {
+      end = totalPages;
+      start = Math.max(1, end - maxVisible + 1);
+    }
+
+    for (let i = start; i <= end; i++) {
+      pages.push(i);
+    }
+
+    return { pages, start, end };
+  };
+
+  const { pages, start, end } = getPages();
   const handleUpdate = (user) => setModalData(user);
 
   const handleModalSubmit = (updatedRole, suspended, suspendReason) => {
@@ -69,7 +89,7 @@ const ManageUsers = () => {
   };
 
   return (
-    <div className="container mx-auto p-4">
+    <div className="p-4">
       <h2 className="text-3xl md:text-4xl font-bold mb-6 text-gray-800">
         Manage Users
       </h2>
@@ -89,8 +109,7 @@ const ManageUsers = () => {
           value={filterRole}
           onChange={(e) => setFilterRole(e.target.value)}
         >
-          <option value="all">All Roles</option>
-          <option value="admin">Admin</option>
+          <option value="all">Select Roles</option>
           <option value="manager">Manager</option>
           <option value="customer">Customer</option>
         </select>
@@ -154,29 +173,69 @@ const ManageUsers = () => {
 
       {/* Pagination Controls */}
       {totalPages > 1 && (
-        <div className="flex justify-center items-center gap-4 mt-6">
+        <div className="flex justify-center items-center gap-2 mt-6 flex-wrap">
+          {/* Previous */}
           <button
             disabled={page === 1}
-            onClick={() => setPage(page - 1)}
-            className="px-4 py-2 bg-gray-300 hover:bg-gray-400 disabled:bg-gray-200 rounded"
+            onClick={() => setPage((p) => p - 1)}
+            className="px-3 py-2 rounded bg-gray-200 hover:bg-gray-300 disabled:opacity-40"
           >
             Previous
           </button>
 
-          <span className="font-semibold">
-            Page {page} of {totalPages}
-          </span>
+          {/* First page */}
+          {start > 1 && (
+            <>
+              <button
+                onClick={() => setPage(1)}
+                className="px-3 py-1 rounded bg-gray-200 hover:bg-gray-300"
+              >
+                1
+              </button>
+              <span className="px-1 text-gray-500">...</span>
+            </>
+          )}
 
+          {/* Visible pages */}
+          {pages.map((num) => (
+            <button
+              key={num}
+              onClick={() => setPage(num)}
+              className={`px-3 py-1 rounded transition
+          ${
+            page === num
+              ? "bg-indigo-600 text-white"
+              : "bg-gray-200 hover:bg-gray-300"
+          }
+        `}
+            >
+              {num}
+            </button>
+          ))}
+
+          {/* Last page */}
+          {end < totalPages && (
+            <>
+              <span className="px-1 text-gray-500">...</span>
+              <button
+                onClick={() => setPage(totalPages)}
+                className="px-3 py-1 rounded bg-gray-200 hover:bg-gray-300"
+              >
+                {totalPages}
+              </button>
+            </>
+          )}
+
+          {/* Next */}
           <button
             disabled={page === totalPages}
-            onClick={() => setPage(page + 1)}
-            className="px-4 py-2 bg-gray-300 hover:bg-gray-400 disabled:bg-gray-200 rounded"
+            onClick={() => setPage((p) => p + 1)}
+            className="px-3 py-2 rounded bg-gray-200 hover:bg-gray-300 disabled:opacity-40"
           >
             Next
           </button>
         </div>
       )}
-
       {modalData && (
         <ManageUserModal
           title={`Update Role / Suspend for ${modalData.name}`}

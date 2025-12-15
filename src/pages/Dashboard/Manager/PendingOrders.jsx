@@ -76,7 +76,7 @@ const PendingOrders = () => {
   const paginatedOrders = orders.slice((page - 1) * limit, page * limit);
 
   return (
-    <div className="container mx-auto p-4">
+    <div className="p-4">
       <h2 className="text-3xl font-bold mb-6 text-gray-800">Pending Orders</h2>
 
       <div className="overflow-x-auto">

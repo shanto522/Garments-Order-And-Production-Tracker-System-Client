@@ -77,7 +77,7 @@ const AllProductsAdmin = () => {
   const paginatedProducts = products.slice((page - 1) * limit, page * limit);
 
   return (
-    <div className="container mx-auto p-4">
+    <div className="p-4">
       <h2 className="text-3xl md:text-4xl font-bold mb-6 text-gray-800">
         All Products Admin
       </h2>

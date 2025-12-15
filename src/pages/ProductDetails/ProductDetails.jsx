@@ -84,13 +84,13 @@ const ProductDetails = () => {
       {/* Product Info */}
       <div className="lg:w-1/2 space-y-4">
         {product.images?.length > 0 ? (
-          <div className="grid grid-cols-2 gap-2">
+          <div className="flex flex-wrap gap-2">
             {product.images.map((img, idx) => (
               <img
                 key={idx}
                 src={img}
                 alt={`img-${idx}`}
-                className="rounded shadow w-full h-full object-cover"
+                className="rounded shadow w-[380px] h-[200px] object-cover"
               />
             ))}
           </div>

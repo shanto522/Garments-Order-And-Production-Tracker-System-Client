@@ -67,7 +67,7 @@ const AddProduct = () => {
   };
 
   return (
-    <div className="container mx-auto p-4">
+    <div className=" p-4">
       <h2 className="text-3xl font-bold mb-6 text-gray-800">Add Product</h2>
       <div className="overflow-x-auto">
         <form

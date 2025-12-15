@@ -3,8 +3,8 @@ import { useNavigate } from "react-router";
 import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
-import HowItWorks from "../../components/Home/HowItWorks";
 import FeedbackSection from "../../components/Home/FeedbackSection";
+import HowItWorks from "../../components/Home/HowItWork";
 
 const FadeInWhenVisible = ({ children }) => {
   const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.15 });
@@ -58,7 +58,7 @@ const Home = () => {
       transition={{ duration: 1 }}
     >
       {/* ================= HERO SECTION ================= */}
-      <section className="relative container rounded-xl mx-auto h-[30vh] sm:h-[80vh] md:h-[50vh] overflow-hidden bg-black">
+      <section className="relative container mx-auto rounded-xl h-[30vh] sm:h-[40vh] md:h-[60vh] overflow-hidden bg-black">
         {heroImages.map((img, i) => (
           <motion.div
             key={i}
