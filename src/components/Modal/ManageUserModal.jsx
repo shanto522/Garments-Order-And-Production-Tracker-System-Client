@@ -17,8 +17,8 @@ const ManageUserModal = ({ title, user, onClose, onSubmit }) => {
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-      <div className="bg-white p-6 rounded-lg w-11/12 max-w-md">
+    <div className="fixed inset-0 min-h-screen bg-black bg-opacity-50 flex justify-center items-center z-50">
+      <div className="bg-white p-6  rounded-lg w-11/12 max-w-md">
         <h3 className="text-xl font-semibold mb-4">{title}</h3>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>

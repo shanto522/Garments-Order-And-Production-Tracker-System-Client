@@ -107,10 +107,10 @@ const Home = () => {
                   {p.shortDesc}
                 </p>
 
-                <p className="text-lime-500 font-bold my-3">${p.price}</p>
+                <p className="text-gray-600 font-bold my-3">${p.price}</p>
 
                 <button
-                  onClick={() => navigate(`/dashboard/product/${p._id}`)}
+                  onClick={() => navigate(`/product/${p._id}`)}
                   className="mt-auto bg-blue-500 hover:bg-blue-700 text-white py-2 rounded-lg font-medium mt-4"
                 >
                   View Details
@@ -135,7 +135,7 @@ const Home = () => {
       {/* ================= EXTRA SECTION 1 ================= */}
       <FadeInWhenVisible>
         <section className="shadow-md bg-gray-200 container mx-auto rounded-xl py-16 text-center px-4">
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold mb-6">
+          <h2 className="text-3xl sm:text-4xl md:text-4xl font-extrabold mb-6">
             Why Choose Us?
           </h2>
           <p className="max-w-2xl font-semibold mx-auto">
@@ -149,7 +149,7 @@ const Home = () => {
       {/* ================= EXTRA SECTION 2 ================= */}
       <FadeInWhenVisible>
         <section className="bg-gray-200 container mx-auto shadow-md rounded-xl py-16 text-center px-4">
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold mb-6">
+          <h2 className="text-3xl sm:text-4xl md:text-4xl font-extrabold mb-6">
             Our Commitment
           </h2>
           <p className="max-w-2xl font-semibold mx-auto">

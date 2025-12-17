@@ -7,8 +7,8 @@ const ManageProductModal = ({ product, onClose, onSubmit }) => {
   const [description, setDescription] = useState(product.description || "");
   const [images, setImages] = useState(product.images || []);
   const [demoVideo, setDemoVideo] = useState(product.demoVideo || "");
-  const [paymentOptions, setPaymentOptions] = useState(
-    product.paymentOptions || "Cash on Delivery"
+  const [paymentOption, setPaymentOption] = useState(
+    product?.paymentOption ?? "Cash on Delivery"
   );
 
   const handleSubmit = (e) => {
@@ -20,7 +20,7 @@ const ManageProductModal = ({ product, onClose, onSubmit }) => {
       description,
       images,
       demoVideo,
-      paymentOptions,
+      paymentOption,
     });
   };
 
@@ -95,13 +95,12 @@ const ManageProductModal = ({ product, onClose, onSubmit }) => {
           <div>
             <label className="block mb-1">Payment Options:</label>
             <select
-              value={paymentOptions}
-              onChange={(e) => setPaymentOptions(e.target.value)}
+              value={paymentOption}
+              onChange={(e) => setPaymentOption(e.target.value)}
               className="border p-2 w-full rounded"
             >
               <option value="Cash on Delivery">Cash on Delivery</option>
-              <option value="Online Payment">Online Payment</option>
-              <option value="Both">Both</option>
+              <option value="Stripe">Stripe</option>
             </select>
           </div>
 

@@ -25,7 +25,7 @@ const ManageProducts = () => {
   const handleDelete = (id) => {
     Swal.fire({
       title: "Are you sure?",
-      text: "You are about to delete this product!",
+      text: "Do you want to delete the product?",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#d33",
@@ -78,7 +78,7 @@ const ManageProducts = () => {
         value={search}
         onChange={(e) => {
           setSearch(e.target.value);
-          setPage(1); // Search করলে পেজ ১-এ ফিরে যাবে
+          setPage(1);
         }}
         className="border p-3 w-full rounded-md mb-6 focus:ring-2 focus:ring-indigo-400"
       />
@@ -101,7 +101,7 @@ const ManageProducts = () => {
                 <tr key={p._id} className="hover:bg-gray-50">
                   <td className="p-3">
                     <img
-                      src={p.images[0]}
+                      src={p.images?.[0] || "/placeholder-image.png"}
                       alt={p.name}
                       className="w-16 h-16 rounded-md object-cover"
                     />

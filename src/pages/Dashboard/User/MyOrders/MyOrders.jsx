@@ -40,7 +40,7 @@ const MyOrders = () => {
   const handleCancel = async (id) => {
     const result = await Swal.fire({
       title: "Are you sure?",
-      text: "You are about to cancel this order!",
+      text: "Do you want to cancel the order?",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#d33",
@@ -179,7 +179,7 @@ const MyOrders = () => {
                     {o.status === "Approved" && (
                       <Link
                         to={`/dashboard/track-order/${o._id}`}
-                        className="bg-indigo-600 text-white px-2 py-1 rounded hover:bg-indigo-700"
+                        className="bg-indigo-600 text-center text-white px-2 py-1 rounded hover:bg-indigo-700"
                       >
                         Track Order
                       </Link>

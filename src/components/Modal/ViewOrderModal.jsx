@@ -2,13 +2,34 @@ import React from "react";
 
 const ViewOrderModal = ({ order, onClose }) => {
   if (!order) return null;
+  // Tracking history with dates in parentheses
+  const trackingHistory =
+    order.tracking && order.tracking.length > 0
+      ? order.tracking.map((stage) => {
+          const date = order.trackingDates?.[stage];
+          return {
+            status: stage,
+            date: date ? `(${new Date(date).toLocaleString()})` : null,
+          };
+        })
+      : [];
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-      <div className="bg-white rounded-lg p-6 w-full max-w-2xl relative">
-        <h2 className="text-2xl font-bold mb-4">Order Details</h2>
+    <div className="fixed inset-0 min-h-screen bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+      <div className="bg-white p-6 rounded-lg w-full max-w-md relative max-h-[90vh] overflow-y-auto shadow-lg">
+        {/* Close Button */}
+        <button
+          onClick={onClose}
+          className="absolute top-2 right-2 text-gray-500 hover:text-gray-800 font-bold"
+        >
+          X
+        </button>
 
-        <div className="space-y-3">
+        {/* Modal Title */}
+        <h2 className="text-2xl font-bold mb-4 text-center">Order Details</h2>
+
+        {/* Order Info */}
+        <div className="space-y-2 text-sm">
           <p>
             <span className="font-semibold">Order ID:</span> {order._id}
           </p>
@@ -26,35 +47,35 @@ const ViewOrderModal = ({ order, onClose }) => {
             <span className="font-semibold">Quantity:</span> {order.quantity}
           </p>
           <p>
-            <span className="font-semibold">Status:</span> {order.status}
+            <span className="font-semibold">Status:</span>{" "}
+            {order.status || "Pending"}
           </p>
           <p>
             <span className="font-semibold">Payment Option:</span>{" "}
-            {order.paymentOption}
+            {order.paymentOption || "N/A"}
           </p>
-          <p>
-            <span className="font-semibold">Booked At:</span>{" "}
-            {new Date(order.bookedAt).toLocaleString()}
-          </p>
-
-          {order.tracking && (
+          {/* Tracking History */}
+          {trackingHistory.length > 0 ? (
             <div className="mt-2">
               <h3 className="font-semibold mb-1">Tracking History:</h3>
-              <ul className="list-disc list-inside">
-                {order.tracking.map((t, idx) => (
+              <ul className="list-disc list-inside text-gray-700 text-sm">
+                {trackingHistory.map((t, idx) => (
                   <li key={idx}>
-                    {t.status} - {new Date(t.date).toLocaleString()}
+                    {t.status} {t.date ? t.date : ""}
                   </li>
                 ))}
               </ul>
             </div>
+          ) : (
+            <p className="text-gray-500 mt-2">No tracking history yet.</p>
           )}
         </div>
 
-        <div className="flex justify-end mt-4">
+        {/* Footer Button */}
+        <div className="flex justify-center mt-6">
           <button
             onClick={onClose}
-            className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400"
+            className="px-5 py-2 bg-gray-300 rounded hover:bg-gray-400 font-medium"
           >
             Close
           </button>

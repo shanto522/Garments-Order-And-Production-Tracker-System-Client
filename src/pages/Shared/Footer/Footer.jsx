@@ -1,13 +1,13 @@
 // src/components/Shared/Footer.jsx
 import React from "react";
 import { Link, NavLink } from "react-router";
-import logoImg from "../../../assets/logoImg.jpg";
+import logoImg from "../../../assets/logoImage.png";
 import { FaFacebook, FaInstagram, FaYoutube } from "react-icons/fa";
 import { BsTwitterX } from "react-icons/bs";
 
 const Footer = () => {
   return (
-    <footer className="bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-200 mt-12">
+    <footer className="bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-100">
       <div className="max-w-7xl mx-auto px-5 py-12 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
         {/* Logo + Description */}
         <div className="flex flex-col items-center md:items-start text-center md:text-left">

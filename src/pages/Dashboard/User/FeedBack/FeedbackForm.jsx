@@ -24,7 +24,7 @@ const FeedbackForm = () => {
   };
 
   return (
-    <div className="max-w-lg mx-auto mt-16 p-8 bg-white rounded-2xl shadow-xl border border-gray-200">
+    <div className=" mt-16 p-8 bg-white rounded-2xl shadow-xl border border-gray-200">
       <h2 className="text-3xl font-extrabold mb-6 text-center text-gray-800">
         Share Your Feedback
       </h2>
@@ -46,7 +46,7 @@ const FeedbackForm = () => {
         />
         <button
           type="submit"
-          className="bg-lime-500 hover:bg-lime-600 text-white font-semibold py-3 rounded-lg shadow-md transition transform hover:-translate-y-0.5"
+          className="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg shadow-md transition transform hover:-translate-y-0.5"
         >
           Submit Feedback
         </button>
@@ -54,7 +54,7 @@ const FeedbackForm = () => {
       <div className="flex justify-center mt-10">
         <button
           onClick={() => navigate("/")}
-          className="px-6 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg font-semibold"
+          className="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold"
         >
           Go Back Home
         </button>

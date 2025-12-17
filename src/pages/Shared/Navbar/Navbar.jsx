@@ -3,7 +3,8 @@ import React from "react";
 import { Link, NavLink } from "react-router";
 import { FaRegArrowAltCircleDown } from "react-icons/fa";
 import { IoMdLogOut } from "react-icons/io";
-import logoImg from "../../../assets/logoImg.jpg";
+import logoImage from "../../../assets/logoImage.png";
+
 import useAuth from "../../../hooks/useAuth";
 
 const Navbar = () => {
@@ -57,7 +58,7 @@ const Navbar = () => {
   );
 
   return (
-    <div className="navbar dark:bg-gray-900 dark:text-gray-200 px-4">
+    <div className="navbar dark:bg-gray-800 dark:text-gray-200 md:px-8">
       {/* Navbar Start */}
       <div className="navbar-start">
         {/* Small screen dropdown */}
@@ -80,7 +81,7 @@ const Navbar = () => {
           </label>
           <ul
             tabIndex={0}
-            className="menu menu-compact dark:bg-gray-900 dark:text-gray-200 dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52"
+            className="menu menu-compact dark:bg-gray-800 dark:text-gray-200 dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52"
           >
             {user ? privateLinks : publicLinks}
 
@@ -98,11 +99,13 @@ const Navbar = () => {
         </div>
 
         {/* Logo */}
-        <img
-          className="h-[50px] w-[50px] rounded-full ml-2"
-          src={logoImg}
-          alt="Logo"
-        />
+        <Link to="/">
+          <img
+            className="h-[50px] w-[50px] rounded-full"
+            src={logoImage}
+            alt="Logo"
+          />
+        </Link>
       </div>
 
       {/* Navbar Center (large screen) */}
@@ -133,7 +136,7 @@ const Navbar = () => {
               <FaRegArrowAltCircleDown />
             </div>
 
-            <ul className="dropdown-content menu bg-base-100 rounded-xl mt-3 w-60 dark:bg-gray-900 dark:text-gray-200 p-3 shadow-lg border border-gray-200 dark:border-gray-700">
+            <ul className="dropdown-content menu bg-base-100 rounded-xl mt-3 w-60 dark:bg-gray-800 dark:text-gray-200 p-3 shadow-lg border border-gray-200 dark:border-gray-700">
               <li className="text-center pb-2 border-b border-gray-300 dark:border-gray-600">
                 <div className="flex flex-col items-center">
                   <img

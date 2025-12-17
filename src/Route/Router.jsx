@@ -47,6 +47,18 @@ const router = createBrowserRouter([
     children: [
       { index: true, element: <Home /> },
       { path: "all-products", element: <AllProducts /> },
+      {
+        path: "product/:id",
+        element: (
+          <PrivateRoute>
+            <ProductDetails />
+          </PrivateRoute>
+        ),
+      },
+       {
+        path: "payment-success",
+        element: <PaymentSuccess />,
+      },
       { path: "about-us", element: <AboutUs /> },
       { path: "contact", element: <Contact /> },
     ],
@@ -87,14 +99,6 @@ const router = createBrowserRouter([
       {
         path: "payment-success",
         element: <PaymentSuccess />,
-      },
-      {
-        path: "product/:id",
-        element: (
-          <PrivateRoute>
-            <ProductDetails />
-          </PrivateRoute>
-        ),
       },
       {
         path: "track-order/:orderId",

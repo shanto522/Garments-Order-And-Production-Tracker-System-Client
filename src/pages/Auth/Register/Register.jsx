@@ -99,7 +99,7 @@ const Register = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-indigo-50 via-purple-50 to-pink-50 p-4">
+    <div className=" flex items-center justify-center bg-gradient-to-r from-indigo-50 via-purple-50 to-pink-50 p-5">
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="w-full max-w-md bg-white rounded-2xl shadow-xl p-10 space-y-6 transform transition-transform duration-300 hover:scale-[1.02]"
@@ -150,9 +150,6 @@ const Register = () => {
                   /[A-Z]/.test(v) || "1 uppercase letter required",
                 hasLower: (v) =>
                   /[a-z]/.test(v) || "1 lowercase letter required",
-                hasNumber: (v) => /\d/.test(v) || "1 number required",
-                hasSymbol: (v) =>
-                  /[!@#$%^&*]/.test(v) || "1 special char required",
               },
             })}
             className="border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400 shadow-sm transition duration-200"

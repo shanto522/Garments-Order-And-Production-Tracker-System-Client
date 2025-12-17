@@ -4,6 +4,7 @@ import useAxiosSecure from "../../hooks/useAxiosSecure";
 import useAuth from "../../hooks/useAuth";
 import toast from "react-hot-toast";
 import Payment from "../Dashboard/Payment/Payment";
+import LoadingSpinner from "../Shared/LoadingSpinner";
 
 const ProductDetails = () => {
   const { id } = useParams();
@@ -13,20 +14,20 @@ const ProductDetails = () => {
   const [profile, setProfile] = useState(null);
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
-
-  const [quantity, setQuantity] = useState(1);
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [contactNumber, setContactNumber] = useState("");
   const [deliveryAddress, setDeliveryAddress] = useState("");
+  const minOrder = product?.minimumOrder || 1;
+  const [quantity, setQuantity] = useState("");
   const [notes, setNotes] = useState("");
-
+  const [error, setError] = useState("");
   useEffect(() => {
     axiosSecure
       .get(`/products/${id}`)
       .then((res) => {
         setProduct(res.data);
-        setQuantity(res.data.minOrder || 1);
+        setQuantity(String(res.data.minimumOrder || 1));
         setLoading(false);
       })
       .catch(() => setLoading(false));
@@ -44,15 +45,20 @@ const ProductDetails = () => {
     if (!user) return toast("Please login to book the product.");
     if (user.role === "admin" || user.role === "manager")
       return toast("Only buyers can place orders.");
+    const finalQty = Number(quantity);
+    // Minimum order check
+    if (!finalQty || finalQty < (product.minimumOrder || 1)) {
+      return toast(`Minimum order quantity is ${product.minimumOrder || 1}`);
+    }
 
-    if (quantity < (product.minOrder || 1))
-      return toast(`Minimum order quantity is ${product.minOrder || 1}`);
-    if (quantity > (product.availableQuantity || 0))
+    // Maximum order check
+    if (finalQty > (product.availableQuantity || 0)) {
       return toast(
         `Cannot order more than available quantity (${
           product.availableQuantity || 0
         })`
       );
+    }
     if (!firstName || !lastName || !contactNumber || !deliveryAddress)
       return toast("Please fill all required fields.");
 
@@ -61,7 +67,7 @@ const ProductDetails = () => {
       productName: product.name,
       price: product.price,
       quantity,
-      minOrder: product.minOrder || 1,
+      minOrder: product.minimumOrder || 1,
       orderPrice: Number(product.price) * quantity,
       userEmail: user.email,
       userName: user.displayName || "Anonymous",
@@ -84,11 +90,11 @@ const ProductDetails = () => {
     }
   };
 
-  if (loading) return <div className="p-4">Loading...</div>;
+  if (loading) return <LoadingSpinner></LoadingSpinner>;
   if (!product) return <div className="p-4">Product not found</div>;
 
   return (
-    <div className="container mx-auto p-4 flex flex-col lg:flex-row gap-8">
+    <div className="container mx-auto p-4 flex flex-col md:items-start lg:flex-row gap-8 ">
       {/* Product Info */}
       <div className="lg:w-1/2 space-y-4">
         {product.images?.length > 0 ? (
@@ -98,7 +104,7 @@ const ProductDetails = () => {
                 key={idx}
                 src={img}
                 alt={`img-${idx}`}
-                className="rounded shadow w-[380px] h-[200px] object-cover"
+                className="rounded-xl w-full shadow md:w-[750px] md:h-[400px] object-cover"
               />
             ))}
           </div>
@@ -121,7 +127,7 @@ const ProductDetails = () => {
           Available: {product.availableQuantity || 0}
         </p>
         <p className="text-gray-700 text-xl font-bold">
-          Minimum Order: {product.minOrder || 1}
+          Minimum Order: {product.minimumOrder || 1}
         </p>
         <p className="text-gray-700 text-xl font-bold">
           Payment: {product.paymentOption || "Cash on Delivery"}
@@ -152,7 +158,7 @@ const ProductDetails = () => {
         user.role !== "admin" &&
         user.role !== "manager" &&
         profile?.status !== "Suspended" && (
-          <div className="lg:w-1/2 bg-white p-4 rounded shadow space-y-4">
+          <div className="lg:w-1/2 bg-white p-4 rounded shadow space-y-4 md:sticky md:top-4">
             <h3 className="text-3xl font-bold">Book This Product</h3>
 
             <div className="flex flex-col gap-2">
@@ -193,6 +199,7 @@ const ProductDetails = () => {
                   value={firstName}
                   onChange={(e) => setFirstName(e.target.value)}
                   className="border p-2 rounded"
+                  required
                 />
               </div>
               <div className="flex-1 flex flex-col gap-2">
@@ -202,6 +209,7 @@ const ProductDetails = () => {
                   value={lastName}
                   onChange={(e) => setLastName(e.target.value)}
                   className="border p-2 rounded"
+                  required
                 />
               </div>
             </div>
@@ -213,6 +221,7 @@ const ProductDetails = () => {
                 value={contactNumber}
                 onChange={(e) => setContactNumber(e.target.value)}
                 className="border p-2 rounded"
+                required
               />
             </div>
 
@@ -223,6 +232,7 @@ const ProductDetails = () => {
                 value={deliveryAddress}
                 onChange={(e) => setDeliveryAddress(e.target.value)}
                 className="border p-2 rounded"
+                required
               />
             </div>
 
@@ -237,22 +247,40 @@ const ProductDetails = () => {
 
             <div className="flex flex-col gap-2">
               <label>Quantity</label>
+
               <input
                 type="number"
-                min={product.minOrder || 1}
+                min={1}
                 max={product.availableQuantity || 1}
                 value={quantity}
                 onChange={(e) => {
-                  const val = parseInt(e.target.value);
-                  if (val < (product.minOrder || 1))
-                    setQuantity(product.minOrder || 1);
-                  else if (val > (product.availableQuantity || 1))
-                    setQuantity(product.availableQuantity || 1);
-                  else setQuantity(val);
+                  const val = e.target.value;
+                  if (val === "") {
+                    setQuantity("");
+                    setError("");
+                    return;
+                  }
+                  const num = Number(val);
+                  if (isNaN(num)) return;
+                  setQuantity(val);
+
+                  if (num < minOrder) {
+                    setError(`Minimum order is ${minOrder}`);
+                  } else {
+                    setError("");
+                  }
                 }}
-                className="border p-2 rounded"
+                className={`border p-2 rounded ${
+                  error ? "border-red-500" : "border-gray-300"
+                }`}
               />
-              <p>Total Price: ${product.price * quantity}</p>
+              {error && (
+                <p className="text-sm text-red-500 font-medium">{error}</p>
+              )}
+
+              <p className="font-semibold">
+                Total Price: ${quantity ? product.price * Number(quantity) : 0}
+              </p>
             </div>
 
             {/* Payment Button */}
@@ -269,6 +297,7 @@ const ProductDetails = () => {
               />
             ) : (
               <button
+                type="submit"
                 onClick={handleBooking}
                 className="bg-blue-600 hover:bg-blue-700 w-full text-white px-4 py-2 rounded font-semibold"
               >

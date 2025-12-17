@@ -16,13 +16,19 @@ const AddProduct = () => {
     paymentOption: "Cash on Delivery",
     showOnHome: false,
   });
-
+  const [previewImages, setPreviewImages] = useState([]);
   const handleChange = (e) => {
     const { name, value, type, checked, files } = e.target;
+
     if (type === "checkbox") {
       setProductData({ ...productData, [name]: checked });
     } else if (type === "file") {
-      setProductData({ ...productData, images: Array.from(files) });
+      const fileArray = Array.from(files);
+      setProductData({ ...productData, images: fileArray });
+
+      // preview URLs generate
+      const previewArray = fileArray.map((file) => URL.createObjectURL(file));
+      setPreviewImages(previewArray);
     } else {
       setProductData({ ...productData, [name]: value });
     }
@@ -60,6 +66,7 @@ const AddProduct = () => {
         paymentOption: "Cash on Delivery",
         showOnHome: false,
       });
+      setPreviewImages([]);
     } catch (err) {
       console.error(err);
       toast.error("Failed to add product!");
@@ -150,6 +157,18 @@ const AddProduct = () => {
             className="border border-gray-300 p-3 w-full rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-400"
             required
           />
+          {previewImages.length > 0 && (
+            <div className="flex gap-2 mt-2">
+              {previewImages.map((url, idx) => (
+                <img
+                  key={idx}
+                  src={url}
+                  alt={`preview-${idx}`}
+                  className=" rounded-xl h-50 object-cover"
+                />
+              ))}
+            </div>
+          )}
           <input
             type="file"
             name="images"
@@ -158,6 +177,7 @@ const AddProduct = () => {
             className="border border-gray-300 p-3 w-full rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-400"
             required
           />
+
           <input
             type="text"
             name="demoVideo"

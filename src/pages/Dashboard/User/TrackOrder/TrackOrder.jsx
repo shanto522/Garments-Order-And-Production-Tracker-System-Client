@@ -59,7 +59,7 @@ const TrackOrder = () => {
     : defaultPosition;
 
   return (
-    <div className="container mx-auto p-4 space-y-6">
+    <div className="p-4 space-y-6">
       <h2 className="text-3xl font-bold text-center">
         Track Order: {order._id}
       </h2>
