@@ -12,7 +12,7 @@ const Login = () => {
   const axiosSecure = useAxiosSecure();
   const navigate = useNavigate();
   const location = useLocation();
-  const from = location.state?.from?.pathname || "/dashboard";
+  const from = location.state?.from?.pathname || "/";
   const [show, setShow] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -30,6 +30,7 @@ const Login = () => {
           email: loggedInUser.email,
           name: loggedInUser.displayName || "Anonymous",
           photoURL: loggedInUser.photoURL || "",
+          role: "customer", // safe default
         },
         {
           headers: { Authorization: `Bearer ${idToken}` },
@@ -38,12 +39,9 @@ const Login = () => {
       console.log("User save result:", res.data);
     } catch (err) {
       const msg = err.response?.data?.message;
-      toast.error("User save error:", msg);
-      if (msg === "User already exists") {
-        return;
+      if (msg && msg !== "User already exists") {
+        toast.error(msg);
       }
-
-      toast.error(msg || "Something went wrong when saving user!");
     }
   };
 

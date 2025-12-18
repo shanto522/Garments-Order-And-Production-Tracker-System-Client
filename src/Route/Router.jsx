@@ -83,7 +83,7 @@ const router = createBrowserRouter([
       </PrivateRoute>
     ),
     children: [
-      // ---------------- USER / BUYER ----------------
+      // ----------------Customer----------------
       {
         index: true,
         element: <RoleRedirect />,

@@ -18,10 +18,14 @@ const ProductDetails = () => {
   const [lastName, setLastName] = useState("");
   const [contactNumber, setContactNumber] = useState("");
   const [deliveryAddress, setDeliveryAddress] = useState("");
-  const minOrder = product?.minimumOrder || 1;
   const [quantity, setQuantity] = useState("");
   const [notes, setNotes] = useState("");
   const [error, setError] = useState("");
+  const [profileLoading, setProfileLoading] = useState(true);
+
+  const minOrder = product?.minimumOrder || 1;
+
+  // Fetch product
   useEffect(() => {
     axiosSecure
       .get(`/products/${id}`)
@@ -33,25 +37,34 @@ const ProductDetails = () => {
       .catch(() => setLoading(false));
   }, [id, axiosSecure]);
 
+  // Fetch user profile
   useEffect(() => {
     if (user?.email) {
       axiosSecure.get("/profile").then((res) => {
         setProfile(res.data);
+        setProfileLoading(false);
       });
+    } else {
+      setProfileLoading(false);
     }
-  }, [user, axiosSecure]);
+  }, [user]);
 
+  // Handle booking (Cash on Delivery)
   const handleBooking = async () => {
     if (!user) return toast("Please login to book the product.");
-    if (user.role === "admin" || user.role === "manager")
-      return toast("Only buyers can place orders.");
+    if (
+      profile?.role?.toLowerCase() !== "customer" ||
+      profile?.status !== "approved"
+    ) {
+      return toast("Only approved customers can order.");
+    }
+
     const finalQty = Number(quantity);
-    // Minimum order check
+
     if (!finalQty || finalQty < (product.minimumOrder || 1)) {
       return toast(`Minimum order quantity is ${product.minimumOrder || 1}`);
     }
 
-    // Maximum order check
     if (finalQty > (product.availableQuantity || 0)) {
       return toast(
         `Cannot order more than available quantity (${
@@ -59,6 +72,7 @@ const ProductDetails = () => {
         })`
       );
     }
+
     if (!firstName || !lastName || !contactNumber || !deliveryAddress)
       return toast("Please fill all required fields.");
 
@@ -90,11 +104,11 @@ const ProductDetails = () => {
     }
   };
 
-  if (loading) return <LoadingSpinner></LoadingSpinner>;
+  if (loading || profileLoading) return <LoadingSpinner />;
   if (!product) return <div className="p-4">Product not found</div>;
 
   return (
-    <div className="container mx-auto p-4 flex flex-col md:items-start lg:flex-row gap-8 ">
+    <div className="container mx-auto p-4 flex flex-col md:items-start lg:flex-row gap-8">
       {/* Product Info */}
       <div className="lg:w-1/2 space-y-4">
         {product.images?.length > 0 ? (
@@ -115,7 +129,7 @@ const ProductDetails = () => {
             className="rounded shadow w-full object-cover"
           />
         )}
-        <h2 className="text-3xl font-bold">{product.name}</h2>
+        <h2 className="text-3xl py-2 font-bold">{product.name}</h2>
         <p className="text-gray-700 text-xl font-bold">
           Description: {product.description}
         </p>
@@ -134,8 +148,8 @@ const ProductDetails = () => {
         </p>
       </div>
 
-      {/* 🚫 Suspended Buyer Block */}
-      {profile?.status === "Suspended" && (
+      {/* Suspended User Block */}
+      {profile?.status === "suspended" && (
         <div className="lg:w-1/2 bg-red-100 border border-red-400 p-5 rounded">
           <h3 className="text-xl font-bold text-red-700">
             Your account is suspended
@@ -143,7 +157,6 @@ const ProductDetails = () => {
           <p className="mt-2 text-red-600">
             You cannot place new orders or bookings.
           </p>
-
           {profile?.suspendFeedback && (
             <p className="mt-2 text-sm text-gray-700">
               <span className="font-semibold">Reason:</span>{" "}
@@ -153,11 +166,19 @@ const ProductDetails = () => {
         </div>
       )}
 
-      {/* Booking Form */}
+      {/* Pending user notice */}
+      {profile?.status === "pending" && (
+        <div className="lg:w-1/2 bg-yellow-100 border border-yellow-300 p-4 rounded">
+          <p className="text-yellow-700 font-semibold">
+            Your account is pending approval. You can view product details only.
+          </p>
+        </div>
+      )}
+
+      {/* Booking Form - only approved customer */}
       {user &&
-        user.role !== "admin" &&
-        user.role !== "manager" &&
-        profile?.status !== "Suspended" && (
+        profile?.role?.toLowerCase() === "customer" &&
+        profile.status === "approved" && (
           <div className="lg:w-1/2 bg-white p-4 rounded shadow space-y-4 md:sticky md:top-4">
             <h3 className="text-3xl font-bold">Book This Product</h3>
 
@@ -247,7 +268,6 @@ const ProductDetails = () => {
 
             <div className="flex flex-col gap-2">
               <label>Quantity</label>
-
               <input
                 type="number"
                 min={1}
@@ -263,12 +283,8 @@ const ProductDetails = () => {
                   const num = Number(val);
                   if (isNaN(num)) return;
                   setQuantity(val);
-
-                  if (num < minOrder) {
-                    setError(`Minimum order is ${minOrder}`);
-                  } else {
-                    setError("");
-                  }
+                  if (num < minOrder) setError(`Minimum order is ${minOrder}`);
+                  else setError("");
                 }}
                 className={`border p-2 rounded ${
                   error ? "border-red-500" : "border-gray-300"
@@ -277,13 +293,12 @@ const ProductDetails = () => {
               {error && (
                 <p className="text-sm text-red-500 font-medium">{error}</p>
               )}
-
               <p className="font-semibold">
                 Total Price: ${quantity ? product.price * Number(quantity) : 0}
               </p>
             </div>
 
-            {/* Payment Button */}
+            {/* Payment */}
             {product.paymentOption?.toLowerCase() === "stripe" ? (
               <Payment
                 product={product}

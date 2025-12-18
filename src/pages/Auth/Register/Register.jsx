@@ -8,7 +8,7 @@ import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import { FaEye, FaEyeSlash, FaGoogle } from "react-icons/fa";
 
 const Register = () => {
-  const { signUpFunc, setUser, signInWithPopupGoogleFunc } = useAuth();
+  const { signUpFunc, setUser } = useAuth();
   const axiosSecure = useAxiosSecure();
   const navigate = useNavigate();
   const location = useLocation();
@@ -61,38 +61,15 @@ const Register = () => {
       navigate(from, { replace: true });
     } catch (err) {
       console.error(err);
-      toast.error(err.message || "Registration failed!");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleGoogleLogin = async () => {
-    setLoading(true);
-    try {
-      const res = await signInWithPopupGoogleFunc();
-      const user = res.user;
-      setUser(user);
-
-      const idToken = await user.getIdToken();
-
-      await axiosSecure.post(
-        "/users",
-        {
-          name: user.displayName || "Anonymous",
-          email: user.email,
-          photoURL: user.photoURL || "",
-          role: "customer", // Google login always buyer
-          status: "pending",
-        },
-        { headers: { Authorization: `Bearer ${idToken}` } }
-      );
-
-      toast.success("Google login successful!");
-      navigate(from, { replace: true });
-    } catch (err) {
-      console.error(err);
-      toast.error("Google login failed!");
+      if (err.code === "auth/email-already-in-use") {
+        toast.error("This email is already registered");
+      } else if (err.code === "auth/invalid-email") {
+        toast.error("Invalid email address");
+      } else if (err.code === "auth/weak-password") {
+        toast.error("Password must be at least 6 characters long");
+      } else {
+        toast.error("Registration failed. Please try again.");
+      }
     } finally {
       setLoading(false);
     }
@@ -215,26 +192,6 @@ const Register = () => {
             Login
           </Link>
         </p>
-
-        <div className="flex items-center justify-center space-x-2 mt-2">
-          <span className="h-px bg-gray-300 flex-1"></span>
-          <span className="text-gray-400 text-sm font-medium">OR</span>
-          <span className="h-px bg-gray-300 flex-1"></span>
-        </div>
-
-        {/* Google login (modern neutral style) */}
-        <button
-          type="button"
-          onClick={handleGoogleLogin}
-          className={`w-full flex items-center justify-center gap-2 cursor-pointer py-3 rounded-lg border `}
-        >
-          <img
-            src="https://www.svgrepo.com/show/355037/google.svg"
-            alt="Google"
-            className="w-5 h-5"
-          />
-          <span className="font-medium">Continue with Google</span>
-        </button>
       </form>
     </div>
   );

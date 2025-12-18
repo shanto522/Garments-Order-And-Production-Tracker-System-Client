@@ -1,13 +1,19 @@
 import { Navigate } from "react-router";
 import LoadingSpinner from "../pages/Shared/LoadingSpinner";
-import useRole from "../hooks/useRole";
+import useUserInfo from "../hooks/useUserInfo";
 
 const ManagerRoute = ({ children }) => {
-  const [role, isRoleLoading] = useRole();
+   const [userInfo, isLoading] = useUserInfo();
 
-  if (isRoleLoading) return <LoadingSpinner />;
-  if (role === "manager") return children;
-  return <Navigate to="/" replace="true" />;
+  if (isLoading) return <LoadingSpinner />;
+  if (
+    userInfo?.role === "manager" &&
+    userInfo?.status === "approved"
+  ) {
+    return children;
+  }
+
+  return <Navigate to="/" replace />;
 };
 
 export default ManagerRoute;

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import ManageUserModal from "../../../components/Modal/ManageUserModal";
 import toast from "react-hot-toast";
+import Swal from "sweetalert2";
 
 const ManageUsers = () => {
   const [users, setUsers] = useState([]);
@@ -55,12 +56,39 @@ const ManageUsers = () => {
   };
 
   const { pages, start, end } = getPages();
+  const approveUser = (userId) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "Do you want to approve this user?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#16a34a", // green
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, approve",
+      cancelButtonText: "Cancel",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axiosSecure
+          .patch(`/users/approve/${userId}`)
+          .then(() => {
+            toast.success("User approved successfully!");
+            fetchUsers(); // refresh user list
+          })
+          .catch((err) => {
+            toast.error("Failed to approve user");
+            console.error(err);
+          });
+      }
+    });
+  };
+
   const handleUpdate = (user) => setModalData(user);
 
   const handleModalSubmit = (updatedRole, suspended, suspendReason) => {
     axiosSecure
       .put(`/users/${modalData._id}`, {
         role: updatedRole,
+        status: updatedRole === "manager" ? "approved" : "approved",
         suspended,
         suspendReason,
       })
@@ -109,6 +137,7 @@ const ManageUsers = () => {
           <option value="all">All Status</option>
           <option value="active">Active</option>
           <option value="suspended">Suspended</option>
+          <option value="pending">Pending</option>
         </select>
       </div>
 
@@ -135,10 +164,25 @@ const ManageUsers = () => {
                   <td className="p-3">{u.email}</td>
                   <td className="p-3">{u.role || "pending"}</td>
                   <td className="p-3">
-                    {u.suspended ? "Suspended" : "Active"}
+                    {u.suspended
+                      ? "Suspended"
+                      : u.status === "pending"
+                      ? "Pending"
+                      : "Active"}
                   </td>
-                  <td className="p-3">
-                    {u.role !== "admin" && (
+                  <td className="p-3 flex flex-wrap gap-2 sm:flex-nowrap">
+                    {/* Pending → only Approve */}
+                    {u.role !== "admin" && u.status === "pending" && (
+                      <button
+                        onClick={() => approveUser(u._id)}
+                        className="bg-green-600 text-white px-3 py-2 rounded-md"
+                      >
+                        Approve
+                      </button>
+                    )}
+
+                    {/* Approved → only Update */}
+                    {u.role !== "admin" && u.status !== "pending" && (
                       <button
                         onClick={() => handleUpdate(u)}
                         className="bg-blue-600 text-white px-3 py-2 rounded-md"

@@ -69,6 +69,20 @@ const Home = () => {
             transition={{ duration: 1.2, ease: "easeInOut" }}
           />
         ))}
+
+        {/* CTA BUTTON */}
+        <div className="absolute inset-0 flex flex-col justify-center items-center z-10 pointer-events-none">
+          <h1 className="text-white text-3xl sm:text-4xl md:text-5xl font-bold mb-4 text-center pointer-events-auto">
+            Discover Our Premium Garments
+          </h1>
+          <button
+            onClick={() => navigate("/all-products")}
+            className="pointer-events-auto bg-blue-500 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition transform hover:-translate-y-1"
+          >
+            View Products
+          </button>
+        </div>
+
         {/* Dots */}
         <div className="absolute bottom-5 sm:bottom-8 left-1/2 -translate-x-1/2 flex gap-2 sm:gap-3 z-20">
           {heroImages.map((_, i) => (

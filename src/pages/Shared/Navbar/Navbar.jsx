@@ -6,62 +6,30 @@ import { IoMdLogOut } from "react-icons/io";
 import logoImage from "../../../assets/logoImage.png";
 
 import useAuth from "../../../hooks/useAuth";
+import useUserInfo from "../../../hooks/useUserInfo";
 
 const Navbar = () => {
   const { user, signOutFunc } = useAuth();
+  const [userInfo, isLoading] = useUserInfo();
 
   const handleLogOut = () => {
     signOutFunc();
   };
+  const canViewDashboard = () => {
+    if (!user || !userInfo) return false;
 
-  const publicLinks = (
-    <>
-      <li>
-        <NavLink className="font-semibold" to="/">
-          Home
-        </NavLink>
-      </li>
-      <li>
-        <NavLink className="font-semibold" to="/all-products">
-          All-Products
-        </NavLink>
-      </li>
-      <li>
-        <NavLink className="font-semibold" to="/about-us">
-          About Us
-        </NavLink>
-      </li>
-      <li>
-        <NavLink to="/contact">Contact</NavLink>
-      </li>
-    </>
-  );
+    const role = userInfo.role?.toLowerCase();
+    if (role === "admin") return true;
+    if (role === "manager" || role === "customer") return true;
 
-  const privateLinks = (
-    <>
-      <li>
-        <NavLink className="font-semibold" to="/">
-          Home
-        </NavLink>
-      </li>
-      <li>
-        <NavLink className="font-semibold" to="/all-products">
-          All-Products
-        </NavLink>
-      </li>
-      <li>
-        <NavLink className="font-semibold" to="/dashboard">
-          Dashboard
-        </NavLink>
-      </li>
-    </>
-  );
+    return false;
+  };
 
   return (
     <div className="navbar dark:bg-gray-800 dark:text-gray-200 md:px-8">
       {/* Navbar Start */}
       <div className="navbar-start">
-        {/* Small screen dropdown */}
+        {/* Mobile Menu */}
         <div className="dropdown lg:hidden">
           <label tabIndex={0} className="btn btn-ghost">
             <svg
@@ -79,11 +47,23 @@ const Navbar = () => {
               />
             </svg>
           </label>
+
           <ul
             tabIndex={0}
-            className="menu menu-compact dark:bg-gray-800 dark:text-gray-200 dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52"
+            className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 dark:bg-gray-800 rounded-box w-52"
           >
-            {user ? privateLinks : publicLinks}
+            <li>
+              <NavLink to="/">Home</NavLink>
+            </li>
+            <li>
+              <NavLink to="/all-products">All-Products</NavLink>
+            </li>
+
+            {canViewDashboard() && (
+              <li>
+                <NavLink to="/dashboard">Dashboard</NavLink>
+              </li>
+            )}
 
             {!user && (
               <>
@@ -108,10 +88,32 @@ const Navbar = () => {
         </Link>
       </div>
 
-      {/* Navbar Center (large screen) */}
+      {/* Navbar Center (Desktop) */}
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal px-1">
-          {user ? privateLinks : publicLinks}
+          <li>
+            <NavLink to="/">Home</NavLink>
+          </li>
+          <li>
+            <NavLink to="/all-products">All-Products</NavLink>
+          </li>
+
+          {canViewDashboard() && (
+            <li>
+              <NavLink to="/dashboard">Dashboard</NavLink>
+            </li>
+          )}
+
+          {!user && (
+            <>
+              <li>
+                <NavLink to="/about-us">About Us</NavLink>
+              </li>
+              <li>
+                <NavLink to="/contact">Contact</NavLink>
+              </li>
+            </>
+          )}
         </ul>
       </div>
 
@@ -121,44 +123,48 @@ const Navbar = () => {
           <div className="dropdown dropdown-end">
             <div
               tabIndex={0}
-              className="flex items-center gap-2 cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-700 px-3 py-1 rounded-lg transition-all"
+              className="flex items-center gap-2 cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-700 px-3 py-1 rounded-lg"
             >
               <img
                 src={
                   user.photoURL ||
+                  userInfo.photoURL ||
                   `https://ui-avatars.com/api/?name=${
-                    user.displayName || "User"
+                    user.displayName || userInfo.name || "User"
                   }`
                 }
                 alt="profile"
-                className="h-9 w-9 rounded-full border-2 border-white"
+                className="h-10 w-10 rounded-full border-2 border-white"
               />
               <FaRegArrowAltCircleDown />
             </div>
 
-            <ul className="dropdown-content menu bg-base-100 rounded-xl mt-3 w-60 dark:bg-gray-800 dark:text-gray-200 p-3 shadow-lg border border-gray-200 dark:border-gray-700">
-              <li className="text-center pb-2 border-b border-gray-300 dark:border-gray-600">
+            <ul className="dropdown-content menu bg-base-100 dark:bg-gray-800 rounded-xl mt-3 w-60 p-3 shadow-lg">
+              <li className="text-center pb-2 border-b">
                 <div className="flex flex-col items-center">
                   <img
                     src={
                       user.photoURL ||
+                      userInfo.photoURL ||
                       `https://ui-avatars.com/api/?name=${
-                        user.displayName || "User"
+                        user.displayName || userInfo.name || "User"
                       }`
                     }
                     alt="profile"
-                    className="h-14 w-14 rounded-full border-2 border-gray-400 mb-2"
+                    className="h-14 w-14 rounded-full border-2 border-white"
                   />
-                  <p className="font-semibold text-[20px]">
-                    {user.displayName}
+
+                  <p className="font-semibold text-[18px]">
+                    {user.displayName || userInfo.name || "User"}
                   </p>
-                  <p className="text-xs font-semibold">{user.email}</p>
+                  <p className="text-xs">{user.email}</p>
                 </div>
               </li>
+
               <li>
                 <button
                   onClick={handleLogOut}
-                  className="text-red-600 font-semibold flex justify-center rounded-lg transition-colors w-full items-center gap-2 mt-2"
+                  className="text-red-600 font-semibold flex justify-center items-center gap-2 mt-2"
                 >
                   <IoMdLogOut size={22} />
                   Logout

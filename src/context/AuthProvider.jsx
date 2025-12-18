@@ -45,7 +45,7 @@ const AuthProvider = ({ children }) => {
             `http://localhost:3000/users/role/${currentUser.email}`
           );
           const data = await res.json();
-          setRole(data.role); // admin/manager/buyer
+          setRole(data.role); // admin/manager/customer
         } catch (err) {
           console.log("Role fetch error:", err);
           setRole(null);

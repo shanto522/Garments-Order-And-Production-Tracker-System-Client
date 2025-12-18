@@ -134,6 +134,7 @@ const AddProduct = () => {
             type="number"
             name="price"
             placeholder="Price"
+            min="0"
             value={productData.price}
             onChange={handleChange}
             className="border border-gray-300 p-3 w-full rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-400"
@@ -143,6 +144,7 @@ const AddProduct = () => {
             type="number"
             name="availableQuantity"
             placeholder="Available Quantity"
+            min="0"
             value={productData.availableQuantity}
             onChange={handleChange}
             className="border border-gray-300 p-3 w-full rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-400"
@@ -151,6 +153,7 @@ const AddProduct = () => {
           <input
             type="number"
             name="minimumOrder"
+            min="1"
             placeholder="Minimum Order Quantity"
             value={productData.minimumOrder}
             onChange={handleChange}

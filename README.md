@@ -1,19 +1,26 @@
 ### Project Name : Garments Order & Production Tracker System
+
 📌 Project Purpose
 
 1.The Garments Order & Production Tracker System is a web-based platform designed to help small and medium-sized garment factories manage orders, production stages, inventory, and delivery tracking efficiently.
-The system supports Buyer, Manager, and Admin roles with proper access control.
+The system supports Customer, Manager, and Admin roles with proper access control.
 
 🌐 Live Site
 
-Live URL: 
+Live URL:
+
+🔗 Repository Links
+
+1.Client Repository: 
+
+2.Server Repository: 
 
 🚀 Key Features
 🔐 Authentication & Security
 
 1.Email & Password Authentication using Firebase
 
-2.Google or GitHub Login (Buyer role, status: pending)
+2.Google or GitHub Login (Customer role, status: pending)
 
 3.JWT authentication with token stored in cookies
 
@@ -77,7 +84,7 @@ Live URL:
 
 7.Orders saved to database
 
-8.Buyer Dashboard → My Orders
+8.Customer Dashboard → My Orders
 
 📊 Order Tracking
 
@@ -99,14 +106,14 @@ vi.Shipped / Out for Delivery
 
 3.Interactive map using Leaflet
 
-4.Read-only access for buyers
+4.Read-only access for customers
 
 📊 Dashboards
 👑 Admin Dashboard
 
 1.Manage Users (search, filter, pagination)
 
-2.Update user roles (Buyer / Manager)
+2.Update user roles (Customer / Manager)
 
 3.Suspend users with reason & feedback
 
@@ -136,7 +143,7 @@ ii.Cannot approve or reject orders
 
 iii.Can view suspend feedback
 
-🧑 Buyer Dashboard
+🧑 Customer Dashboard
 
 1.My Orders
 
@@ -144,7 +151,7 @@ iii.Can view suspend feedback
 
 3.My Profile
 
-4.If Buyer is Suspended:
+4.If Customer is Suspended:
 
 i.Cannot place new orders
 
@@ -165,6 +172,7 @@ iii.Suspend feedback visible on profile
 5.404 Not Found page
 
 🛠️ Technologies Used
+
 ### Frontend
 
 1.React
@@ -198,12 +206,6 @@ iii.Suspend feedback visible on profile
 react, react-router, react-hook-form, firebase, axios,
 @tanstack/react-query, framer-motion, sweetalert2,
 react-hot-toast, leaflet, tailwindcss, daisyui
-
-🔗 Repository Links
-
-1.Client Repository: [Add client GitHub link]
-
-2.Server Repository: [Add server GitHub link]
 
 🚀 Deployment Checklist
 

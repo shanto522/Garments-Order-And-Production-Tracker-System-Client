@@ -59,7 +59,7 @@ const UpdateProductModal = ({ product, isOpen, onClose, onUpdate }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 px-4 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <div className="fixed inset-0 px-4 min-h-screen bg-black bg-opacity-50 flex items-center justify-center z-50">
       <div className="bg-white p-6 rounded-lg w-full max-w-lg relative">
         <button
           onClick={onClose}

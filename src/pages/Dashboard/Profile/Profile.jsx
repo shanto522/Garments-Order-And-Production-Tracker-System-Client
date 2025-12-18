@@ -45,13 +45,13 @@ const Profile = () => {
             />
           </div>
 
-          {/* Role Badge */}
-          <p className="px-5 py-1 mt-4 text-sm sm:text-base md:text-base font-medium text-white bg-gradient-to-r from-lime-500 to-lime-600 rounded-full shadow-lg">
+          {/* Role */}
+          <p className="px-5 py-1 mt-4 text-sm sm:text-base font-medium text-white bg-gradient-to-r from-lime-500 to-lime-600 rounded-full shadow-lg">
             {profile?.role || "Customer"}
           </p>
 
           {/* UID */}
-          <p className="mt-2 text-base sm:text-lg md:text-xl text-gray-700 font-medium tracking-wide">
+          <p className="mt-2 text-base sm:text-lg text-gray-700 font-medium tracking-wide">
             UID: {user?.uid}
           </p>
         </div>
@@ -61,31 +61,27 @@ const Profile = () => {
           {/* Name, Email & Status */}
           <div className="flex flex-col sm:flex-row sm:justify-between gap-6 w-full text-center sm:text-left">
             <div className="flex flex-col">
-              <span className="text-gray-500 font-medium text-sm sm:text-base md:text-base">
-                Name
-              </span>
-              <span className="text-gray-800 font-semibold text-base sm:text-lg md:text-xl">
+              <span className="text-gray-500 font-medium text-sm">Name</span>
+              <span className="text-gray-800 font-semibold text-lg">
                 {user?.displayName || profile?.name || "N/A"}
               </span>
             </div>
 
             <div className="flex flex-col">
-              <span className="text-gray-500 font-medium text-sm sm:text-base md:text-base">
-                Email
-              </span>
-              <span className="text-gray-800 font-semibold text-base sm:text-lg md:text-xl">
+              <span className="text-gray-500 font-medium text-sm">Email</span>
+              <span className="text-gray-800 font-semibold text-lg">
                 {user?.email || profile?.email || "N/A"}
               </span>
             </div>
 
             <div className="flex flex-col">
-              <span className="text-gray-500 font-medium text-sm sm:text-base md:text-base">
-                Status
-              </span>
+              <span className="text-gray-500 font-medium text-sm">Status</span>
               <span
-                className={`font-semibold text-base sm:text-lg md:text-xl ${
+                className={`font-semibold text-lg ${
                   profile?.status === "Suspended"
                     ? "text-red-600"
+                    : profile?.status === "Pending"
+                    ? "text-yellow-600"
                     : "text-green-600"
                 }`}
               >
@@ -94,17 +90,30 @@ const Profile = () => {
             </div>
           </div>
 
-          {/* Suspend Feedback */}
-          {profile?.status === "Suspended" && profile?.suspendFeedback && (
-            <div className="mt-4 w-full p-4 bg-red-100 rounded-md border border-red-300 text-left">
+          {/* ✅ Pending Notice (Assignment Requirement) */}
+          {profile?.status === "pending" && (
+            <div className="w-full p-4 bg-yellow-100 border border-yellow-300 rounded-md text-left">
+              <h3 className="font-semibold text-yellow-800 mb-1">
+                Account Pending Approval
+              </h3>
+              <p className="text-yellow-700 text-sm">
+                Your account is currently under review. Once approved by the
+                admin, you will be able to access all dashboard features.
+              </p>
+            </div>
+          )}
+
+          {/* ❌ Suspended Feedback */}
+          {profile?.status === "suspended" && profile?.suspendFeedback && (
+            <div className="w-full p-4 bg-red-100 rounded-md border border-red-300 text-left">
               <h3 className="font-semibold text-red-700 mb-1">
-                Suspend Feedback:
+                Suspend Feedback
               </h3>
               <p className="text-red-600">{profile.suspendFeedback}</p>
             </div>
           )}
 
-          {/* Logout Button */}
+          {/* Logout */}
           <div className="flex justify-center mt-6 w-full">
             <button
               onClick={handleLogOut}

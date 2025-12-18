@@ -5,16 +5,23 @@ import useAxiosSecure from "../../hooks/useAxiosSecure";
 const AllProducts = () => {
   const [products, setProducts] = useState([]);
   const [page, setPage] = useState(1);
-  const [limit] = useState(10);
+  const [limit, setLimit] = useState(window.innerWidth >= 1024 ? 9 : 10);
   const [total, setTotal] = useState(0);
-
-  const [visibleLimit, setVisibleLimit] = useState(
-    window.innerWidth >= 1024 ? 9 : 10
-  );
 
   const axiosSecure = useAxiosSecure();
   const navigate = useNavigate();
 
+  // Update limit on window resize
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 1024) setLimit(9);
+      else setLimit(10);
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  // Fetch products with dynamic limit
   useEffect(() => {
     axiosSecure
       .get(`/all-products?page=${page}&limit=${limit}`)
@@ -46,23 +53,13 @@ const AllProducts = () => {
   };
 
   const { pages, start, end } = getPages();
-  // Update visibleLimit on window resize
-  useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth >= 1024) setVisibleLimit(9);
-      else setVisibleLimit(10);
-    };
-
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
 
   return (
     <div className="container mx-auto p-2">
       <h2 className="text-4xl text-center font-bold mb-6">All Products</h2>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {products?.slice(0, visibleLimit).map((product) => (
+        {products.map((product) => (
           <div
             key={product._id}
             className="rounded-lg shadow-2xl hover:shadow-lg transition p-3 flex flex-col"
@@ -84,7 +81,9 @@ const AllProducts = () => {
             <h3 className="text-xl font-semibold">{product.name}</h3>
             <p className="text-gray-600">{product.category}</p>
             <p className="text-gray-800 font-bold text-lg">${product.price}</p>
-            <p className="text-gray-700">Available: {product.availableQuantity}</p>
+            <p className="text-gray-700">
+              Available: {product.availableQuantity}
+            </p>
             <p className="text-gray-700">
               Minimum Order: {product.minimumOrder || 1}
             </p>
@@ -102,7 +101,6 @@ const AllProducts = () => {
       {/* Pagination */}
       {totalPages > 1 && (
         <div className="flex justify-center items-center gap-2 mt-6 flex-wrap">
-          {/* Previous */}
           <button
             disabled={page === 1}
             onClick={() => setPage((p) => p - 1)}
@@ -111,7 +109,6 @@ const AllProducts = () => {
             Previous
           </button>
 
-          {/* First page */}
           {start > 1 && (
             <>
               <button
@@ -124,7 +121,6 @@ const AllProducts = () => {
             </>
           )}
 
-          {/* Visible pages */}
           {pages.map((num) => (
             <button
               key={num}
@@ -139,7 +135,6 @@ const AllProducts = () => {
             </button>
           ))}
 
-          {/* Last page */}
           {end < totalPages && (
             <>
               <span className="px-1 text-gray-500">...</span>
@@ -152,7 +147,6 @@ const AllProducts = () => {
             </>
           )}
 
-          {/* Next */}
           <button
             disabled={page === totalPages}
             onClick={() => setPage((p) => p + 1)}

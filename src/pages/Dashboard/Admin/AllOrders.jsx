@@ -7,6 +7,7 @@ const AllOrders = () => {
   const [modalData, setModalData] = useState(null);
   const [filterStatus, setFilterStatus] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
+  const [searchText, setSearchText] = useState("");
   const [ordersPerPage] = useState(10);
   const axiosSecure = useAxiosSecure();
 
@@ -22,13 +23,21 @@ const AllOrders = () => {
     ? orders.filter((o) => o.status === filterStatus)
     : orders;
 
+  const searchedOrders = searchText
+    ? filteredOrders.filter(
+        (o) =>
+          (o.userName || "").toLowerCase().includes(searchText.toLowerCase()) ||
+          (o.productName || "").toLowerCase().includes(searchText.toLowerCase())
+      )
+    : filteredOrders;
+
   const indexOfLastOrder = currentPage * ordersPerPage;
   const indexOfFirstOrder = indexOfLastOrder - ordersPerPage;
-  const currentOrders = filteredOrders.slice(
+  const currentOrders = searchedOrders.slice(
     indexOfFirstOrder,
     indexOfLastOrder
   );
-  const totalPages = Math.ceil(filteredOrders.length / ordersPerPage);
+  const totalPages = Math.ceil(searchedOrders.length / ordersPerPage);
   const maxVisible = 5;
 
   const getPages = () => {
@@ -61,6 +70,7 @@ const AllOrders = () => {
         All Orders
       </h2>
 
+      {/* Filter and Search */}
       <div className="mb-4 flex flex-col sm:flex-row gap-2 items-start sm:items-center">
         <label className="mr-2 font-medium">Filter by Status:</label>
         <select
@@ -76,6 +86,18 @@ const AllOrders = () => {
           <option value="Approved">Approved</option>
           <option value="Rejected">Rejected</option>
         </select>
+
+        {/* Search Input */}
+        <input
+          type="text"
+          placeholder="Search by User or Product..."
+          className="border border-gray-300 w-full p-2 rounded focus:outline-none focus:ring-2 focus:ring-indigo-400 transition flex-1"
+          value={searchText}
+          onChange={(e) => {
+            setSearchText(e.target.value);
+            setCurrentPage(1);
+          }}
+        />
       </div>
 
       <div className="overflow-x-auto shadow-md rounded-lg bg-white">
