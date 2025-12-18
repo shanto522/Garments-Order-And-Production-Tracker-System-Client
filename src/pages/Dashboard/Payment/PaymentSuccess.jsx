@@ -41,7 +41,7 @@ const PaymentSuccess = () => {
       <div className="bg-white rounded-2xl shadow-xl p-8 sm:p-12 max-w-md w-full text-center animate-fade-in">
         <CheckCircleIcon className="w-16 h-16 mx-auto text-green-500 mb-6 animate-bounce" />
         <h1 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-2">
-         🎉Payment Successful!
+          🎉Payment Successful!
         </h1>
         <p className="text-gray-600 mb-6">
           Your order has been created successfully. <br />

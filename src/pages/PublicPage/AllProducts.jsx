@@ -84,9 +84,6 @@ const AllProducts = () => {
             <p className="text-gray-700">
               Available: {product.availableQuantity}
             </p>
-            <p className="text-gray-700">
-              Minimum Order: {product.minimumOrder || 1}
-            </p>
 
             <button
               onClick={() => navigate(`/product/${product._id}`)}

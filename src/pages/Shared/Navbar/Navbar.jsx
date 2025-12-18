@@ -1,5 +1,5 @@
 // src/components/Shared/Navbar.jsx
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link, NavLink } from "react-router";
 import { FaRegArrowAltCircleDown } from "react-icons/fa";
 import { IoMdLogOut } from "react-icons/io";
@@ -11,7 +11,6 @@ import useUserInfo from "../../../hooks/useUserInfo";
 const Navbar = () => {
   const { user, signOutFunc } = useAuth();
   const [userInfo, isLoading] = useUserInfo();
-
   const handleLogOut = () => {
     signOutFunc();
   };
@@ -116,10 +115,9 @@ const Navbar = () => {
           )}
         </ul>
       </div>
-
       {/* Navbar End */}
       <div className="navbar-end flex items-center gap-2">
-        {user ? (
+        {!isLoading && userInfo && user ? (
           <div className="dropdown dropdown-end">
             <div
               tabIndex={0}

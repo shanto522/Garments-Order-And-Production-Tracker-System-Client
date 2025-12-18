@@ -8,7 +8,6 @@ import { Toaster } from "react-hot-toast";
 import { ToastContainer } from "react-toastify";
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools"; // <-- Missing import added
 
 const queryClient = new QueryClient();
 
@@ -20,7 +19,6 @@ createRoot(document.getElementById("root")).render(
         <Toaster />
         <ToastContainer />
       </AuthProvider>
-      <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   </StrictMode>
 );

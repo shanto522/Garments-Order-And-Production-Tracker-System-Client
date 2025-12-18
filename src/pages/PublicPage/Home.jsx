@@ -20,7 +20,10 @@ const FadeInWhenVisible = ({ children }) => {
     </motion.div>
   );
 };
-
+const truncateText = (text, maxLength = 100) => {
+  if (!text) return "No description available";
+  return text.length > maxLength ? text.slice(0, maxLength) + "..." : text;
+};
 const Home = () => {
   const [products, setProducts] = useState([]);
   const axiosSecure = useAxiosSecure();
@@ -117,8 +120,8 @@ const Home = () => {
 
                 <h3 className="text-xl font-semibold mt-4">{p.name}</h3>
 
-                <p className="text-gray-600 dark:text-gray-300 mt-2">
-                  {p.shortDesc}
+                <p className="dark:text-gray-500 mt-2">
+                  {truncateText(p.description, 100)}
                 </p>
 
                 <p className="text-gray-600 font-bold my-3">${p.price}</p>

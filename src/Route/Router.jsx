@@ -36,6 +36,7 @@ import PrivateRoute from "../Provider/PrivateRoute";
 import AdminRoute from "./AdminRoute";
 import ManagerRoute from "./ManagerRoute";
 import RoleRedirect from "../pages/Dashboard/RoleRedirect";
+import BookingPage from "../pages/Dashboard/User/BookingPage/BookingPage";
 
 // Route Guards
 
@@ -55,7 +56,15 @@ const router = createBrowserRouter([
           </PrivateRoute>
         ),
       },
-       {
+      {
+        path: "/booking/:id",
+        element: (
+          <PrivateRoute>
+            <BookingPage></BookingPage>
+          </PrivateRoute>
+        ),
+      },
+      {
         path: "payment-success",
         element: <PaymentSuccess />,
       },

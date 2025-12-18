@@ -108,7 +108,7 @@ const PendingOrders = () => {
                   className="hover:bg-gray-50 transition duration-200"
                 >
                   <td className="p-3 text-gray-700 font-medium">{o._id}</td>
-                  <td className="p-3 text-gray-700">{o.userName}</td>
+                  <td className="p-3 text-gray-700">{o.userName || o.userEmail || "Unknown"}</td>
                   <td className="p-3 text-gray-700">{o.productName}</td>
                   <td className="p-3 text-gray-700">{o.quantity}</td>
                   <td className="p-3 flex gap-2">
