@@ -4,6 +4,7 @@ import toast from "react-hot-toast";
 import useAxiosSecure from "../../../../hooks/useAxiosSecure";
 import useAuth from "../../../../hooks/useAuth";
 import Swal from "sweetalert2";
+import { CircleX, MapPin, ShoppingBag } from "lucide-react";
 
 const MyOrders = () => {
   const { user } = useAuth();
@@ -87,8 +88,8 @@ const MyOrders = () => {
 
   return (
     <div className="p-4">
-      <h2 className="text-3xl md:text-4xl font-bold mb-6 text-gray-800">
-        My Orders
+      <h2 className="text-3xl flex items-center gap-3 md:text-4xl font-bold mb-6 text-gray-800">
+        <ShoppingBag size={28} /> My Orders
       </h2>
 
       <div className="overflow-x-auto shadow-md rounded-lg bg-white">
@@ -170,18 +171,18 @@ const MyOrders = () => {
                     {o.status === "Pending" && (
                       <button
                         onClick={() => handleCancel(o._id)}
-                        className="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded-md transition duration-200"
+                        className="bg-red-600 hover:bg-red-700 text-white px-3 py-2 mt-5 flex items-center justify-center gap-1 lg:mt-0 rounded-md transition duration-200"
                       >
-                        Cancel
+                        <CircleX size={18} /> Cancel
                       </button>
                     )}
 
                     {o.status === "Approved" && (
                       <Link
                         to={`/dashboard/track-order/${o._id}`}
-                        className="bg-indigo-600 text-center text-white px-2 py-1 rounded hover:bg-indigo-700"
+                        className="bg-indigo-600 text-center whitespace-nowrap text-white flex justify-center items-center gap-1 px-2 py-2 rounded mt-4 lg:mt-0 hover:bg-indigo-700"
                       >
-                        Track Order
+                        <MapPin /> Track Order
                       </Link>
                     )}
                   </td>

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import useAxiosSecure from "../../../../hooks/useAxiosSecure";
 import { useNavigate } from "react-router";
+import { ArrowLeft, MessageCircle } from "lucide-react";
 
 const AllFeedbacks = () => {
   const [feedbacks, setFeedbacks] = useState([]);
@@ -33,7 +34,8 @@ const AllFeedbacks = () => {
 
   return (
     <div className=" px-4 py-16">
-      <h2 className="text-3xl font-bold mb-8 text-center">
+      <h2 className="text-3xl flex justify-center items-center gap-3 font-bold mb-8 text-center">
+        <MessageCircle size={26} />
         All Customer Feedbacks
       </h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
@@ -50,9 +52,9 @@ const AllFeedbacks = () => {
       <div className="flex justify-center mt-10">
         <button
           onClick={() => navigate("/")}
-          className="px-6 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg font-semibold"
+          className="px-6 py-2 bg-blue-500 flex justify-center items-center gap-3 hover:bg-blue-600 text-white rounded-lg font-semibold"
         >
-          Go Back Home
+          <ArrowLeft /> Go Back Home
         </button>
       </div>
 

@@ -5,8 +5,8 @@
   themes: light --default;
 }
 a.active {
-  @apply btn bg-[#47698F] text-white border-[#35567b];
+  @apply bg-[#47698F] text-white border-[#35567b];
 }
 * {
   font-family: "Poppins", sans-serif;
-}
+} 

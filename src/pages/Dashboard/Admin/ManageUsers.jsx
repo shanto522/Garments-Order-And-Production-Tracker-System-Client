@@ -3,6 +3,7 @@ import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import ManageUserModal from "../../../components/Modal/ManageUserModal";
 import toast from "react-hot-toast";
 import Swal from "sweetalert2";
+import { Check, Delete, RefreshCw, Users } from "lucide-react";
 
 const ManageUsers = () => {
   const [users, setUsers] = useState([]);
@@ -25,7 +26,8 @@ const ManageUsers = () => {
         `/users?search=${searchTerm}&role=${filterRole}&status=${filterStatus}&page=${page}&limit=${limit}`
       )
       .then((res) => {
-        setUsers(res.data.users);
+        const sorted = res.data.users.sort((a, b) => (a._id < b._id ? 1 : -1));
+        setUsers(sorted);
         setTotalUsers(res.data.total);
       });
   };
@@ -81,6 +83,31 @@ const ManageUsers = () => {
       }
     });
   };
+  const rejectUser = (userId) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "Do you want to reject this user?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33", // red
+      cancelButtonColor: "#6b7280",
+      confirmButtonText: "Yes, reject",
+      cancelButtonText: "Cancel",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axiosSecure
+          .delete(`/users/${userId}`)
+          .then(() => {
+            toast.success("User rejected successfully!");
+            fetchUsers(); // refresh UI
+          })
+          .catch((err) => {
+            toast.error("Failed to reject user");
+            console.error(err);
+          });
+      }
+    });
+  };
 
   const handleUpdate = (user) => setModalData(user);
 
@@ -105,8 +132,8 @@ const ManageUsers = () => {
 
   return (
     <div className="p-4">
-      <h2 className="text-3xl md:text-4xl font-bold mb-6 text-gray-800">
-        Manage Users
+      <h2 className="text-3xl md:text-4xl flex items-center gap-3 font-bold mb-6 text-gray-800">
+        <Users size={28} /> Manage Users
       </h2>
 
       {/* 🔍 Search + Filters */}
@@ -173,21 +200,29 @@ const ManageUsers = () => {
                   <td className="p-3 flex flex-wrap gap-2 sm:flex-nowrap">
                     {/* Pending → only Approve */}
                     {u.role !== "admin" && u.status === "pending" && (
-                      <button
-                        onClick={() => approveUser(u._id)}
-                        className="bg-green-600 text-white px-3 py-2 rounded-md"
-                      >
-                        Approve
-                      </button>
+                      <>
+                        <button
+                          onClick={() => approveUser(u._id)}
+                          className="bg-green-600 flex items-center justify-center gap-1 text-white px-3 py-2 rounded-md"
+                        >
+                          <Check /> Approve
+                        </button>
+                        <button
+                          onClick={() => rejectUser(u._id)}
+                          className="bg-red-600 flex items-center justify-center gap-1 text-white px-3 py-2 rounded-md"
+                        >
+                          <Delete /> Reject
+                        </button>
+                      </>
                     )}
 
                     {/* Approved → only Update */}
                     {u.role !== "admin" && u.status !== "pending" && (
                       <button
                         onClick={() => handleUpdate(u)}
-                        className="bg-blue-600 text-white px-3 py-2 rounded-md"
+                        className="bg-blue-600 flex items-center justify-center gap-1 text-white px-3 py-2 rounded-md"
                       >
-                        Update
+                      <RefreshCw size={16} />  Update
                       </button>
                     )}
                   </td>

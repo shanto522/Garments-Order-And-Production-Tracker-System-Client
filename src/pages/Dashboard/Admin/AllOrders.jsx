@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import ViewOrderModal from "../../../components/Modal/ViewOrderModal";
+import { ClipboardList, Eye } from "lucide-react";
 
 const AllOrders = () => {
   const [orders, setOrders] = useState([]);
@@ -12,7 +13,10 @@ const AllOrders = () => {
   const axiosSecure = useAxiosSecure();
 
   const fetchOrders = () => {
-    axiosSecure.get("/orders").then((res) => setOrders(res.data));
+    axiosSecure.get("/orders").then((res) => {
+      const sorted = res.data.sort((a, b) => (a._id < b._id ? 1 : -1));
+      setOrders(sorted);
+    });
   };
 
   useEffect(() => {
@@ -66,8 +70,8 @@ const AllOrders = () => {
 
   return (
     <div className="p-4">
-      <h2 className="text-3xl md:text-4xl font-bold mb-6 text-gray-800">
-        All Orders
+      <h2 className="text-3xl flex items-center gap-3 md:text-4xl font-bold mb-6 text-gray-800">
+        <ClipboardList size={28}/> All Orders
       </h2>
 
       {/* Filter and Search */}
@@ -155,9 +159,9 @@ const AllOrders = () => {
                   <td className="p-3 flex flex-wrap gap-2 sm:flex-nowrap">
                     <button
                       onClick={() => setModalData(o)}
-                      className="bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded-md flex-1"
+                      className="bg-blue-600 hover:bg-blue-700 flex justify-center items-center gap-1 mt-3 lg:mt-0 text-white px-3 py-2 rounded-md flex-1"
                     >
-                      View
+                      <Eye /> View
                     </button>
                   </td>
                 </tr>

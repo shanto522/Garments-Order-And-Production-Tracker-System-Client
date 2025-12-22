@@ -4,6 +4,7 @@ import useAuth from "../../../hooks/useAuth";
 import toast from "react-hot-toast";
 import UpdateProductModal from "../../../components/Modal/UpdateProductModal";
 import Swal from "sweetalert2";
+import { Delete, PackageCheck, RefreshCw } from "lucide-react";
 
 const ManageProducts = () => {
   const { user } = useAuth();
@@ -55,9 +56,9 @@ const ManageProducts = () => {
       prev.map((p) => (p._id === updatedProduct._id ? updatedProduct : p))
     );
   };
+  const sortedProducts = [...products].sort((a, b) => (a._id < b._id ? 1 : -1));
 
-  // Search filtering
-  const filteredProducts = products.filter((p) =>
+  const filteredProducts = sortedProducts.filter((p) =>
     p.name.toLowerCase().includes(search.toLowerCase())
   );
 
@@ -70,7 +71,10 @@ const ManageProducts = () => {
 
   return (
     <div className="p-4">
-      <h2 className="text-3xl font-bold mb-6 text-gray-800">Manage Products</h2>
+      <h2 className="text-3xl flex items-center gap-3 font-bold mb-6 text-gray-800">
+        <PackageCheck size={28} />
+        Manage Products
+      </h2>
 
       <input
         type="text"
@@ -115,15 +119,15 @@ const ManageProducts = () => {
                       <>
                         <button
                           onClick={() => openModal(p)}
-                          className="bg-blue-600 px-3 py-2 text-white rounded w-full sm:w-auto"
+                          className="bg-blue-600 flex justify-center items-center gap-1 px-3 py-2 text-white rounded w-full sm:w-auto"
                         >
-                          Update
+                          <RefreshCw size={16} /> Update
                         </button>
                         <button
                           onClick={() => handleDelete(p._id)}
-                          className="bg-red-600 px-3 py-2 text-white rounded w-full sm:w-auto"
+                          className="bg-red-600 px-3 py-2 text-white rounded flex justify-center items-center gap-1 w-full sm:w-auto"
                         >
-                          Delete
+                          <Delete /> Delete
                         </button>
                       </>
                     ) : (

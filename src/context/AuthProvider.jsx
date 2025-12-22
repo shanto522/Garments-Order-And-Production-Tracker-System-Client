@@ -42,7 +42,7 @@ const AuthProvider = ({ children }) => {
       if (currentUser?.email) {
         try {
           const res = await fetch(
-            `http://localhost:3000/users/role/${currentUser.email}`
+            `https://garments-order-and-production-track.vercel.app/users/role/${currentUser.email}`
           );
           const data = await res.json();
           setRole(data.role); // admin/manager/customer

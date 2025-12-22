@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import useAuth from "../../hooks/useAuth";
 import LoadingSpinner from "../Shared/LoadingSpinner";
+import { ArrowLeft, CheckLine } from "lucide-react";
 
 const ProductDetails = () => {
   const { id } = useParams();
@@ -74,10 +75,10 @@ const ProductDetails = () => {
         <p className="text-gray-700 text-xl font-bold">
           Description: {product.description}
         </p>
-        <p className="text-gray-600 text-xl font-bold">
+        <p className="text-gray-700 text-xl font-bold">
           Category: {product.category}
         </p>
-        <p className="text-lime-500 font-bold text-xl">${product.price}</p>
+        <p className="text-gray-700 font-bold text-xl">${product.price}</p>
         <p className="text-gray-700 text-xl font-bold">
           Available: {product.availableQuantity || 0}
         </p>
@@ -92,9 +93,9 @@ const ProductDetails = () => {
         {showBookingButton && (
           <button
             onClick={() => navigate(`/booking/${product._id}`)}
-            className="bg-blue-600 hover:bg-blue-700 w-full text-white px-4 py-2 rounded font-semibold"
+            className="bg-blue-600 flex justify-center items-center gap-3 hover:bg-blue-700 w-full text-white px-4 py-2 rounded font-semibold"
           >
-            Book / Order Product
+           <CheckLine size={22} /> Book / Order Product
           </button>
         )}
 
@@ -123,9 +124,9 @@ const ProductDetails = () => {
         {/* Go Back Button */}
         <button
           onClick={() => navigate(-1)}
-          className="bg-gray-300 w-full hover:bg-gray-400 text-gray-800 px-4 py-2 rounded font-semibold mt-4"
+          className="bg-gray-300 w-full flex item-center justify-center gap-2 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded font-semibold"
         >
-          Go Back
+        <ArrowLeft size={22}/> Go Back
         </button>
       </div>
     </div>

@@ -4,6 +4,7 @@ import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import useAxiosSecure from "../../../../hooks/useAxiosSecure";
+import { ArrowLeft, MapPin } from "lucide-react";
 
 // Fix Leaflet default icons
 delete L.Icon.Default.prototype._getIconUrl;
@@ -17,12 +18,13 @@ L.Icon.Default.mergeOptions({
 });
 
 const steps = [
-  { name: "Cutting Completed", key: "Cutting" },
-  { name: "Sewing Started", key: "Sewing" },
+  { name: "Cutting Completed", key: "Cutting Completed" },
+  { name: "Sewing Started", key: "Sewing Started" },
   { name: "Finishing", key: "Finishing" },
-  { name: "QC Checked", key: "QC" },
+  { name: "QC Checked", key: "QC Checked" },
   { name: "Packed", key: "Packed" },
-  { name: "Shipped / Out for Delivery", key: "Shipped" },
+  { name: "Shipped", key: "Shipped" },
+  { name: "Out for Delivery", key: "Out for Delivery" },
 ];
 
 const TrackOrder = () => {
@@ -60,7 +62,7 @@ const TrackOrder = () => {
 
   return (
     <div className="p-4 space-y-6">
-      <h2 className="text-3xl font-bold text-center">
+      <h2 className="text-3xl font-bold text-center break-words">
         Track Order: {order._id}
       </h2>
 
@@ -113,9 +115,9 @@ const TrackOrder = () => {
       <div className="text-center">
         <Link
           to="/dashboard/my-orders"
-          className="px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700"
+          className="px-4 py-2 bg-indigo-600 flex justify-center items-center gap-2 text-white rounded hover:bg-indigo-700"
         >
-          Back to My Orders
+          <ArrowLeft /> Back to My Orders
         </Link>
       </div>
     </div>

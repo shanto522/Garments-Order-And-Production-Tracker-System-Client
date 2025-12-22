@@ -2,9 +2,12 @@ import { useEffect, useState } from "react";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import toast from "react-hot-toast";
 import Swal from "sweetalert2";
+import ViewOrderModal from "../../../components/Modal/ViewOrderModal";
+import { Check, Clock, Delete, Eye } from "lucide-react";
 
 const PendingOrders = () => {
   const [orders, setOrders] = useState([]);
+  const [modalData, setModalData] = useState(null);
   const [page, setPage] = useState(1);
   const limit = 10;
   const axiosSecure = useAxiosSecure();
@@ -12,6 +15,8 @@ const PendingOrders = () => {
   const fetchPendingOrders = async () => {
     try {
       const res = await axiosSecure.get("/orders/pending");
+      const sorted = res.data.sort((a, b) => (a._id < b._id ? 1 : -1));
+      setOrders(sorted);
       setOrders(res.data);
     } catch (err) {
       console.error(err);
@@ -77,7 +82,7 @@ const PendingOrders = () => {
 
   return (
     <div className="p-4">
-      <h2 className="text-3xl font-bold mb-6 text-gray-800">Pending Orders</h2>
+      <h2 className="text-3xl flex items-center gap-3 font-bold mb-6 text-gray-800"><Clock size={26}/>Pending Orders</h2>
 
       <div className="overflow-x-auto">
         <table className="min-w-full border border-gray-200 shadow-md rounded-lg">
@@ -108,21 +113,29 @@ const PendingOrders = () => {
                   className="hover:bg-gray-50 transition duration-200"
                 >
                   <td className="p-3 text-gray-700 font-medium">{o._id}</td>
-                  <td className="p-3 text-gray-700">{o.userName || o.userEmail || "Unknown"}</td>
+                  <td className="p-3 text-gray-700">
+                    {o.userName || o.userEmail || "Unknown"}
+                  </td>
                   <td className="p-3 text-gray-700">{o.productName}</td>
                   <td className="p-3 text-gray-700">{o.quantity}</td>
-                  <td className="p-3 flex gap-2">
+                  <td className="p-3 flex flex-col lg:flex-row gap-2 lg:mt-0">
                     <button
                       onClick={() => handleApprove(o._id)}
-                      className="bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded-md transition duration-200"
+                      className="bg-green-600 hover:bg-green-700 flex justify-center items-center gap-1 text-white px-3 py-1 rounded-md transition duration-200"
                     >
-                      Approve
+                    <Check />  Approve
                     </button>
                     <button
                       onClick={() => handleReject(o._id)}
-                      className="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded-md transition duration-200"
+                      className="bg-red-600 hover:bg-red-700 text-white flex justify-center items-center gap-1 px-3 py-1 rounded-md transition duration-200"
                     >
-                      Reject
+                    <Delete/>  Reject
+                    </button>
+                    <button
+                      onClick={() => setModalData(o)}
+                      className="bg-blue-600 hover:bg-blue-700 flex justify-center items-center gap-1 text-white px-3 py-1 rounded-md transition duration-200"
+                    >
+                    <Eye />  View
                     </button>
                   </td>
                 </tr>
@@ -161,6 +174,9 @@ const PendingOrders = () => {
             Next
           </button>
         </div>
+      )}
+      {modalData && (
+        <ViewOrderModal order={modalData} onClose={() => setModalData(null)} />
       )}
     </div>
   );

@@ -82,7 +82,7 @@ const Register = () => {
         className="w-full max-w-md bg-white rounded-2xl shadow-xl p-10 space-y-6 transform transition-transform duration-300 hover:scale-[1.02]"
       >
         <h2 className="text-3xl font-extrabold text-center text-gray-800 tracking-tight">
-          Register
+          Register Now
         </h2>
 
         {/* Name */}

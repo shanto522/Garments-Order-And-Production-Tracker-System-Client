@@ -5,6 +5,7 @@ import { useInView } from "react-intersection-observer";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import FeedbackSection from "../../components/Home/FeedbackSection";
 import HowItWorks from "../../components/Home/HowItWork";
+import { ArrowRight, Box, CheckCircle, Handshake } from "lucide-react";
 
 const FadeInWhenVisible = ({ children }) => {
   const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.15 });
@@ -50,7 +51,13 @@ const Home = () => {
 
   // Fetch products
   useEffect(() => {
-    axiosSecure.get("/home-products").then((res) => setProducts(res.data));
+    axiosSecure.get("/home-products").then((res) => {
+      // Sort by createdAt descending (latest first)
+      const sortedProducts = (res.data || []).sort(
+        (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+      );
+      setProducts(sortedProducts);
+    });
   }, [axiosSecure]);
 
   return (
@@ -80,9 +87,9 @@ const Home = () => {
           </h1>
           <button
             onClick={() => navigate("/all-products")}
-            className="pointer-events-auto bg-blue-500 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition transform hover:-translate-y-1"
+            className="pointer-events-auto bg-blue-500 hover:bg-blue-700 flex justify-center items-center gap-1 text-white px-6 py-3 rounded-lg font-semibold transition transform hover:-translate-y-1"
           >
-            View Products
+            View Products<ArrowRight />
           </button>
         </div>
 
@@ -103,7 +110,10 @@ const Home = () => {
       {/* ================= OUR PRODUCTS ================= */}
       <FadeInWhenVisible>
         <section className="container mx-auto px-4">
-          <h2 className="text-4xl font-bold mb-10 text-center">Our Products</h2>
+          <h2 className="text-4xl font-bold mb-10 text-center flex items-center justify-center gap-3">
+            <Box size={28} />
+            Our Products
+          </h2>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
             {products.map((p) => (
@@ -128,9 +138,10 @@ const Home = () => {
 
                 <button
                   onClick={() => navigate(`/product/${p._id}`)}
-                  className="mt-auto bg-blue-500 hover:bg-blue-700 text-white py-2 rounded-lg font-medium mt-4"
+                  className="mt-auto bg-blue-500 hover:bg-blue-700 text-white py-2 rounded-lg font-medium mt-4 flex justify-center items-center gap-2"
                 >
                   View Details
+                  <ArrowRight />
                 </button>
               </motion.div>
             ))}
@@ -145,14 +156,14 @@ const Home = () => {
 
       {/* ================= FEEDBACK ================= */}
       <FadeInWhenVisible>
-        <FeedbackSection />{" "}
-        {/* ✅ replaced FeedbackCarousel with FeedbackSection */}
+        <FeedbackSection />
       </FadeInWhenVisible>
 
       {/* ================= EXTRA SECTION 1 ================= */}
       <FadeInWhenVisible>
         <section className="shadow-md bg-gray-200 container mx-auto rounded-xl py-16 text-center px-4">
-          <h2 className="text-3xl sm:text-4xl md:text-4xl font-extrabold mb-6">
+          <h2 className="text-3xl sm:text-4xl md:text-4xl font-extrabold mb-6 flex justify-center items-center gap-2">
+            <CheckCircle size={26} />
             Why Choose Us?
           </h2>
           <p className="max-w-2xl font-semibold mx-auto">
@@ -166,7 +177,8 @@ const Home = () => {
       {/* ================= EXTRA SECTION 2 ================= */}
       <FadeInWhenVisible>
         <section className="bg-gray-200 container mx-auto shadow-md rounded-xl py-16 text-center px-4">
-          <h2 className="text-3xl sm:text-4xl md:text-4xl font-extrabold mb-6">
+          <h2 className="text-3xl sm:text-4xl md:text-4xl font-extrabold mb-6 flex justify-center items-center gap-2">
+            <Handshake size={26} />
             Our Commitment
           </h2>
           <p className="max-w-2xl font-semibold mx-auto">

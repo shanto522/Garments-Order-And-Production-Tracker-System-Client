@@ -1,6 +1,7 @@
 import { useState } from "react";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import toast from "react-hot-toast";
+import { CirclePlus, PlusSquare } from "lucide-react";
 
 const AddProduct = () => {
   const axiosSecure = useAxiosSecure();
@@ -75,7 +76,7 @@ const AddProduct = () => {
 
   return (
     <div className=" p-4">
-      <h2 className="text-3xl font-bold mb-6 text-gray-800">Add Product</h2>
+      <h2 className="text-3xl flex items-center gap-3 font-bold mb-6 text-gray-800"><PlusSquare size={28}/>Add Product</h2>
       <div className="overflow-x-auto">
         <form
           onSubmit={handleSubmit}
@@ -104,30 +105,60 @@ const AddProduct = () => {
             onChange={handleChange}
             className="border border-gray-300 p-3 w-full rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-400"
           >
-            <option value="shirt">Shirt</option>
-            <option value="tshirt">T-Shirt</option>
-            <option value="polo-shirt">Polo Shirt</option>
-            <option value="hoodie">Hoodie</option>
-            <option value="sweater">Sweater / Sweatshirt</option>
-            <option value="jacket">Jacket</option>
-            <option value="blazer">Blazer</option>
-            <option value="coat">Coat</option>
+            <option value="">Select Category</option>
 
-            <option value="pant">Pant / Trouser</option>
-            <option value="jeans">Jeans</option>
-            <option value="shorts">Shorts</option>
+            {/* MEN */}
+            <option value="men-shirt">Men Shirt</option>
+            <option value="men-tshirt">Men T-Shirt</option>
+            <option value="men-polo">Men Polo Shirt</option>
+            <option value="panjabi">Panjabi / Punjabi</option>
+            <option value="men-hoodie">Men Hoodie</option>
+            <option value="men-sweater">Men Sweater</option>
+            <option value="men-jacket">Men Jacket</option>
+            <option value="men-blazer">Men Blazer</option>
+            <option value="men-coat">Men Coat</option>
+            <option value="men-pant">Men Pant / Trouser</option>
+            <option value="men-jeans">Men Jeans</option>
+            <option value="men-shorts">Men Shorts</option>
+            <option value="men-cargo">Men Cargo Pant</option>
 
-            <option value="kurta">Kurta / Kurti</option>
+            {/* WOMEN */}
+            <option value="women-top">Women Top</option>
+            <option value="women-tshirt">Women T-Shirt</option>
+            <option value="women-blouse">Women Blouse</option>
+            <option value="kurti">Kurti</option>
+            <option value="women-tunic">Women Tunic</option>
+            <option value="women-pant">Women Pant</option>
+            <option value="women-jeans">Women Jeans</option>
+            <option value="leggings">Leggings</option>
+            <option value="skirt">Skirt</option>
+            <option value="palazzo">Palazzo</option>
+            <option value="dress">Dress</option>
+            <option value="gown">Gown</option>
+            <option value="jumpsuit">Jumpsuit</option>
             <option value="saree">Saree</option>
             <option value="salwar">Salwar / Churidar</option>
+            <option value="lehenga">Lehenga</option>
+            <option value="anarkali">Anarkali</option>
 
-            <option value="dress">Dress</option>
-            <option value="skirt">Skirt</option>
+            {/* KIDS */}
+            <option value="baby-wear">Baby Wear</option>
+            <option value="kids-tshirt">Kids T-Shirt</option>
+            <option value="kids-shirt">Kids Shirt</option>
+            <option value="kids-pant">Kids Pant</option>
+            <option value="kids-shorts">Kids Shorts</option>
+            <option value="kids-dress">Kids Dress</option>
+            <option value="kids-hoodie">Kids Hoodie</option>
+            <option value="school-uniform">School Uniform</option>
 
+            {/* COMMON */}
             <option value="activewear">Activewear / Sportswear</option>
             <option value="nightwear">Nightwear / Pajamas</option>
             <option value="swimwear">Swimwear</option>
+            <option value="innerwear">Innerwear</option>
+            <option value="loungewear">Loungewear</option>
 
+            {/* ACCESSORIES */}
             <option value="accessories">Accessories</option>
           </select>
           <input
@@ -210,9 +241,9 @@ const AddProduct = () => {
           </label>
           <button
             type="submit"
-            className="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-lg font-semibold transition duration-200 w-full md:w-auto"
+            className="bg-indigo-600 hover:bg-indigo-700 flex justify-center items-center gap-3 text-white px-6 py-3 rounded-lg font-semibold transition duration-200 w-full md:w-auto"
           >
-            Add Product
+           <CirclePlus /> Add Product
           </button>
         </form>
       </div>

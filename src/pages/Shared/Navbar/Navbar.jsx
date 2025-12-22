@@ -1,12 +1,22 @@
 // src/components/Shared/Navbar.jsx
 import React, { useEffect, useState } from "react";
 import { Link, NavLink } from "react-router";
-import { FaRegArrowAltCircleDown } from "react-icons/fa";
+import {
+  FaBoxOpen,
+  FaHome,
+  FaInfoCircle,
+  FaPhone,
+  FaRegArrowAltCircleDown,
+  FaSignInAlt,
+  FaTachometerAlt,
+  FaUserPlus,
+} from "react-icons/fa";
 import { IoMdLogOut } from "react-icons/io";
 import logoImage from "../../../assets/logoImage.png";
 
 import useAuth from "../../../hooks/useAuth";
 import useUserInfo from "../../../hooks/useUserInfo";
+import { LayoutDashboard } from "lucide-react";
 
 const Navbar = () => {
   const { user, signOutFunc } = useAuth();
@@ -52,25 +62,39 @@ const Navbar = () => {
             className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 dark:bg-gray-800 rounded-box w-52"
           >
             <li>
-              <NavLink to="/">Home</NavLink>
+              <NavLink className="font-semibold" to="/">
+                <FaHome /> Home
+              </NavLink>
             </li>
             <li>
-              <NavLink to="/all-products">All-Products</NavLink>
+              <NavLink className="font-semibold" to="/all-products">
+                <FaBoxOpen />
+                All-Products
+              </NavLink>
             </li>
 
             {canViewDashboard() && (
               <li>
-                <NavLink to="/dashboard">Dashboard</NavLink>
+                <NavLink to="/dashboard">
+                 <LayoutDashboard />
+                  Dashboard
+                </NavLink>
               </li>
             )}
 
             {!user && (
               <>
                 <li>
-                  <NavLink to="/auth/login">Login</NavLink>
+                  <NavLink className="font-semibold" to="/auth/login">
+                    <FaSignInAlt />
+                    Login
+                  </NavLink>
                 </li>
                 <li>
-                  <NavLink to="/auth/register">Register</NavLink>
+                  <NavLink className="font-semibold" to="/auth/register">
+                    <FaUserPlus />
+                    Register
+                  </NavLink>
                 </li>
               </>
             )}
@@ -91,25 +115,33 @@ const Navbar = () => {
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal px-1">
           <li>
-            <NavLink to="/">Home</NavLink>
+            <NavLink className="font-semibold" to="/">
+              <FaHome /> Home
+            </NavLink>
           </li>
           <li>
-            <NavLink to="/all-products">All-Products</NavLink>
+            <NavLink className="font-semibold" to="/all-products">
+              <FaBoxOpen />
+              All-Products
+            </NavLink>
           </li>
 
           {canViewDashboard() && (
             <li>
-              <NavLink to="/dashboard">Dashboard</NavLink>
+              <NavLink className="font-semibold" to="/dashboard">
+                <LayoutDashboard />
+                Dashboard
+              </NavLink>
             </li>
           )}
 
           {!user && (
             <>
               <li>
-                <NavLink to="/about-us">About Us</NavLink>
+                <NavLink className="font-semibold" to="/about-us"><FaInfoCircle />About Us</NavLink>
               </li>
               <li>
-                <NavLink to="/contact">Contact</NavLink>
+                <NavLink className="font-semibold" to="/contact"><FaPhone />Contact</NavLink>
               </li>
             </>
           )}
@@ -173,9 +205,11 @@ const Navbar = () => {
         ) : (
           <div className="flex gap-2">
             <NavLink to="/auth/login" className="btn btn-sm btn-outline">
+              <FaSignInAlt />
               Login
             </NavLink>
-            <NavLink to="/auth/register" className="btn btn-sm btn-primary">
+            <NavLink to="/auth/register" className="btn btn-sm btn-outline">
+              <FaUserPlus />
               Register
             </NavLink>
           </div>

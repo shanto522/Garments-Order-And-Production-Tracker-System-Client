@@ -3,6 +3,7 @@ import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import ManageProductModal from "../../../components/Modal/ManageProductModal";
 import Swal from "sweetalert2";
 import toast from "react-hot-toast";
+import { Delete, PackageSearch, RefreshCw } from "lucide-react";
 
 const AllProductsAdmin = () => {
   const [products, setProducts] = useState([]);
@@ -12,7 +13,10 @@ const AllProductsAdmin = () => {
   const axiosSecure = useAxiosSecure();
 
   useEffect(() => {
-    axiosSecure.get("/products").then((res) => setProducts(res.data));
+    axiosSecure.get("/products").then((res) => {
+      const sorted = res.data.sort((a, b) => (a._id < b._id ? 1 : -1));
+      setProducts(sorted);
+    });
   }, [axiosSecure]);
 
   const handleDelete = (id) => {
@@ -78,8 +82,8 @@ const AllProductsAdmin = () => {
 
   return (
     <div className="p-4">
-      <h2 className="text-3xl md:text-4xl font-bold mb-6 text-gray-800">
-        All Products Admin
+      <h2 className="text-3xl flex items-center gap-3 md:text-4xl font-bold mb-6 text-gray-800">
+        <PackageSearch size={28}/> All Products Admin
       </h2>
 
       <div className="overflow-x-auto shadow-md rounded-lg bg-white">
@@ -138,15 +142,15 @@ const AllProductsAdmin = () => {
                   <td className="p-3 flex flex-wrap gap-2 sm:flex-nowrap">
                     <button
                       onClick={() => handleUpdate(p)}
-                      className="bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded-md transition duration-200 flex-1 sm:flex-auto"
+                      className="bg-blue-600 flex justify-center items-center gap-1 hover:bg-blue-700 text-white px-3 py-2 rounded-md transition duration-200 flex-1 sm:flex-auto"
                     >
-                      Update
+                      <RefreshCw size={16} /> Update
                     </button>
                     <button
                       onClick={() => handleDelete(p._id)}
-                      className="bg-red-600 hover:bg-red-700 text-white px-3 py-2 rounded-md transition duration-200 flex-1 sm:flex-auto"
+                      className="bg-red-600 hover:bg-red-700 text-white px-3 py-2 flex justify-center items-center gap-1 rounded-md transition duration-200 flex-1 sm:flex-auto"
                     >
-                      Delete
+                      <Delete size={20} /> Delete
                     </button>
                   </td>
                 </tr>

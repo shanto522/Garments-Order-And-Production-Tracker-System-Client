@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router";
 import { motion } from "framer-motion";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
+import { ArrowRight, MessageCircle } from "lucide-react";
 
 const FeedbackSection = () => {
   const [feedbacks, setFeedbacks] = useState([]);
@@ -21,7 +22,10 @@ const FeedbackSection = () => {
 
   return (
     <section className="container shadow-md mx-auto px-4 py-4">
-      <h2 className="text-4xl font-bold mb-8 text-center">Customer Feedback</h2>
+      <h2 className="text-4xl font-bold mb-8 text-center flex items-center justify-center gap-2">
+        <MessageCircle size={26} />
+        Customer Feedback
+      </h2>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
         {feedbacks.map((fb, idx) => (
@@ -42,9 +46,10 @@ const FeedbackSection = () => {
       <div className="flex justify-center mt-6">
         <Link
           to="/dashboard/all-feedbacks"
-          className="bg-blue-500 text-white px-6 py-2 rounded-lg font-bold hover:bg-blue-600 transition"
+          className="bg-blue-500 text-white px-6 py-2 rounded-lg font-bold hover:bg-blue-600 transition flex items-center gap-2"
         >
           See More
+          <ArrowRight />
         </Link>
       </div>
     </section>

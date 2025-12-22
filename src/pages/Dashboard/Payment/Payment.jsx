@@ -16,49 +16,66 @@ const Payment = ({
   const [loading, setLoading] = useState(false);
 
   const handleStripeFast = async () => {
+    // ===== Basic validation =====
     if (!firstName || !lastName || !contactNumber || !deliveryAddress) {
       return toast.error("Please fill all required fields");
     }
 
+    const totalCost = Number(product?.price) * Number(quantity);
+
+    if (!totalCost || isNaN(totalCost) || totalCost <= 0) {
+      return toast.error("Invalid price or quantity");
+    }
+
+    // ===== Safe UUID =====
+    const stripeSessionId =
+      window.crypto?.randomUUID() || Date.now().toString();
+
     setLoading(true);
 
     try {
+      // 🔹 Stripe metadata MUST be small
       const metadata = {
+        stripeSessionId,
         productId: product._id,
-        productName: product.name,
-        quantity,
-        orderPrice: Number(product.price) * quantity,
-        firstName,
-        lastName,
-        contactNumber,
-        deliveryAddress,
-        notes,
+        qty: String(quantity),
         userEmail: user.email,
-        paymentOption: "Stripe",
       };
-      localStorage.setItem("stripeMetadata", JSON.stringify(metadata));
+
       const sessionRes = await axiosSecure.post("/create-checkout-session", {
         productId: product._id,
         productName: product.name,
-        cost: Number(product.price) * quantity,
+        cost: totalCost,
         senderEmail: user.email,
         metadata,
       });
 
       const sessionUrl = sessionRes.data?.url;
-      const sessionId = sessionRes.data?.id;
+      if (!sessionUrl) throw new Error("Stripe session failed");
 
-      if (!sessionUrl) throw new Error("Stripe URL not found");
-
+      // 🔹 Save full order info locally (NOT in Stripe)
       localStorage.setItem(
         "stripeMetadata",
-        JSON.stringify({ ...metadata, stripeSessionId: sessionId })
+        JSON.stringify({
+          stripeSessionId,
+          productId: product._id,
+          productName: product.name,
+          quantity,
+          orderPrice: totalCost,
+          firstName,
+          lastName,
+          contactNumber,
+          deliveryAddress,
+          notes,
+          userEmail: user.email,
+          paymentOption: "Stripe",
+        })
       );
 
       window.location.href = sessionUrl;
     } catch (err) {
       console.error(err);
-      toast.error(err.message || "Payment failed");
+      toast.error(err.response?.data?.message || "Payment failed");
       setLoading(false);
     }
   };

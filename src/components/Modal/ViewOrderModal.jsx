@@ -44,7 +44,18 @@ const ViewOrderModal = ({ order, onClose }) => {
             {order.productName}
           </p>
           <p>
+            <span className="font-semibold">Contact Number:</span>{" "}
+            {order.contactNumber}
+          </p>
+          <p>
+            <span className="font-semibold">Delivery Address:</span>{" "}
+            {order.deliveryAddress}
+          </p>
+          <p>
             <span className="font-semibold">Quantity:</span> {order.quantity}
+          </p>
+          <p>
+            <span className="font-semibold">Order Price:</span> {order.orderPrice}
           </p>
           <p>
             <span className="font-semibold">Status:</span>{" "}
@@ -53,6 +64,9 @@ const ViewOrderModal = ({ order, onClose }) => {
           <p>
             <span className="font-semibold">Payment Option:</span>{" "}
             {order.paymentOption || "N/A"}
+          </p>
+          <p>
+            <span className="font-semibold">Notes:</span> {order.notes}
           </p>
           {/* Tracking History */}
           {trackingHistory.length > 0 ? (

@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { ArrowRight, ListChecks } from "lucide-react";
 
 const steps = [
   { title: "Order Placed" },
@@ -11,7 +12,10 @@ const steps = [
 const HowItWorks = () => {
   return (
     <section className="container mx-auto px-4 py-4">
-      <h2 className="text-4xl font-bold mb-8 text-center">How It Works</h2>
+      <h2 className="text-4xl font-bold mb-8 text-center flex items-center justify-center gap-2">
+       <ListChecks size={26} />How It Works
+        
+      </h2>
       <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
         {steps.map((step, idx) => (
           <motion.div

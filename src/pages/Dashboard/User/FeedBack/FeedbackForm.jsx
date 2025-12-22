@@ -2,6 +2,7 @@ import { useState } from "react";
 import useAxiosSecure from "../../../../hooks/useAxiosSecure";
 import { useNavigate } from "react-router";
 import toast from "react-hot-toast";
+import { ArrowLeft, MessagesSquare, SendHorizontal } from "lucide-react";
 
 const FeedbackForm = () => {
   const [name, setName] = useState("");
@@ -25,8 +26,8 @@ const FeedbackForm = () => {
 
   return (
     <div className=" mt-16 p-8 bg-white rounded-2xl shadow-xl border border-gray-200">
-      <h2 className="text-3xl font-extrabold mb-6 text-center text-gray-800">
-        Share Your Feedback
+      <h2 className="text-3xl flex justify-center items-center gap-3 font-extrabold mb-6 text-center text-gray-800">
+        <MessagesSquare size={26} />Share Your Feedback
       </h2>
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
         <input
@@ -46,17 +47,17 @@ const FeedbackForm = () => {
         />
         <button
           type="submit"
-          className="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg shadow-md transition transform hover:-translate-y-0.5"
+          className="bg-blue-500 flex justify-center items-center gap-3 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg shadow-md transition transform hover:-translate-y-0.5"
         >
-          Submit Feedback
+          Submit Feedback<SendHorizontal />
         </button>
       </form>
       <div className="flex justify-center mt-10">
         <button
           onClick={() => navigate("/")}
-          className="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold"
+          className="px-6 flex justify-center items-center gap-3 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold"
         >
-          Go Back Home
+          <ArrowLeft/>Go Back Home
         </button>
       </div>
     </div>
