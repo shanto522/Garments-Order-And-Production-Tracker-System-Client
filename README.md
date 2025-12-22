@@ -7,7 +7,7 @@ The system supports Customer, Manager, and Admin roles with proper access contro
 
 🌐 Live Site
 
-Live URL:
+Live URL: https://garments-order-tracker-client.web.app
 
 🔗 Repository Links
 
