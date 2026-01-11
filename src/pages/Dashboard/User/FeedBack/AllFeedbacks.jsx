@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import useAxiosSecure from "../../../../hooks/useAxiosSecure";
 import { useNavigate } from "react-router";
 import { ArrowLeft, MessageCircle } from "lucide-react";
-
+import feedbackIcon from "../../../../assets/message.png";
 const AllFeedbacks = () => {
   const [feedbacks, setFeedbacks] = useState([]);
   const [page, setPage] = useState(1);
@@ -35,7 +35,7 @@ const AllFeedbacks = () => {
   return (
     <div className=" px-4 py-16">
       <h2 className="text-3xl flex justify-center items-center gap-3 font-bold mb-8 text-center">
-        <MessageCircle size={26} />
+        <img src={feedbackIcon} className="h-10 w-10" alt="" />
         All Customer Feedbacks
       </h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">

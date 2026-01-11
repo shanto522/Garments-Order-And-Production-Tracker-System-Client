@@ -2,7 +2,7 @@ import { useState } from "react";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import toast from "react-hot-toast";
 import { CirclePlus, PlusSquare } from "lucide-react";
-
+import addIcon from '../../../assets/add-product.png'
 const AddProduct = () => {
   const axiosSecure = useAxiosSecure();
   const [productData, setProductData] = useState({
@@ -76,7 +76,7 @@ const AddProduct = () => {
 
   return (
     <div className=" p-4">
-      <h2 className="text-3xl flex items-center gap-3 font-bold mb-6 text-gray-800"><PlusSquare size={28}/>Add Product</h2>
+      <h2 className="text-3xl flex items-center gap-3 font-bold mb-6 text-gray-800"><img src={addIcon} className="h-10 w-10" alt="" /> Add Product</h2>
       <div className="overflow-x-auto">
         <form
           onSubmit={handleSubmit}

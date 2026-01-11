@@ -4,7 +4,9 @@ import ManageProductModal from "../../../components/Modal/ManageProductModal";
 import Swal from "sweetalert2";
 import toast from "react-hot-toast";
 import { Delete, PackageSearch, RefreshCw } from "lucide-react";
-
+import allProductIcon from '../../../assets/package.png'
+import updateIcon from "../../../assets/update.png";
+import deleteIcon from "../../../assets/bin.png";
 const AllProductsAdmin = () => {
   const [products, setProducts] = useState([]);
   const [modalData, setModalData] = useState(null);
@@ -83,7 +85,7 @@ const AllProductsAdmin = () => {
   return (
     <div className="p-4">
       <h2 className="text-3xl flex items-center gap-3 md:text-4xl font-bold mb-6 text-gray-800">
-        <PackageSearch size={28}/> All Products Admin
+        <img src={allProductIcon} className="h-10 w-10" alt="" /> All Products Admin
       </h2>
 
       <div className="overflow-x-auto shadow-md rounded-lg bg-white">
@@ -144,13 +146,13 @@ const AllProductsAdmin = () => {
                       onClick={() => handleUpdate(p)}
                       className="bg-blue-600 flex justify-center items-center gap-1 hover:bg-blue-700 text-white px-3 py-2 rounded-md transition duration-200 flex-1 sm:flex-auto"
                     >
-                      <RefreshCw size={16} /> Update
+                     <img src={updateIcon} className="h-4 w-4 md:h-6 md:w-6" alt="" />  Update
                     </button>
                     <button
                       onClick={() => handleDelete(p._id)}
                       className="bg-red-600 hover:bg-red-700 text-white px-3 py-2 flex justify-center items-center gap-1 rounded-md transition duration-200 flex-1 sm:flex-auto"
                     >
-                      <Delete size={20} /> Delete
+                    <img src={deleteIcon} className="h-4 w-4 md:h-6 md:w-6" alt="" /> Delete
                     </button>
                   </td>
                 </tr>

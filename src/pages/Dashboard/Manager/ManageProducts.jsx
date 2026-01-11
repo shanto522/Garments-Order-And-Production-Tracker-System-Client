@@ -5,7 +5,7 @@ import toast from "react-hot-toast";
 import UpdateProductModal from "../../../components/Modal/UpdateProductModal";
 import Swal from "sweetalert2";
 import { Delete, PackageCheck, RefreshCw } from "lucide-react";
-
+import manageIcon from '../../../assets/services.png'
 const ManageProducts = () => {
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
@@ -72,7 +72,7 @@ const ManageProducts = () => {
   return (
     <div className="p-4">
       <h2 className="text-3xl flex items-center gap-3 font-bold mb-6 text-gray-800">
-        <PackageCheck size={28} />
+        <img src={manageIcon} className="h-10 w-10" alt="" />
         Manage Products
       </h2>
 

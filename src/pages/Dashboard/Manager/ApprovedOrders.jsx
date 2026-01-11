@@ -4,7 +4,7 @@ import toast from "react-hot-toast";
 import TrackingModal from "../../../components/Modal/TrackingModal";
 import ViewTrackingModal from "../../../components/Modal/ViewTrackingModal";
 import { BadgeCheck, Eye, PlusCircle } from "lucide-react";
-
+import approvedIcon from '../../../assets/bag.png'
 const ApprovedOrders = () => {
   const [orders, setOrders] = useState([]);
   const [locationInputs, setLocationInputs] = useState({});
@@ -43,7 +43,7 @@ const ApprovedOrders = () => {
 
   return (
     <div className="p-4">
-      <h2 className="text-3xl flex items-center gap-3 font-bold mb-6 text-gray-800"><BadgeCheck size={26}/>Approved Orders</h2>
+      <h2 className="text-3xl flex items-center gap-3 font-bold mb-6 text-gray-800"><img src={approvedIcon} className="h-10 w-10" alt="" /> Approved Orders</h2>
 
       <div className="overflow-x-auto">
         <table className="min-w-full border border-gray-200 shadow-md rounded-lg">

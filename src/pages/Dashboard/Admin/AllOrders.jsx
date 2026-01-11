@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import ViewOrderModal from "../../../components/Modal/ViewOrderModal";
 import { ClipboardList, Eye } from "lucide-react";
-
+import eyeIcon from "../../../assets/visibility.png";
+import allOrderIcon from '../../../assets/shopping-cart.png'
 const AllOrders = () => {
   const [orders, setOrders] = useState([]);
   const [modalData, setModalData] = useState(null);
@@ -71,7 +72,7 @@ const AllOrders = () => {
   return (
     <div className="p-4">
       <h2 className="text-3xl flex items-center gap-3 md:text-4xl font-bold mb-6 text-gray-800">
-        <ClipboardList size={28}/> All Orders
+        <img src={allOrderIcon} className="h-10 w-10" alt="" /> All Orders
       </h2>
 
       {/* Filter and Search */}
@@ -161,7 +162,7 @@ const AllOrders = () => {
                       onClick={() => setModalData(o)}
                       className="bg-blue-600 hover:bg-blue-700 flex justify-center items-center gap-1 mt-3 lg:mt-0 text-white px-3 py-2 rounded-md flex-1"
                     >
-                      <Eye /> View
+                      <img src={eyeIcon} className="h-4 w-4 md:h-7 md:w-7" alt="" /> View
                     </button>
                   </td>
                 </tr>

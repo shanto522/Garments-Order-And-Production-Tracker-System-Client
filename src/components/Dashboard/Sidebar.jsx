@@ -2,7 +2,6 @@ import { useState } from "react";
 import { Link } from "react-router";
 import { AiOutlineBars } from "react-icons/ai";
 import { FcSettings } from "react-icons/fc";
-import { House } from "lucide-react";
 
 import MenuItem from "./Menu/MenuItem";
 import AdminMenu from "./Menu/AdminMenu";
@@ -11,7 +10,7 @@ import CustomerMenu from "./Menu/CustomerMenu";
 
 import LoadingSpinner from "../../pages/Shared/LoadingSpinner";
 import useUserInfo from "../../hooks/useUserInfo";
-
+import profileImg from "../../assets/user.png";
 const Sidebar = () => {
   const [isActive, setActive] = useState(false);
   const [userInfo, isLoading, isError] = useUserInfo();
@@ -45,16 +44,6 @@ const Sidebar = () => {
         rounded-r-2xl flex flex-col z-30 h-[calc(100vh-4rem)]`}
       >
         <nav className="flex-1 overflow-y-auto px-5 py-3 space-y-2">
-          <Link
-            to="/"
-            className="w-full font-semibold p-4 rounded-2xl shadow-lg 
-            bg-gradient-to-br from-[#f5f7fa] to-[#dfe9f3]
-            flex items-center justify-center gap-3"
-          >
-            <House className="w-5 h-5" />
-            <span>Home</span>
-          </Link>
-
           {userInfo?.role === "admin" && <AdminMenu />}
 
           {userInfo?.role === "manager" && userInfo?.status === "approved" && (
@@ -69,7 +58,7 @@ const Sidebar = () => {
         {/* Profile */}
         <div className="flex-shrink-0 px-5 py-3 border-t border-blue-100">
           <MenuItem
-            icon={FcSettings}
+            icon={profileImg}
             label="Profile"
             address="/dashboard/profile"
           />

@@ -3,7 +3,7 @@ import { Link } from "react-router";
 import { motion } from "framer-motion";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import { ArrowRight, MessageCircle } from "lucide-react";
-
+import feedbackIcon from '../../assets/message.png'
 const FeedbackSection = () => {
   const [feedbacks, setFeedbacks] = useState([]);
   const axiosSecure = useAxiosSecure();
@@ -23,7 +23,7 @@ const FeedbackSection = () => {
   return (
     <section className="container shadow-md mx-auto px-4 py-4">
       <h2 className="text-4xl font-bold mb-8 text-center flex items-center justify-center gap-2">
-        <MessageCircle size={26} />
+        <img src={feedbackIcon} className="h-10 w-10" alt="" />
         Customer Feedback
       </h2>
 
@@ -45,7 +45,7 @@ const FeedbackSection = () => {
 
       <div className="flex justify-center mt-6">
         <Link
-          to="/dashboard/all-feedbacks"
+          to="/all-feedbacks"
           className="bg-blue-500 text-white px-6 py-2 rounded-lg font-bold hover:bg-blue-600 transition flex items-center gap-2"
         >
           See More

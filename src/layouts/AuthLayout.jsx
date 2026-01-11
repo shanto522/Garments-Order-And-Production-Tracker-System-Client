@@ -6,9 +6,12 @@ import Footer from "../pages/Shared/Footer/Footer";
 const AuthLayout = () => {
   return (
     <div>
-      <Navbar></Navbar>
-      <Outlet></Outlet>
-      <Footer></Footer>
+     <nav className="sticky top-0 z-50">
+       <Navbar></Navbar>
+     </nav>
+      <main>
+        <Outlet></Outlet>
+      </main>
     </div>
   );
 };

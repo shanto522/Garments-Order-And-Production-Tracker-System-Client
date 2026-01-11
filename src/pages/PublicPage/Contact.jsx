@@ -38,13 +38,13 @@ const Contact = () => {
 
           <div className="space-y-4 text-gray-700">
             <p>
-              <strong>Email:</strong> info@garments-tracker.com
+              <strong>Email:</strong> shahriarnafij000@gmail.com
             </p>
             <p>
-              <strong>Phone:</strong> +880 1234 567890
+              <strong>Phone:</strong> +880 1794967522
             </p>
             <p>
-              <strong>Address:</strong> 123, Dhaka, Bangladesh
+              <strong>Address:</strong> Rangabali,Patuakhali,Bangladesh
             </p>
           </div>
         </div>

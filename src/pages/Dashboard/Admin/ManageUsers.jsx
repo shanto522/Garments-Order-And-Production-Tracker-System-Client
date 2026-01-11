@@ -4,7 +4,8 @@ import ManageUserModal from "../../../components/Modal/ManageUserModal";
 import toast from "react-hot-toast";
 import Swal from "sweetalert2";
 import { Check, Delete, RefreshCw, Users } from "lucide-react";
-
+import managerUserIcon from "../../../assets/team.png";
+import updateIcon from "../../../assets/update.png";
 const ManageUsers = () => {
   const [users, setUsers] = useState([]);
   const [modalData, setModalData] = useState(null);
@@ -133,7 +134,7 @@ const ManageUsers = () => {
   return (
     <div className="p-4">
       <h2 className="text-3xl md:text-4xl flex items-center gap-3 font-bold mb-6 text-gray-800">
-        <Users size={28} /> Manage Users
+        <img src={managerUserIcon} className="h-10 w-10" alt="" /> Manage Users
       </h2>
 
       {/* 🔍 Search + Filters */}
@@ -222,7 +223,7 @@ const ManageUsers = () => {
                         onClick={() => handleUpdate(u)}
                         className="bg-blue-600 flex items-center justify-center gap-1 text-white px-3 py-2 rounded-md"
                       >
-                      <RefreshCw size={16} />  Update
+                        <img src={updateIcon} className="h-4 w-4 md:h-6 md:w-6" alt="" /> Update
                       </button>
                     )}
                   </td>

@@ -1,5 +1,9 @@
 import MenuItem from "./MenuItem";
 import { BadgeCheck, Clock, PackageCheck, PlusSquare } from "lucide-react";
+import addProductIcon from '../../../assets/add-product.png'
+import manageProductIcon from '../../../assets/services.png'
+import approvedIcon from '../../../assets/bag.png'
+import pendingIcon from '../../../assets/shopping-bag (1).png'
 
 const ManagerMenu = () => {
   return (
@@ -13,18 +17,18 @@ const ManagerMenu = () => {
       mx-auto border border-blue-100
     "
     >
-      <MenuItem icon={PlusSquare} label="Add Product" address="add-product" />
+      <MenuItem icon={addProductIcon} label="Add Product" address="add-product" />
       <MenuItem
-        icon={PackageCheck}
+        icon={manageProductIcon}
         label="Manage Product"
         address="manage-products"
       />
       <MenuItem
-        icon={BadgeCheck}
+        icon={approvedIcon}
         label="Approved Orders"
         address="approved-orders"
       />
-      <MenuItem icon={Clock} label="Pending Orders" address="pending-orders" />
+      <MenuItem icon={pendingIcon} label="Pending Orders" address="pending-orders" />
     </div>
   );
 };

@@ -1,6 +1,8 @@
 import MenuItem from "./MenuItem";
 import { ClipboardList, PackageSearch, Users } from "lucide-react";
-
+import allOrderIcon from "../../../assets/package.png";
+import manageUserIcon from "../../../assets/team.png";
+import allProductIcon from "../../../assets/shopping-cart.png";
 const AdminMenu = () => {
   return (
     <div
@@ -13,10 +15,10 @@ const AdminMenu = () => {
       mx-auto border border-blue-100
     "
     >
-      <MenuItem icon={ClipboardList} label="All Orders" address="all-orders" />
-      <MenuItem icon={Users} label="Manage Users" address="manage-users" />
+      <MenuItem icon={allProductIcon} label="All Orders" address="all-orders" />
+      <MenuItem icon={manageUserIcon} label="Manage Users" address="manage-users" />
       <MenuItem
-        icon={PackageSearch}
+        icon={allOrderIcon}
         label="All Product Admin"
         address="all-products-admin"
       />

@@ -5,7 +5,7 @@ import useAxiosSecure from "../../../../hooks/useAxiosSecure";
 import useAuth from "../../../../hooks/useAuth";
 import Swal from "sweetalert2";
 import { CircleX, MapPin, ShoppingBag } from "lucide-react";
-
+import shoppingImg from "../../../../assets/online-shopping.png";
 const MyOrders = () => {
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
@@ -89,7 +89,7 @@ const MyOrders = () => {
   return (
     <div className="p-4">
       <h2 className="text-3xl flex items-center gap-3 md:text-4xl font-bold mb-6 text-gray-800">
-        <ShoppingBag size={28} /> My Orders
+        <img src={shoppingImg} className="h-10 w-10" alt="" /> My Orders
       </h2>
 
       <div className="overflow-x-auto shadow-md rounded-lg bg-white">

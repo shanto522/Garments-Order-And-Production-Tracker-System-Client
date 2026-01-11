@@ -5,7 +5,8 @@ import { useNavigate, useLocation, Link } from "react-router";
 import { toast } from "react-hot-toast";
 import useAuth from "../../../hooks/useAuth";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
-import { FaEye, FaEyeSlash, FaGoogle } from "react-icons/fa";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { CheckCircle } from "lucide-react";
 
 const Login = () => {
   const { signInFunc, signInWithPopupGoogleFunc, setUser } = useAuth();
@@ -15,14 +16,16 @@ const Login = () => {
   const from = location.state?.from?.pathname || "/";
   const [show, setShow] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [demoRole, setDemoRole] = useState(null); // Track demo role
 
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm();
 
-  const saveUserToDB = async (loggedInUser, idToken) => {
+  const saveUserToDB = async (loggedInUser, idToken, role = "customer") => {
     try {
       const res = await axiosSecure.post(
         "/users",
@@ -30,7 +33,7 @@ const Login = () => {
           email: loggedInUser.email,
           name: loggedInUser.displayName || "Anonymous",
           photoURL: loggedInUser.photoURL || "",
-          role: "customer", // safe default
+          role, // safe default or demo role
         },
         {
           headers: { Authorization: `Bearer ${idToken}` },
@@ -54,7 +57,7 @@ const Login = () => {
 
       const idToken = await loggedInUser.getIdToken();
 
-      await saveUserToDB(loggedInUser, idToken);
+      await saveUserToDB(loggedInUser, idToken, demoRole || "customer");
 
       setUser(loggedInUser);
       toast.success("Login successful!");
@@ -90,11 +93,47 @@ const Login = () => {
     }
   };
 
+  const handleDemoLogin = (role) => {
+    const demoUsers = {
+      customer: {
+        email: "shahriarnafij2002@gmail.com",
+        password: "Shahriar@nafij2002",
+      },
+      manager: {
+        email: "nafijshahriar@gmail.com",
+        password: "Nafij@shahriar0",
+      },
+      admin: { email: "shahriarnafij@gmail.com", password: "Shahriar@nafij0" },
+    };
+    const creds = demoUsers[role];
+    if (!creds) return;
+
+    // Autofill & submit
+    setValue("email", creds.email);
+    setValue("password", creds.password);
+    setDemoRole(role);
+    handleSubmit(onSubmit)();
+  };
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-indigo-50 via-purple-50 to-pink-50 p-4">
+    <div className="flex flex-col items-center justify-center py-10">
+      {/* Demo Role Buttons */}
+      <div className="flex justify-center gap-4 mb-6">
+        {["admin", "manager", "customer"].map((role) => (
+          <button
+            key={role}
+            type="button"
+            onClick={() => handleDemoLogin(role)}
+            className="px-4 py-2 bg-gray-200 rounded-xl hover:bg-gray-300 transition font-semibold"
+          >
+            {role.charAt(0).toUpperCase() + role.slice(1)} Demo
+          </button>
+        ))}
+      </div>
+
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="w-full max-w-md bg-white rounded-2xl shadow-xl p-10 space-y-6 transform transition-transform duration-300 hover:scale-[1.02]"
+        className="w-full max-w-md bg-white rounded-2xl shadow-xl p-10 space-y-6 transform transition-transform duration-300 hover:scale-[1.02] border border-gray-300"
       >
         <h2 className="text-3xl font-extrabold text-center text-gray-800 tracking-tight">
           Login
@@ -165,7 +204,7 @@ const Login = () => {
         <button
           type="button"
           onClick={handleGoogleLogin}
-          className={`w-full flex items-center justify-center gap-2 cursor-pointer py-3 rounded-lg border `}
+          className="w-full flex items-center justify-center gap-2 cursor-pointer py-3 rounded-lg border hover:bg-blue-200 transition"
         >
           <img
             src="https://www.svgrepo.com/show/355037/google.svg"

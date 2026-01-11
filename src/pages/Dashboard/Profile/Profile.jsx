@@ -7,8 +7,15 @@ import LoadingSpinner from "../../Shared/LoadingSpinner";
 const Profile = () => {
   const { user, signOutFunc } = useAuth();
   const axiosSecure = useAxiosSecure();
+
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true);
+
+  // 🔥 Edit State
+  const [isEditOpen, setIsEditOpen] = useState(false);
+  const [name, setName] = useState("");
+  const [photoURL, setPhotoURL] = useState("");
+  const [updating, setUpdating] = useState(false);
 
   const handleLogOut = () => {
     signOutFunc();
@@ -19,8 +26,9 @@ const Profile = () => {
       try {
         const res = await axiosSecure.get("/profile");
         setProfile(res.data);
+        setName(res.data.name);
+        setPhotoURL(res.data.photoURL);
       } catch (err) {
-        console.error(err);
         toast.error("Failed to fetch profile!");
       } finally {
         setLoading(false);
@@ -29,101 +37,142 @@ const Profile = () => {
     fetchProfile();
   }, [axiosSecure]);
 
+  const handleUpdateProfile = async () => {
+    if (!name.trim()) return toast.error("Name is required");
+    setUpdating(true);
+
+    try {
+      await axiosSecure.put("/profile", {
+        name,
+        photoURL,
+      });
+
+      setProfile((prev) => ({
+        ...prev,
+        name,
+        photoURL,
+      }));
+
+      toast.success("Profile updated successfully!");
+      setIsEditOpen(false);
+    } catch (err) {
+      toast.error("Failed to update profile!");
+    } finally {
+      setUpdating(false);
+    }
+  };
+
   if (loading) return <LoadingSpinner />;
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-blue-50 via-blue-100 to-white flex justify-center items-start py-10 px-4">
-      <div className="bg-white shadow-2xl rounded-3xl md:w-4/5 lg:w-3/5 overflow-hidden relative">
+    <div className=" flex justify-center py-10 px-4">
+      <div className="bg-white shadow-2xl rounded-3xl md:w-4/5 lg:w-5/5 overflow-hidden">
         {/* Header */}
-        <div className="flex flex-col items-center relative px-6 pt-20 pb-6">
-          {/* Profile Image */}
-          <div className="relative w-36 h-36 sm:w-40 sm:h-40 md:w-44 md:h-44 rounded-full overflow-hidden border-4 border-white shadow-xl">
+        <div className="flex flex-col items-center px-6 pt-20 pb-6">
+          <div className="w-40 h-40 rounded-full overflow-hidden border-4 border-white shadow-xl">
             <img
+              src={profile?.photoURL || "/default-avatar.png"}
               alt="profile"
-              src={user?.photoURL || profile?.photoURL || "/default-avatar.png"}
-              className="object-cover w-full h-full"
+              className="w-full h-full object-cover"
             />
           </div>
 
-          {/* Role */}
-          <p className="px-5 py-1 mt-4 text-sm sm:text-base font-medium text-white bg-gradient-to-r from-lime-500 to-lime-600 rounded-full shadow-lg">
-            {profile?.role || "Customer"}
+          <p className="px-5 py-1 mt-4 text-sm font-medium text-white bg-gradient-to-r from-lime-500 to-lime-600 rounded-full">
+            {profile?.role}
           </p>
 
-          {/* UID */}
-          <p className="mt-2 text-base sm:text-lg text-gray-700 font-medium tracking-wide">
-            UID: {user?.uid}
-          </p>
+          <p className="mt-2 text-gray-700 font-medium">UID: {user?.uid}</p>
+
+          {/* ✏️ Edit Button */}
+          <button
+            onClick={() => setIsEditOpen(true)}
+            className="mt-4 px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition"
+          >
+            Edit Profile
+          </button>
         </div>
 
-        {/* Profile Info */}
-        <div className="w-full mt-6 p-6 bg-gray-50 rounded-t-3xl shadow-inner flex flex-col gap-6 items-center">
-          {/* Name, Email & Status */}
-          <div className="flex flex-col sm:flex-row sm:justify-between gap-6 w-full text-center sm:text-left">
-            <div className="flex flex-col">
-              <span className="text-gray-500 font-medium text-sm">Name</span>
-              <span className="text-gray-800 font-semibold text-lg">
-                {user?.displayName || profile?.name || "N/A"}
-              </span>
+        {/* Info */}
+        <div className="bg-gray-50 p-6 rounded-t-3xl">
+          <div className="grid sm:grid-cols-3 gap-20 text-center sm:text-left">
+            <div>
+              <p className="text-gray-500 text-sm">Name</p>
+              <p className="font-semibold text-lg break-words">{profile?.name}</p>
             </div>
 
-            <div className="flex flex-col">
-              <span className="text-gray-500 font-medium text-sm">Email</span>
-              <span className="text-gray-800 font-semibold text-lg">
-                {user?.email || profile?.email || "N/A"}
-              </span>
+            <div>
+              <p className="text-gray-500 text-sm">Email</p>
+              <p className="font-semibold text-lg break-words">{profile?.email}</p>
             </div>
 
-            <div className="flex flex-col">
-              <span className="text-gray-500 font-medium text-sm">Status</span>
-              <span
+            <div>
+              <p className="text-gray-500 text-sm">Status</p>
+              <p
                 className={`font-semibold text-lg ${
-                  profile?.status === "Suspended"
+                  profile?.status === "suspended"
                     ? "text-red-600"
-                    : profile?.status === "Pending"
+                    : profile?.status === "pending"
                     ? "text-yellow-600"
                     : "text-green-600"
                 }`}
               >
-                {profile?.status || "Active"}
-              </span>
+                {profile?.status}
+              </p>
             </div>
           </div>
 
-          {/* ✅ Pending Notice (Assignment Requirement) */}
-          {profile?.status === "pending" && (
-            <div className="w-full p-4 bg-yellow-100 border border-yellow-300 rounded-md text-left">
-              <h3 className="font-semibold text-yellow-800 mb-1">
-                Account Pending Approval
-              </h3>
-              <p className="text-yellow-700 text-sm">
-                Your account is currently under review. Once approved by the
-                admin, you will be able to access all dashboard features.
-              </p>
-            </div>
-          )}
-
-          {/* ❌ Suspended Feedback */}
-          {profile?.status === "suspended" && profile?.suspendFeedback && (
-            <div className="w-full p-4 bg-red-100 rounded-md border border-red-300 text-left">
-              <h3 className="font-semibold text-red-700 mb-1">
-                Suspend Feedback
-              </h3>
-              <p className="text-red-600">{profile.suspendFeedback}</p>
-            </div>
-          )}
-
-          {/* Logout */}
-          <div className="flex justify-center mt-6 w-full">
+          <div className="flex justify-center mt-8">
             <button
               onClick={handleLogOut}
-              className="bg-red-500 px-10 py-3 rounded-lg text-white font-semibold hover:bg-red-700 transition-all duration-200 shadow-md hover:shadow-xl active:scale-[0.97]"
+              className="bg-red-500 px-10 py-3 rounded-lg text-white font-semibold hover:bg-red-700"
             >
               Logout
             </button>
           </div>
         </div>
       </div>
+
+      {/* ================= EDIT MODAL ================= */}
+      {isEditOpen && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-xl w-full max-w-md p-6 space-y-4">
+            <h2 className="text-xl font-semibold text-center">Edit Profile</h2>
+
+            <input
+              type="text"
+              placeholder="Your Name"
+              className="w-full border px-4 py-2 rounded-lg"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
+
+            <input
+              type="text"
+              placeholder="Photo URL"
+              className="w-full border px-4 py-2 rounded-lg"
+              value={photoURL}
+              onChange={(e) => setPhotoURL(e.target.value)}
+            />
+
+            <div className="flex justify-end gap-3">
+              <button
+                onClick={() => setIsEditOpen(false)}
+                className="px-5 py-2 rounded-lg border"
+              >
+                Cancel
+              </button>
+
+              <button
+                onClick={handleUpdateProfile}
+                disabled={updating}
+                className="px-5 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700"
+              >
+                {updating ? "Updating..." : "Update"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

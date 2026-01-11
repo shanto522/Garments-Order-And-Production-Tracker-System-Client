@@ -16,7 +16,7 @@ const MenuItem = ({ label, address, icon: Icon }) => {
         }`
       }
     >
-      <Icon className="w-5 h-5" />
+      <img src={Icon} alt="" className="w-7 h-7" />
 
       <span className="mx-4 font-medium text-[15px] tracking-wide">
         {label}

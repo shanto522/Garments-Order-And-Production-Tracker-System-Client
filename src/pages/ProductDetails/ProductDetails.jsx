@@ -4,7 +4,6 @@ import useAxiosSecure from "../../hooks/useAxiosSecure";
 import useAuth from "../../hooks/useAuth";
 import LoadingSpinner from "../Shared/LoadingSpinner";
 import { ArrowLeft, CheckLine } from "lucide-react";
-
 const ProductDetails = () => {
   const { id } = useParams();
   const axiosSecure = useAxiosSecure();
@@ -51,14 +50,14 @@ const ProductDetails = () => {
   const showPendingMessage = profile?.status === "pending";
 
   return (
-<div className="container mx-auto p-4 flex flex-col lg:flex-row gap-15">
+    <div className="container mx-auto p-4 flex flex-col lg:flex-row gap-10">
       {/* Left: Product Image (Centered, Sticky-ish) */}
       <div className="lg:w-1/2 flex justify-center items-start ">
         {product.images?.length > 0 ? (
           <img
             src={product.images[0]}
             alt={product.name}
-            className="rounded-xl sticky top-40 shadow max-h-[600px] object-contain"
+            className="rounded-xl sticky top-30 shadow max-h-[600px] object-contain"
           />
         ) : (
           <img
@@ -73,7 +72,7 @@ const ProductDetails = () => {
       <div className="lg:w-1/2 space-y-4 md:sticky md:top-4">
         <h2 className="text-3xl py-2 font-bold">{product.name}</h2>
         <p className="text-gray-700 text-xl font-bold">
-          Description: {product.description}
+         <span className="text-2xl">D</span>escription: {product.description}
         </p>
         <p className="text-gray-700 text-xl font-bold">
           Category: {product.category}
@@ -95,7 +94,7 @@ const ProductDetails = () => {
             onClick={() => navigate(`/booking/${product._id}`)}
             className="bg-blue-600 flex justify-center items-center gap-3 hover:bg-blue-700 w-full text-white px-4 py-2 rounded font-semibold"
           >
-           <CheckLine size={22} /> Book / Order Product
+            <CheckLine size={22} /> Book / Order Product
           </button>
         )}
 
@@ -126,12 +125,11 @@ const ProductDetails = () => {
           onClick={() => navigate(-1)}
           className="bg-gray-300 w-full flex item-center justify-center gap-2 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded font-semibold"
         >
-        <ArrowLeft size={22}/> Go Back
+          <ArrowLeft size={22} /> Go Back
         </button>
       </div>
     </div>
   );
 };
-
 
 export default ProductDetails;

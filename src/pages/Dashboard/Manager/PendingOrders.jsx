@@ -4,7 +4,7 @@ import toast from "react-hot-toast";
 import Swal from "sweetalert2";
 import ViewOrderModal from "../../../components/Modal/ViewOrderModal";
 import { Check, Clock, Delete, Eye } from "lucide-react";
-
+import pendingIcon from '../../../assets/shopping-bag (1).png'
 const PendingOrders = () => {
   const [orders, setOrders] = useState([]);
   const [modalData, setModalData] = useState(null);
@@ -82,7 +82,7 @@ const PendingOrders = () => {
 
   return (
     <div className="p-4">
-      <h2 className="text-3xl flex items-center gap-3 font-bold mb-6 text-gray-800"><Clock size={26}/>Pending Orders</h2>
+      <h2 className="text-3xl flex items-center gap-3 font-bold mb-6 text-gray-800"><img src={pendingIcon} className="h-10 w-10" alt="" /> Pending Orders</h2>
 
       <div className="overflow-x-auto">
         <table className="min-w-full border border-gray-200 shadow-md rounded-lg">

@@ -3,7 +3,7 @@ import useAxiosSecure from "../../../../hooks/useAxiosSecure";
 import { useNavigate } from "react-router";
 import toast from "react-hot-toast";
 import { ArrowLeft, MessagesSquare, SendHorizontal } from "lucide-react";
-
+import feedbackImg from '../../../../assets/message.png'
 const FeedbackForm = () => {
   const [name, setName] = useState("");
   const [message, setMessage] = useState("");
@@ -27,7 +27,7 @@ const FeedbackForm = () => {
   return (
     <div className=" mt-16 p-8 bg-white rounded-2xl shadow-xl border border-gray-200">
       <h2 className="text-3xl flex justify-center items-center gap-3 font-extrabold mb-6 text-center text-gray-800">
-        <MessagesSquare size={26} />Share Your Feedback
+        <img src={feedbackImg} className="h-10 w-10" alt="" />Share Your Feedback
       </h2>
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
         <input

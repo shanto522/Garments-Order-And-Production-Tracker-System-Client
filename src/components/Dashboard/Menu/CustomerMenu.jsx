@@ -1,9 +1,8 @@
-import { BsFingerprint } from "react-icons/bs";
-import { GrUserAdmin } from "react-icons/gr";
 import MenuItem from "./MenuItem";
 import { useState } from "react";
 import { FilePlus, MessageCircle, SearchCheck, ShoppingBag } from "lucide-react";
-
+import shoppingIcon from '../../../assets/online-shopping.png'
+import feedbackIcon from '../../../assets/message.png'
 const CustomerMenu = () => {
   const [isOpen, setIsOpen] = useState(false);
   const closeModal = () => setIsOpen(false);
@@ -20,8 +19,8 @@ const CustomerMenu = () => {
       mx-auto flex flex-col gap-3
     "
     >
-      <MenuItem icon={ShoppingBag} label="My Orders" address="my-orders" />
-      <MenuItem icon={MessageCircle} label="Feedback Form" address="feedbackForm" />
+      <MenuItem icon={shoppingIcon} label="My Orders" address="my-orders" />
+      <MenuItem icon={feedbackIcon} label="Feedback Form" address="feedbackForm" />
     </div>
   );
 };

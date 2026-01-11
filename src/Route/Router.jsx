@@ -41,7 +41,6 @@ import BookingPage from "../pages/Dashboard/User/BookingPage/BookingPage";
 // Route Guards
 
 const router = createBrowserRouter([
-  // ======================== PUBLIC ========================
   {
     path: "/",
     element: <MainLayout />,
@@ -50,11 +49,7 @@ const router = createBrowserRouter([
       { path: "all-products", element: <AllProducts /> },
       {
         path: "product/:id",
-        element: (
-          <PrivateRoute>
-            <ProductDetails />
-          </PrivateRoute>
-        ),
+        element: <ProductDetails />,
       },
       {
         path: "/booking/:id",
@@ -63,6 +58,10 @@ const router = createBrowserRouter([
             <BookingPage></BookingPage>
           </PrivateRoute>
         ),
+      },
+      {
+        path: "all-feedbacks",
+        element: <AllFeedbacks></AllFeedbacks>,
       },
       {
         path: "payment-success",
@@ -122,14 +121,6 @@ const router = createBrowserRouter([
         element: (
           <PrivateRoute>
             <FeedbackForm></FeedbackForm>
-          </PrivateRoute>
-        ),
-      },
-      {
-        path: "all-feedbacks",
-        element: (
-          <PrivateRoute>
-            <AllFeedbacks></AllFeedbacks>
           </PrivateRoute>
         ),
       },

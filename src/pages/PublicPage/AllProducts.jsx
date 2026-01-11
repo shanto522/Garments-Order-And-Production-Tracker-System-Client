@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import { ArrowRight, Grid } from "lucide-react";
-
+import allProductIcon from "../../assets/box.png";
 const AllProducts = () => {
   const [products, setProducts] = useState([]);
   const [page, setPage] = useState(1);
@@ -61,9 +61,9 @@ const AllProducts = () => {
   const { pages, start, end } = getPages();
 
   return (
-    <div className="container mx-auto p-2">
+    <div className="max-w-7xl mx-auto p-2">
       <h2 className="text-4xl text-center font-bold mb-6 flex items-center justify-center gap-2">
-        <Grid size={30} /> All Products
+        <img src={allProductIcon} className="h-10 w-10" alt="" /> All Products
       </h2>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
