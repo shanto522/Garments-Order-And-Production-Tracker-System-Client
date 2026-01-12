@@ -143,7 +143,7 @@ const AllOrders = () => {
                   <td className="p-2 md:p-3 text-gray-600">{o.productName}</td>
                   <td className="p-2 md:p-3 text-gray-600">{o.quantity}</td>
                   <td
-                    className={`p-2 md:p-3 font-semibold ${
+                    className={`p-2 md:p-3 font-semibold cursor-pointer ${
                       o.status === "Pending"
                         ? "text-yellow-600"
                         : o.status === "Approved"
@@ -160,7 +160,7 @@ const AllOrders = () => {
                   <td className="p-3 flex flex-wrap gap-2 sm:flex-nowrap">
                     <button
                       onClick={() => setModalData(o)}
-                      className="bg-blue-600 hover:bg-blue-700 flex justify-center items-center gap-1 mt-3 lg:mt-0 text-white px-3 py-2 rounded-md flex-1"
+                      className="bg-blue-600 hover:bg-blue-700 flex justify-center items-center gap-1 mt-3 lg:mt-0 text-white px-3 py-2 rounded-md flex-1 cursor-pointer"
                     >
                       <img src={eyeIcon} className="h-4 w-4 md:h-7 md:w-7" alt="" /> View
                     </button>

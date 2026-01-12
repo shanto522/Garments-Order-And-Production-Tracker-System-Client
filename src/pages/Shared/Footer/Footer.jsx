@@ -2,9 +2,10 @@
 import React from "react";
 import { Link, NavLink } from "react-router";
 import logoImg from "../../../assets/logoImage.png";
-import { FaFacebook, FaInstagram, FaYoutube } from "react-icons/fa";
-import { BsTwitterX } from "react-icons/bs";
-
+import facebookImg from '../../../assets/facebook.png'
+import twitterImg from '../../../assets/twitter.png'
+import instagramImg from '../../../assets/instagram.png'
+import youtubeImg from '../../../assets/youtube.png'
 const Footer = () => {
   return (
     <footer className="bg-gray-100  text-gray-700  border border-gray-300">
@@ -60,23 +61,23 @@ const Footer = () => {
           <h4 className="font-semibold  text-lg mb-3">Follow Us</h4>
           <ul className=" flex flex-row gap-4 mt-5 text-sm">
             <li>
-              <Link>
-                <FaFacebook size={26} />
+              <Link to='https://web.facebook.com/shahriar.nafij.2002'>
+                <img src={facebookImg} className="h-8 w-8" alt="" />
+              </Link>
+            </li>
+            <li>
+              <Link to='https://www.instagram.com/shahriarnafij/'>
+               <img src={instagramImg} className="h-8 w-8" alt="" />  
+              </Link>
+            </li>
+            <li>
+              <Link to='https://x.com/Nafij522'>
+                <img src={twitterImg} className="h-8 w-8" alt="" /> 
               </Link>
             </li>
             <li>
               <Link>
-                <FaInstagram size={26} />
-              </Link>
-            </li>
-            <li>
-              <Link>
-                <BsTwitterX size={26} />
-              </Link>
-            </li>
-            <li>
-              <Link>
-                <FaYoutube size={26} />
+                <img src={youtubeImg} className="h-8 w-8" alt="" /> 
               </Link>
             </li>
           </ul>
@@ -85,8 +86,8 @@ const Footer = () => {
         {/* Contact Info */}
         <div className="flex flex-col items-center md:items-start text-center md:text-left">
           <h4 className="font-semibold text-lg mb-3">Contact</h4>
-          <p className="text-sm">Email: info@garments-tracker.com</p>
-          <p className="text-sm mt-1">Phone: +880 1234 567890</p>
+          <p className="text-sm">Email: shahriarnafij000@gmail.com</p>
+          <p className="text-sm mt-1">Phone: +880 1794967522</p>
           <p className="text-sm mt-1">Address: 123, Dhaka, Bangladesh</p>
         </div>
       </div>

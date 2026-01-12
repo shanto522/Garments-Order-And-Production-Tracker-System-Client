@@ -95,9 +95,17 @@ const Login = () => {
 
   const handleDemoLogin = (role) => {
     const demoUsers = {
-      customer: {
+      activeCustomer: {
         email: "shahriarnafij2002@gmail.com",
         password: "Shahriar@nafij2002",
+      },
+      pendingCustomer: {
+        email: "naimislam@gmail.com",
+        password: "Naim@islam0",
+      },
+      suspendedCustomer: {
+        email: "kamal@gmail.com",
+        password: "Kamal@123",
       },
       manager: {
         email: "nafijshahriar@gmail.com",
@@ -118,8 +126,14 @@ const Login = () => {
   return (
     <div className="flex flex-col items-center justify-center py-10">
       {/* Demo Role Buttons */}
-      <div className="flex justify-center gap-4 mb-6">
-        {["admin", "manager", "customer"].map((role) => (
+      <div className="flex justify-center flex-wrap gap-4 mb-6">
+        {[
+          "admin",
+          "manager",
+          "activeCustomer",
+          "pendingCustomer",
+          "suspendedCustomer",
+        ].map((role) => (
           <button
             key={role}
             type="button"

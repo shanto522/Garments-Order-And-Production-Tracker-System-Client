@@ -16,7 +16,7 @@ const Profile = () => {
   const [name, setName] = useState("");
   const [photoURL, setPhotoURL] = useState("");
   const [updating, setUpdating] = useState(false);
-
+  const showSuspendedMessage = profile?.status === "suspended";
   const handleLogOut = () => {
     signOutFunc();
   };
@@ -91,18 +91,36 @@ const Profile = () => {
             Edit Profile
           </button>
         </div>
+        {showSuspendedMessage && (
+         <div className="px-3 md:px-15">
+           <div className="bg-red-100 border border-red-400 p-4 rounded text-center">
+            <p className="text-red-700 font-semibold">
+              Your account is suspended.
+            </p>
+            {profile?.suspendFeedback && (
+              <p className="mt-2 text-sm text-gray-700">
+                Reason: {profile.suspendFeedback}
+              </p>
+            )}
+          </div>
+         </div>
+        )}
 
         {/* Info */}
         <div className="bg-gray-50 p-6 rounded-t-3xl">
           <div className="grid sm:grid-cols-3 gap-20 text-center sm:text-left">
             <div>
               <p className="text-gray-500 text-sm">Name</p>
-              <p className="font-semibold text-lg break-words">{profile?.name}</p>
+              <p className="font-semibold text-lg break-words">
+                {profile?.name}
+              </p>
             </div>
 
             <div>
               <p className="text-gray-500 text-sm">Email</p>
-              <p className="font-semibold text-lg break-words">{profile?.email}</p>
+              <p className="font-semibold text-lg break-words">
+                {profile?.email}
+              </p>
             </div>
 
             <div>

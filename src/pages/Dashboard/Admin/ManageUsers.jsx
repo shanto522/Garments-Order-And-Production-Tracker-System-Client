@@ -204,13 +204,13 @@ const ManageUsers = () => {
                       <>
                         <button
                           onClick={() => approveUser(u._id)}
-                          className="bg-green-600 flex items-center justify-center gap-1 text-white px-3 py-2 rounded-md"
+                          className="bg-green-600 flex items-center justify-center gap-1 text-white px-3 py-2 rounded-md cursor-pointer"
                         >
                           <Check /> Approve
                         </button>
                         <button
                           onClick={() => rejectUser(u._id)}
-                          className="bg-red-600 flex items-center justify-center gap-1 text-white px-3 py-2 rounded-md"
+                          className="bg-red-600 flex items-center justify-center gap-1 text-white px-3 py-2 rounded-md cursor-pointer"
                         >
                           <Delete /> Reject
                         </button>
@@ -221,7 +221,7 @@ const ManageUsers = () => {
                     {u.role !== "admin" && u.status !== "pending" && (
                       <button
                         onClick={() => handleUpdate(u)}
-                        className="bg-blue-600 flex items-center justify-center gap-1 text-white px-3 py-2 rounded-md"
+                        className="bg-blue-600 flex items-center justify-center gap-1 text-white px-3 py-2 rounded-md cursor-pointer"
                       >
                         <img src={updateIcon} className="h-4 w-4 md:h-6 md:w-6" alt="" /> Update
                       </button>

@@ -144,13 +144,13 @@ const AllProductsAdmin = () => {
                   <td className="p-3 flex flex-wrap gap-2 sm:flex-nowrap">
                     <button
                       onClick={() => handleUpdate(p)}
-                      className="bg-blue-600 flex justify-center items-center gap-1 hover:bg-blue-700 text-white px-3 py-2 rounded-md transition duration-200 flex-1 sm:flex-auto"
+                      className="bg-blue-600 flex justify-center items-center gap-1 hover:bg-blue-700 text-white px-3 py-2 rounded-md transition duration-200 flex-1 sm:flex-auto cursor-pointer"
                     >
                      <img src={updateIcon} className="h-4 w-4 md:h-6 md:w-6" alt="" />  Update
                     </button>
                     <button
                       onClick={() => handleDelete(p._id)}
-                      className="bg-red-600 hover:bg-red-700 text-white px-3 py-2 flex justify-center items-center gap-1 rounded-md transition duration-200 flex-1 sm:flex-auto"
+                      className="bg-red-600 hover:bg-red-700 text-white px-3 py-2 flex justify-center items-center gap-1 rounded-md transition duration-200 flex-1 sm:flex-auto cursor-pointer"
                     >
                     <img src={deleteIcon} className="h-4 w-4 md:h-6 md:w-6" alt="" /> Delete
                     </button>

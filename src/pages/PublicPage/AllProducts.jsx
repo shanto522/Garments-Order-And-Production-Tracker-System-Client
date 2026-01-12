@@ -3,8 +3,10 @@ import { useNavigate } from "react-router";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import { ArrowRight, Grid } from "lucide-react";
 import allProductIcon from "../../assets/box.png";
+import LoadingSpinner from "../Shared/LoadingSpinner";
 const AllProducts = () => {
   const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(window.innerWidth >= 1024 ? 9 : 10);
   const [total, setTotal] = useState(0);
@@ -24,6 +26,7 @@ const AllProducts = () => {
 
   // Fetch products with dynamic limit
   useEffect(() => {
+    setLoading(true);
     axiosSecure
       .get(`/all-products?page=${page}&limit=${limit}`)
       .then((res) => {
@@ -35,7 +38,10 @@ const AllProducts = () => {
         setProducts(sortedProducts);
         setTotal(res.data?.total || 0);
       })
-      .catch(console.error);
+      .catch(console.error)
+      .finally(() => {
+        setLoading(false);
+      });
   }, [axiosSecure, page, limit]);
 
   const totalPages = Math.ceil(total / limit);
@@ -66,45 +72,51 @@ const AllProducts = () => {
         <img src={allProductIcon} className="h-10 w-10" alt="" /> All Products
       </h2>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {products.map((product) => (
-          <div
-            key={product._id}
-            className="rounded-lg shadow-2xl hover:shadow-lg transition p-3 flex flex-col"
-          >
-            {product.images?.length > 0 ? (
-              <img
-                src={product.images[0]}
-                alt={product.name}
-                className="h-80 w-full object-cover rounded-xl mb-4"
-              />
-            ) : (
-              <img
-                src={product.imageURL || "/default-product.png"}
-                alt={product.name}
-                className="h-48 w-full object-cover rounded mb-4"
-              />
-            )}
-
-            <h3 className="text-xl break-words font-semibold">
-              {product.name}
-            </h3>
-            <p className="text-gray-600">{product.category}</p>
-            <p className="text-gray-800 font-bold text-lg">${product.price}</p>
-            <p className="text-gray-700 md:mb-2">
-              Available: {product.availableQuantity}
-            </p>
-
-            <button
-              onClick={() => navigate(`/product/${product._id}`)}
-              className="mt-auto md:mt-auto bg-blue-500 flex justify-center items-center gap-1 hover:bg-blue-700 text-white px-4 py-2 rounded font-semibold"
+      {loading ? (
+        <LoadingSpinner />
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {products.map((product) => (
+            <div
+              key={product._id}
+              className="rounded-lg shadow-2xl hover:shadow-lg transition p-3 flex flex-col"
             >
-              View Details
-              <ArrowRight />
-            </button>
-          </div>
-        ))}
-      </div>
+              {product.images?.length > 0 ? (
+                <img
+                  src={product.images[0]}
+                  alt={product.name}
+                  className="h-80 w-full object-cover rounded-xl mb-4"
+                />
+              ) : (
+                <img
+                  src={product.imageURL || "/default-product.png"}
+                  alt={product.name}
+                  className="h-48 w-full object-cover rounded mb-4"
+                />
+              )}
+
+              <h3 className="text-xl break-words font-semibold">
+                {product.name}
+              </h3>
+              <p className="text-gray-600">{product.category}</p>
+              <p className="text-gray-800 font-bold text-lg">
+                ${product.price}
+              </p>
+              <p className="text-gray-700 md:mb-2">
+                Available: {product.availableQuantity}
+              </p>
+
+              <button
+                onClick={() => navigate(`/product/${product._id}`)}
+                className="mt-auto md:mt-auto bg-blue-500 flex justify-center items-center gap-1 hover:bg-blue-700 text-white px-4 py-2 rounded font-semibold"
+              >
+                View Details
+                <ArrowRight />
+              </button>
+            </div>
+          ))}
+        </div>
+      )}
 
       {/* Pagination */}
       {totalPages > 1 && (
